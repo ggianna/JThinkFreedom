@@ -39,8 +39,8 @@ public interface IStimulus<T> {
      * Takes the object that should trigger the reactors as parameter, and checks
      * whether a condition is satisfied.
      * 
-     * @param obj Any object.
+     * @param data Data gathered from sensor.
      * @return True if reaction condition is satisfied, false otherwise (false by default).
      */
-    public boolean shouldReact(Object obj);
+    public boolean shouldReact(T data);
 }

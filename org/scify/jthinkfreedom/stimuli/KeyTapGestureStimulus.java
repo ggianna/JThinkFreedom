@@ -5,7 +5,9 @@
  */
 package org.scify.jthinkfreedom.stimuli;
 
+import com.leapmotion.leap.Frame;
 import com.leapmotion.leap.Gesture;
+import static com.leapmotion.leap.Gesture.State.STATE_STOP;
 
 /**
  *
@@ -18,8 +20,14 @@ public class KeyTapGestureStimulus extends LeapMotionStimulus {
     }
 
     @Override
-    protected boolean shouldReact(Gesture g) {
-        return (g.type() == Gesture.Type.TYPE_SCREEN_TAP);
+    public boolean shouldReact(Frame info) {
+        for (Gesture g : info.gestures()) {
+            if (g.type() == Gesture.Type.TYPE_KEY_TAP && g.state()==STATE_STOP) {
+                System.out.println("Key tap gesture!");
+                return true;
+            }
+        }
+        return false;
     }
 
 }

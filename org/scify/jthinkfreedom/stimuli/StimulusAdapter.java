@@ -87,7 +87,7 @@ public abstract class StimulusAdapter<T> implements IStimulus<T> {
     }
 
     @Override
-    public boolean shouldReact(Object first) {
+    public boolean shouldReact(T data) {
         return false;
     }
 

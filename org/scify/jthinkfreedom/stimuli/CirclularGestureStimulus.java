@@ -5,7 +5,9 @@
  */
 package org.scify.jthinkfreedom.stimuli;
 
+import com.leapmotion.leap.Frame;
 import com.leapmotion.leap.Gesture;
+import static com.leapmotion.leap.Gesture.State.STATE_STOP;
 
 /**
  *
@@ -18,8 +20,13 @@ public class CirclularGestureStimulus extends LeapMotionStimulus {
     }
 
     @Override
-    protected boolean shouldReact(Gesture g) {
-        return (g.type() == Gesture.Type.TYPE_CIRCLE);
-         
+    public boolean shouldReact(Frame info) {
+        for (Gesture g : info.gestures()) {
+            if (g.type() == Gesture.Type.TYPE_CIRCLE && g.state()==STATE_STOP) {
+                System.out.println("Circle gesture!");
+                return true;
+            }
+        }
+        return false;
     }
 }
