@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.scify.jthinkfreedom.stimuli;
 
 import java.util.ArrayList;
@@ -29,8 +24,8 @@ public class CompositeStimulus extends StimulusAdapter<Object> {
         }
     }
 
-    public List<StimulusAdapter> getStimulusList() { 
-       return stimulusList;
+    public List<StimulusAdapter> getStimulusList() {
+        return stimulusList;
     }
 
     public void setStimulusList(List<StimulusAdapter> stimulusList) {
@@ -50,15 +45,15 @@ public class CompositeStimulus extends StimulusAdapter<Object> {
 
             for (int i = 0; i < stimulusList.size(); i++) {
                 if (stimulusList.get(i).shouldReact(info)) {
-                    satisfied.set(i, true);   
-                    
+                    satisfied.set(i, true);
+
                 }
             }
             if (checkAllTrue(satisfied)) {
                 callReactors();
                 Collections.fill(satisfied, false);
             }
-            
+
         }
     }
 

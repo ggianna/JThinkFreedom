@@ -18,7 +18,7 @@ import org.scify.jthinkfreedom.stimuli.RightEyeBlinkStimulus;
  *
  * @author ggianna
  */
-public class Main {
+public class CameraMain {
 
     public static void main(String[] saArgs) {
         ISensor<opencv_core.IplImage> sSensor;
