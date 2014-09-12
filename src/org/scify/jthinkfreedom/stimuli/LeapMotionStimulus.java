@@ -15,6 +15,7 @@ public abstract class LeapMotionStimulus extends StimulusAdapter<Frame> {
         super();
     }
 
+  
     @Override
     public void onDataReceived() {
         if (lSensors.isEmpty()) {
