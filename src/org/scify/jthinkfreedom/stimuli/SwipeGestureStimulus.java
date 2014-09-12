@@ -5,7 +5,9 @@ import com.leapmotion.leap.Gesture;
 import static com.leapmotion.leap.Gesture.State.STATE_STOP;
 
 /**
- *
+ *Class that implements gesture object tracking using a leap motion sensor
+ * Check if the frame is a swipe gesture type and if it has finished moving
+ * gesture.
  * @author alexisz
  */
 public class SwipeGestureStimulus extends LeapMotionStimulus {
@@ -13,7 +15,7 @@ public class SwipeGestureStimulus extends LeapMotionStimulus {
     public SwipeGestureStimulus() {
         super();
     }
-
+    
     @Override
     public boolean shouldReact(Frame info) {
         for (Gesture g : info.gestures()) {
