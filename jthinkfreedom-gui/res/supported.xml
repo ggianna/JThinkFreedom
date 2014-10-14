@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supportedDevices>
+	<device>
+		Webcam
+		<invokeGUI>
+			org.scify.jthinkfreedom.webcamgui.WebcamGUI.class
+		</invokeGUI>
+	</device>
+	<device>
+		Leap Motion
+		<invokeGUI>
+			org.scify.jthinkfreedom.leapgui.LeapGUI.class
+		</invokeGUI>
+	</device>
+</supportedDevices>
