@@ -3,13 +3,13 @@
 	<device>
 		Webcam
 		<invokeGUI>
-			org.scify.jthinkfreedom.webcamgui.WebcamGUI.class
+			org.scify.jthinkfreedom.webcamgui.WebcamGUI
 		</invokeGUI>
 	</device>
 	<device>
 		Leap Motion
 		<invokeGUI>
-			org.scify.jthinkfreedom.leapgui.LeapGUI.class
+			org.scify.jthinkfreedom.leapgui.LeapGUI
 		</invokeGUI>
 	</device>
 </supportedDevices>

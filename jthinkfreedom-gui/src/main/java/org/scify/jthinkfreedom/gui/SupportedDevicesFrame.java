@@ -2,6 +2,12 @@ package org.scify.jthinkfreedom.gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
@@ -17,6 +23,10 @@ import org.jdom2.input.SAXBuilder;
 public class SupportedDevicesFrame extends javax.swing.JFrame {
 
     private static final String CONF_FILE = "res/supported.xml";
+
+    private static final String INVOKE_GUI = "invokeGUI";
+
+    private Map<String, String> deviceGUIs;
 
     /**
      * Creates new form SupportedDevices
@@ -54,6 +64,11 @@ public class SupportedDevicesFrame extends javax.swing.JFrame {
         supportedLabel.setText("Choose one of the supported devices");
 
         runButton.setText("Run");
+        runButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runButtonActionPerformed(evt);
+            }
+        });
 
         radioPanel.setBackground(new java.awt.Color(255, 255, 255));
         radioPanel.setLayout(new javax.swing.BoxLayout(radioPanel, javax.swing.BoxLayout.LINE_AXIS));
@@ -103,17 +118,38 @@ public class SupportedDevicesFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
+        Enumeration<AbstractButton> buttons = bg.getElements();
+        while (buttons.hasMoreElements()) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                try {
+                    Class runClass = Class.forName(deviceGUIs.get(button.getText()));
+                    String[] parameters = null;
+                    Method main = runClass.getMethod("main", String[].class);
+                    main.invoke(null, (Object) parameters);
+                } catch (ClassNotFoundException | NoSuchMethodException |
+                        SecurityException | IllegalAccessException |
+                        IllegalArgumentException | InvocationTargetException ex) {
+                    ex.printStackTrace(System.err);
+                }
+            }
+        }
+    }//GEN-LAST:event_runButtonActionPerformed
+
     private void initControls() {
         bg = new ButtonGroup();
         radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
+        deviceGUIs = new HashMap();
         SAXBuilder sax = new SAXBuilder();
         try {
             Document document = sax.build(new File(CONF_FILE));
             Element root = document.getRootElement();
             for (Element element : root.getChildren()) {
-                JRadioButton control = new JRadioButton(element.getText());
+                JRadioButton control = new JRadioButton(element.getTextTrim());
                 radioPanel.add(control);
                 bg.add(control);
+                deviceGUIs.put(element.getTextTrim(), element.getChildTextTrim(INVOKE_GUI));
             }
         } catch (JDOMException | IOException ex) {
             ex.printStackTrace(System.err);
