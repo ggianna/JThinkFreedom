@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import org.scify.jthinkfreedom.skeleton.sensors.Sensor;
 import org.scify.jthinkfreedom.skeleton.stimuli.Coordinates;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
+import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAnnotation;
 
 /**
  * Class that uses the leap motion sensor in order to track a finger and
@@ -13,6 +14,7 @@ import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
  *
  * @author peustr
  */
+@StimulusAnnotation(sensorClass = "org.scify.jthinkfreedom.leap.sensors.LeapMotionSensor")
 public class FingerTrackStimulus extends StimulusAdapter implements Coordinates {
 
     private static final int SCR_WIDTH

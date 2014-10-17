@@ -15,6 +15,7 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvMoments;
 import org.scify.jthinkfreedom.skeleton.sensors.Sensor;
 import org.scify.jthinkfreedom.skeleton.stimuli.Coordinates;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
+import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAnnotation;
 
 /**
  * Class that implements tracking of colored objects. It detects red color by
@@ -22,6 +23,7 @@ import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
  *
  * @author peustr
  */
+@StimulusAnnotation(sensorClass = "org.scify.jthinkfreedom.webcam.sensors.WebcamSensor")
 public class ColoredObjectTrackStimulus extends StimulusAdapter implements Coordinates {
 
     private static final int SCR_WIDTH

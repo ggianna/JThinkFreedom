@@ -9,47 +9,26 @@
     <groupId>org.scify.jthinkfreedom.gui</groupId>
     <artifactId>jthinkfreedom.gui</artifactId>
     <packaging>jar</packaging>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <groupId>org.scify.jthinkfreedom.gui</groupId>
-                    <artifactId>jthinkfreedom.gui</artifactId>
-                    <version>1.0</version>
-                    <packaging>jar</packaging>
-                    <file>target/jthinkfreedom.gui-1.0-SNAPSHOT.jar</file>
-                    <generatePom>true</generatePom>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>install-jar-lib</id>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <phase>install</phase>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
     <name>jthinkfreedom-gui</name>
     <dependencies>
         <dependency>
-            <groupId>org.jdom</groupId>
-            <artifactId>jdom</artifactId>
-            <version>2.0.2</version>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.9-RC1</version>
         </dependency>
         <dependency>
-            <groupId>org.scify.jthinkfreedom.leapgui</groupId>
-            <artifactId>jthinkfreedom.leapgui</artifactId>
+            <groupId>org.scify.jthinkfreedom.leap</groupId>
+            <artifactId>jthinkfreedom.leap</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.scify.jthinkfreedom.webcamgui</groupId>
-            <artifactId>jthinkfreedom.webcamgui</artifactId>
+            <groupId>org.scify.jthinkfreedom.webcam</groupId>
+            <artifactId>jthinkfreedom.webcam</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scify.jthinkfreedom.reactors</groupId>
+            <artifactId>jthinkfreedom.reactors</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
