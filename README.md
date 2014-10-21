@@ -3,8 +3,15 @@ JThinkFreedom
 
 Think Freedom is an framework that maps behaviours (detected through any source - camera, microphone, egg) to reactions (from a computer click to... pulling a lever!).
 
-Setting up a development environment
-------------------------------------
+1. System architecture
+----------------------
+
+The system consists of three main entities: Sensors, Stimuli and Reactors. Every device that is able to collect and stream data can be viewed as a Sensor. For example a webcam can stream images, a mouse can stream its pointer location and a microphone can stream sound data. The Stimuli are objects that represent behaviours. They retrieve data streamed by the Sensors at all times and decide whether a certain behaviour was detected. Such behaviours can be: red objects in images retrieved from a webcam, mouse gestures, loud noises. Finally, after a behaviour has been detected, the Reactors are called. Reactors are entities that represent a single activity like a mouse click, or the launch of an application.
+
+![Think Freedom architecture](http://i.imgur.com/AyRo8Y1.png "Think Freedom architecture")
+
+2. Setting up a development environment
+---------------------------------------
 
 DISCLAIMER: This guide was written in October 2014 and might be outdated. The setup instructions though might be similar, regardless of the outdated software versions.
 
@@ -40,6 +47,12 @@ DISCLAIMER: This guide was written in October 2014 and might be outdated. The se
  - `cd LeapSDK/lib`
  - `mvn org.apache.maven.plugins:maven-install-plugin:2.5.1:install-file -Dfile=LeapJava.jar -DgroupId=com.leapmotion.leap -DartifactId=leapMotion -Dversion=1.0.0 -Dpackaging=jar`
  - Now we can include it in our project's pom.xml
+
+3. Developing a sensor-stimulus module
+--------------------------------------
+
+The basic framework has been set, and now it's time to develop modules for sensors, stimuli, or both.
+
 
 
 [OpenCV Sourceforge link]:http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.9/opencv-2.4.9.zip/download
