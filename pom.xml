@@ -14,9 +14,7 @@
     <modules>
         <module>jthinkfreedom-skeleton</module>
         <module>jthinkfreedom-leap</module>
-        <module>jthinkfreedom-leapgui</module>
         <module>jthinkfreedom-webcam</module>
-        <module>jthinkfreedom-webcamgui</module>
         <module>jthinkfreedom-reactors</module>
         <module>jthinkfreedom-gui</module>
     </modules>

@@ -51,9 +51,33 @@ DISCLAIMER: This guide was written in October 2014 and might be outdated. The se
 3. Developing a sensor-stimulus module
 --------------------------------------
 
-The basic framework has been set, and now it's time to develop modules for sensors, stimuli, or both.
+The basic framework has been set, and now it's time to develop modules for sensors, stimuli, or both. As of right now (October 2014), Think Freedom supports webcam, leap motion and mouse as sensors. If you'd like to develop a stimulus for those sensors go ahead and implement the stimuli in their respective packages. Lets assume the most complicated scenario: implementing a sensor and its stimuli from scratch.
 
+First of all navigate to the parent directory and compile the modules by running `mvn package install` (let's assume you're running a Linux distribution). Now the modules are installed in your local repository. After that, create a new Maven project and include the following lines in the dependencies in pom.xml dependencies.
 
+```xml
+<dependency>
+    <groupId>org.scify.jthinkfreedom.skeleton</groupId>
+    <artifactId>jthinkfreedom.skeleton</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+Now the tricky part. The sensor you need to implement must have some dependencies, right? For example our webcam modules rely on OpenCV, and leap motion has its own SDK (see instructions above for building it). The main point is that you need to install it to the local repository and then add it as a dependency as well. For example with leap motion, the following lines do the trick:
+
+```xml
+<dependency>
+    <groupId>com.leapmotion.leap</groupId>
+    <artifactId>leapMotion</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+After the dependencies are set we need to create two packages, one for the sensors, one for the stimuli. The naming conventions are the following: Let's assume you are building a module for a sensor called Jimmy. The project name should be jthinkfreedom-jimmy and the two packages should be named something similar to `org.scify.jthinkfreedom.jimmy.sensors` and `org.scify.jthinkfreedom.jimmy.stimuli`. Then we create a java class under the sensors package `JimmySensor extends SensorAdapter` and we implement the `getData()` method via which the sensor is streaming data to the stimuli.
+
+For the purposes of this guide, a JimmySensor can detect bad jokes. So let's create a java class `BadJokeStimulus extends StimulusAdapter` under the stimuli package and implement the method `onDataReceived()`. This method should make use of `shouldReact()` in order to determine if the joke is bad enough to call the reactors (or the police).
+
+Last but not least, all the stimuli must be annotated with the `@StimulusAnnotation` class in order to help the GUI find them. The annotation defines under which sensor the stimulus is operating. For example the BadJokeStimulus should be annotated with `@StimulusAnnotation(sensorClass = "org.scify.jthinkfreedom.jimmy.sensors.JimmySensor")`.
+
+Congratulations! You just created a new module.
 
 [OpenCV Sourceforge link]:http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.9/opencv-2.4.9.zip/download
 [Leap Motion]:https://www.leapmotion.com/
