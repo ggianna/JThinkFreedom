@@ -38,4 +38,9 @@ public class LeftClickReactor extends ReactorAdapter {
         }
     }
 
+    @Override
+    public String getCanonicalString() {
+        return "Left Click";
+    }
+
 }

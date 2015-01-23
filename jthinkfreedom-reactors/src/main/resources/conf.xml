@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thinkfreedom>
+	<profiles>
+		<profile>
+			<name>Maria</name>
+			<photo>placeholder_130.png</photo>
+			<actions>
+				<action>
+					<sensorClass></sensorClass>
+					<stimulusClass></stimulusClass>
+					<reactorClass></reactorClass>
+				</action>
+			</actions>
+		</profile>
+		<profile>
+			<name>Mitsos</name>
+			<photo>placeholder_130.png</photo>
+			<actions>
+				<action>
+					<sensorClass></sensorClass>
+					<stimulusClass></stimulusClass>
+					<reactorClass></reactorClass>
+				</action>
+			</actions>
+		</profile>
+	</profiles>
+</thinkfreedom>

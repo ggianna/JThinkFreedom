@@ -47,4 +47,9 @@ public class MouseMoveReactor<T extends Stimulus & Coordinates> extends ReactorA
         }
     }
 
+    @Override
+    public String getCanonicalString() {
+        return "Move Mouse";
+    }
+
 }

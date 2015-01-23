@@ -39,4 +39,9 @@ public class KeyTapGestureStimulus extends LeapMotionGestureStimulus {
         return false;
     }
 
+    @Override
+    public String getCanonicalString() {
+        return "Key Tap";
+    }
+
 }

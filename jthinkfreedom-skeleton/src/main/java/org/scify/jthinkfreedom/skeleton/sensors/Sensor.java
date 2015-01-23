@@ -77,4 +77,10 @@ public interface Sensor<T> {
      */
     public boolean isRunning();
 
+    /**
+     * Returns a simple string representation of the sensor.
+     *
+     * @return
+     */
+    public String getCanonicalString();
 }

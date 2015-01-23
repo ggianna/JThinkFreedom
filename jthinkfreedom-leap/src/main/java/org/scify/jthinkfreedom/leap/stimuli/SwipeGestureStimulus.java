@@ -39,4 +39,9 @@ public class SwipeGestureStimulus extends LeapMotionGestureStimulus {
         return false;
     }
 
+    @Override
+    public String getCanonicalString() {
+        return "Swipe";
+    }
+
 }

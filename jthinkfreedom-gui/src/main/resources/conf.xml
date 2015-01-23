@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<profiles>
+	<profile>
+		<name>Dimitris</name>
+		<picture>placeholder_144x144.png</picture>
+		<configurations>
+			<configuration>
+				<sensor>org.scify.jthinkfreedom.leap.sensors.LeapMotionSensor</sensor>
+				<stimulus>org.scify.jthinkfreedom.leap.stimuli.KeyTapGestureStimulus</stimulus>
+				<reactor>org.scify.jthinkfreedom.reactors.LeftClickReactor</reactor>
+			</configuration>
+		</configurations>
+	</profile>
+	<profile>
+		<name>Giorgos</name>
+		<picture>placeholder_144x144.png</picture>
+		<configurations>
+			<configuration>
+				<sensor>org.scify.jthinkfreedom.webcam.sensors.WebcamSensor</sensor>
+				<stimulus>org.scify.jthinkfreedom.webcam.stimuli.RedObjectTrackStimulus</stimulus>
+				<reactor>org.scify.jthinkfreedom.reactors.MouseMoveReactor</reactor>
+			</configuration>
+		</configurations>
+	</profile>
+</profiles>

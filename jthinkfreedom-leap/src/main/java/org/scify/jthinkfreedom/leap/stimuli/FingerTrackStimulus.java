@@ -81,4 +81,8 @@ public class FingerTrackStimulus extends StimulusAdapter implements Coordinates 
         return posY;
     }
 
+    @Override
+    public String getCanonicalString() {
+        return "Finger Tracking";
+    }
 }

@@ -60,4 +60,9 @@ public class PlaySoundReactor extends ReactorAdapter {
 
     }
 
+    @Override
+    public String getCanonicalString() {
+        return "Play Sound";
+    }
+
 }

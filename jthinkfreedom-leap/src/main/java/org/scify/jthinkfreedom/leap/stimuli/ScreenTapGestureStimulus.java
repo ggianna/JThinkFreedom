@@ -39,4 +39,8 @@ public class ScreenTapGestureStimulus extends LeapMotionGestureStimulus {
         return false;
     }
 
+    @Override
+    public String getCanonicalString() {
+        return "Screen Tap";
+    }
 }

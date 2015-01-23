@@ -10,6 +10,7 @@
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
+    <name>jthinkfreedom-skeleton</name>
     <build>
         <plugins>
             <plugin>
@@ -36,5 +37,4 @@
             </plugin>
         </plugins>
     </build>
-    <name>jthinkfreedom-skeleton</name>
 </project>

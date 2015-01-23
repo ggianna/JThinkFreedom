@@ -49,4 +49,9 @@ public class ApplicationLaunchReactor extends ReactorAdapter {
         this.application = application;
     }
 
+    @Override
+    public String getCanonicalString() {
+        return "Launch Application";
+    }
+
 }

@@ -16,5 +16,6 @@
         <module>jthinkfreedom-leap</module>
         <module>jthinkfreedom-webcam</module>
         <module>jthinkfreedom-reactors</module>
+        <module>jthinkfreedom-gui</module>
     </modules>
 </project>

@@ -84,4 +84,10 @@ public interface Stimulus {
      */
     public void clearStimuli();
 
+    /**
+     * Returns a simple string representation of the stimulus.
+     *
+     * @return
+     */
+    public String getCanonicalString();
 }

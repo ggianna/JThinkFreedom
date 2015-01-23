@@ -27,4 +27,11 @@ public interface Reactor {
      */
     public void react();
 
+    /**
+     * Returns a simple string representation of the reactor.
+     *
+     * @return
+     */
+    public String getCanonicalString();
+
 }

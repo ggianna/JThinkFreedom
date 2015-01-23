@@ -70,4 +70,9 @@ public class LeapMotionSensor extends SensorAdapter<Frame> {
         super.stop();
     }
 
+    @Override
+    public String getCanonicalString() {
+        return "Leap Motion";
+    }
+
 }

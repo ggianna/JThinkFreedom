@@ -37,4 +37,9 @@ public class RightClickReactor extends ReactorAdapter {
             ex.printStackTrace(System.err);
         }
     }
+
+    @Override
+    public String getCanonicalString() {
+        return "Right Click";
+    }
 }

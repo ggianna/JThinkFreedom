@@ -39,7 +39,7 @@ import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAnnotation;
  * @author peustr
  */
 @StimulusAnnotation(sensorClass = "org.scify.jthinkfreedom.webcam.sensors.WebcamSensor")
-public class ColoredObjectTrackStimulus extends StimulusAdapter implements Coordinates {
+public class RedObjectTrackStimulus extends StimulusAdapter implements Coordinates {
 
     private static final int SCR_WIDTH
             = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -52,7 +52,7 @@ public class ColoredObjectTrackStimulus extends StimulusAdapter implements Coord
     private IplImage grabbedImage, thresholdImage;
     private CvScalar rgbaMin, rgbaMax;
 
-    public ColoredObjectTrackStimulus() {
+    public RedObjectTrackStimulus() {
         super();
         posX = 0;
         posY = 0;
@@ -60,7 +60,7 @@ public class ColoredObjectTrackStimulus extends StimulusAdapter implements Coord
         rgbaMax = cvScalar(80, 80, 255, 0);
     }
 
-    public ColoredObjectTrackStimulus(CvScalar rgbaMin, CvScalar rgbaMax) {
+    public RedObjectTrackStimulus(CvScalar rgbaMin, CvScalar rgbaMax) {
         super();
         posX = 0;
         posY = 0;
@@ -124,5 +124,10 @@ public class ColoredObjectTrackStimulus extends StimulusAdapter implements Coord
     @Override
     public boolean shouldReact() {
         return posX > 0 && posY > 0;
+    }
+
+    @Override
+    public String getCanonicalString() {
+        return "Red Object Tracking";
     }
 }
