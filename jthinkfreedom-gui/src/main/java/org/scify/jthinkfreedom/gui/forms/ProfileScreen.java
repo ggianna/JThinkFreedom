@@ -1,5 +1,6 @@
 package org.scify.jthinkfreedom.gui.forms;
 
+import java.awt.GridBagConstraints;
 import java.util.ArrayList;
 import java.util.List;
 import org.scify.jthinkfreedom.gui.model.Configuration;
@@ -85,7 +86,7 @@ public class ProfileScreen extends javax.swing.JFrame {
         profileCountLabel.setText("n profiles");
 
         profilePanel.setBackground(new java.awt.Color(255, 255, 255));
-        profilePanel.setLayout(new java.awt.GridLayout(1, 0));
+        profilePanel.setLayout(new java.awt.GridBagLayout());
 
         configurationTitleLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         configurationTitleLabel.setText("No configuration selected");
@@ -97,7 +98,7 @@ public class ProfileScreen extends javax.swing.JFrame {
         nextConfigurationButton.setText(">");
 
         configurationPanel.setBackground(new java.awt.Color(255, 255, 255));
-        configurationPanel.setLayout(new java.awt.GridLayout(1, 0));
+        configurationPanel.setLayout(new java.awt.GridBagLayout());
 
         addProfileButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         addProfileButton.setText("Add new profile");
@@ -160,14 +161,14 @@ public class ProfileScreen extends javax.swing.JFrame {
                     .addComponent(previousProfileButton)
                     .addComponent(nextProfileButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(profilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(profilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(configurationTitleLabel)
                     .addComponent(previousConfigurationButton)
                     .addComponent(nextConfigurationButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(configurationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(configurationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addProfileButton)
@@ -186,7 +187,7 @@ public class ProfileScreen extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(contentPane, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
+                .addComponent(contentPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
@@ -204,6 +205,11 @@ public class ProfileScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_runButtonActionPerformed
 
     private void initCustomComponents() {
+        // Grid bag layout manager fill from left to right
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weightx = 1;
+        // Fill the profile panel according to pagination
         profiles = new ArrayList<>();
         for (User profile : cf.getProfiles()) {
             profiles.add(new ProfilePanel(this, profile));
@@ -212,13 +218,14 @@ public class ProfileScreen extends javax.swing.JFrame {
             profileCountLabel.setText(profiles.size() + " profiles");
             for (int i = 0; i < VIEW_LIMIT; i++) {
                 try {
-                    profilePanel.add(profiles.get(i));
+                    profilePanel.add(profiles.get(i), gbc);
                 } catch (IndexOutOfBoundsException e) {
                     // Do nothing
                 }
             }
         }
         configurations = new ArrayList<>();
+        // Pack the fuck up
         pack();
     }
 
@@ -252,7 +259,7 @@ public class ProfileScreen extends javax.swing.JFrame {
         if (!configurations.isEmpty()) {
             for (int i = 0; i < VIEW_LIMIT; i++) {
                 try {
-                    configurationPanel.add(configurations.get(i));
+                    configurationPanel.add(configurations.get(i), gbc);
                 } catch (IndexOutOfBoundsException e) {
                     // Do nothing
                 }
@@ -262,7 +269,7 @@ public class ProfileScreen extends javax.swing.JFrame {
         pack();
     }
 
-
+    private GridBagConstraints gbc;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addProfileButton;
     private javax.swing.JPanel configurationPanel;

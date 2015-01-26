@@ -72,6 +72,9 @@ public class ProfilePanel extends javax.swing.JPanel {
         configureLabel.setText("Configure");
         configureLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         configureLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                configureLabelMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 configureLabelMouseExited(evt);
             }
@@ -112,7 +115,7 @@ public class ProfilePanel extends javax.swing.JPanel {
 
     private void selectLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectLabelMouseClicked
         // Clear all panels and change background color
-        for(ProfilePanel panel : parent.getProfiles()) {
+        for (ProfilePanel panel : parent.getProfiles()) {
             panel.setBackground(new Color(255, 255, 255));
         }
         setBackground(new Color(246, 199, 159));
@@ -147,9 +150,24 @@ public class ProfilePanel extends javax.swing.JPanel {
         configureLabel.setFont(originalFont);
     }//GEN-LAST:event_configureLabelMouseExited
 
+    private void configureLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_configureLabelMouseClicked
+        ConfigurationScreen cs = new ConfigurationScreen(this, parent);
+        cs.setLocationRelativeTo(null);
+        cs.setVisible(true);
+        parent.setVisible(false);
+    }//GEN-LAST:event_configureLabelMouseClicked
+
     private void initCustomComponents() {
         nameLabel.setText(profile.getName());
         imageLabel.setIcon(profile.getPhoto());
+    }
+
+    public User getProfile() {
+        return profile;
+    }
+
+    public void setProfile(User profile) {
+        this.profile = profile;
     }
 
     private Font originalFont;
