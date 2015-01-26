@@ -2,6 +2,7 @@ package org.scify.jthinkfreedom.gui.forms;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.scify.jthinkfreedom.gui.model.Configuration;
 import org.scify.jthinkfreedom.gui.model.User;
 import org.scify.jthinkfreedom.gui.utils.ConfigurationHandler;
 
@@ -16,6 +17,8 @@ public class ProfileScreen extends javax.swing.JFrame {
     private ConfigurationHandler cf;
     private List<ProfilePanel> profiles;
     private List<ConfigurationPanel> configurations;
+
+    private User selectedUser;
 
     /**
      * Creates new form ProfileScreen
@@ -102,6 +105,11 @@ public class ProfileScreen extends javax.swing.JFrame {
         runButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         runButton.setText("Run");
         runButton.setEnabled(false);
+        runButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -185,6 +193,16 @@ public class ProfileScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
+        for (Configuration config : selectedUser.getConfigurations()) {
+            config.getSensor().addStimulus(config.getStimulus());
+            config.getStimulus().addSensor(config.getSensor());
+            config.getStimulus().addReactor(config.getReactor());
+            config.getSensor().start();
+        }
+        setVisible(false);
+    }//GEN-LAST:event_runButtonActionPerformed
+
     private void initCustomComponents() {
         profiles = new ArrayList<>();
         for (User profile : cf.getProfiles()) {
@@ -218,6 +236,14 @@ public class ProfileScreen extends javax.swing.JFrame {
 
     public void setConfigurations(List<ConfigurationPanel> configurations) {
         this.configurations = configurations;
+    }
+
+    public User getSelectedUser() {
+        return selectedUser;
+    }
+
+    public void setSelectedUser(User selectedUser) {
+        this.selectedUser = selectedUser;
     }
 
     public void repaintConfigurations(User user) {

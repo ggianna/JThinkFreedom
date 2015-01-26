@@ -22,4 +22,15 @@
 			</configuration>
 		</configurations>
 	</profile>
+	<profile>
+		<name>Alex</name>
+		<picture>placeholder_144x144.png</picture>
+		<configurations>
+			<configuration>
+				<sensor>org.scify.jthinkfreedom.leap.sensors.LeapMotionSensor</sensor>
+				<stimulus>org.scify.jthinkfreedom.leap.stimuli.FingerTrackStimulus</stimulus>
+				<reactor>org.scify.jthinkfreedom.reactors.MouseMoveReactor</reactor>
+			</configuration>
+		</configurations>
+	</profile>
 </profiles>

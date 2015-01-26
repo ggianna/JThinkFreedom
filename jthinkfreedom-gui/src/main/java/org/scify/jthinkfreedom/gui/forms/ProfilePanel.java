@@ -1,5 +1,6 @@
 package org.scify.jthinkfreedom.gui.forms;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Map;
@@ -110,11 +111,18 @@ public class ProfilePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void selectLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectLabelMouseClicked
+        // Clear all panels and change background color
+        for(ProfilePanel panel : parent.getProfiles()) {
+            panel.setBackground(new Color(255, 255, 255));
+        }
+        setBackground(new Color(246, 199, 159));
+        // Display configurations on the panel bellow
         parent.getConfigurations().clear();
         for (Configuration config : profile.getConfigurations()) {
             parent.getConfigurations().add(new ConfigurationPanel(config));
         }
         parent.repaintConfigurations(profile);
+        parent.setSelectedUser(profile);
     }//GEN-LAST:event_selectLabelMouseClicked
 
     private void selectLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectLabelMouseEntered

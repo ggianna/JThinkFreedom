@@ -255,6 +255,9 @@
             <Property name="text" type="java.lang.String" value="Run"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="runButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
