@@ -71,4 +71,9 @@ public class WebcamSensor extends SensorAdapter<IplImage> {
     public String getCanonicalString() {
         return "Webcam";
     }
+
+    @Override
+    public String getDescription() {
+        return "Webcam";
+    }
 }

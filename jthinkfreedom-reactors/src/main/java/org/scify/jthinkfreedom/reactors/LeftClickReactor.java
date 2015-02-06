@@ -43,4 +43,9 @@ public class LeftClickReactor extends ReactorAdapter {
         return "Left Click";
     }
 
+    @Override
+    public String getDescription() {
+        return "Perform a left click";
+    }
+
 }

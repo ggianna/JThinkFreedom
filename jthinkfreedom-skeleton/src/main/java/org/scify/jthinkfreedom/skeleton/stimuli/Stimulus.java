@@ -90,4 +90,11 @@ public interface Stimulus {
      * @return
      */
     public String getCanonicalString();
+
+    /**
+     * Returns a string that describes the stimulus.
+     *
+     * @return
+     */
+    public String getDescription();
 }

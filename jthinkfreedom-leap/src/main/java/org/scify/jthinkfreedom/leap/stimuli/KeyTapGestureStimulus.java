@@ -44,4 +44,9 @@ public class KeyTapGestureStimulus extends LeapMotionGestureStimulus {
         return "Key Tap";
     }
 
+    @Override
+    public String getDescription() {
+        return "Detecting a key tap gesture";
+    }
+
 }

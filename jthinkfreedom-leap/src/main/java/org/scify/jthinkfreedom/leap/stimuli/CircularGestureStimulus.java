@@ -44,4 +44,9 @@ public class CircularGestureStimulus extends LeapMotionGestureStimulus {
         return "Circle";
     }
 
+    @Override
+    public String getDescription() {
+        return "Detecting a circular gesture";
+    }
+
 }

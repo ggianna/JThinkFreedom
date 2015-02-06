@@ -42,4 +42,9 @@ public class RightClickReactor extends ReactorAdapter {
     public String getCanonicalString() {
         return "Right Click";
     }
+
+    @Override
+    public String getDescription() {
+        return "Perform a right click";
+    }
 }

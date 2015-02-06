@@ -34,4 +34,10 @@ public interface Reactor {
      */
     public String getCanonicalString();
 
+    /**
+     * Returns a string that describes the reactor.
+     *
+     * @return
+     */
+    public String getDescription();
 }

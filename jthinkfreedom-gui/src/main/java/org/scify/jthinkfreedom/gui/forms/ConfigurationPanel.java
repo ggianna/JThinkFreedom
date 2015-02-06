@@ -1,5 +1,9 @@
 package org.scify.jthinkfreedom.gui.forms;
 
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import org.scify.jthinkfreedom.gui.model.Configuration;
 
 /**
@@ -9,6 +13,7 @@ import org.scify.jthinkfreedom.gui.model.Configuration;
 public class ConfigurationPanel extends javax.swing.JPanel {
 
     private Configuration config;
+    private Map<String, Icon> componentIconMap;
 
     /**
      * Creates new form ConfigurationPanel
@@ -32,7 +37,6 @@ public class ConfigurationPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        actionLabel = new javax.swing.JLabel();
         sensorImage = new javax.swing.JLabel();
         sensorLabel = new javax.swing.JLabel();
         stimulusImage = new javax.swing.JLabel();
@@ -40,10 +44,11 @@ public class ConfigurationPanel extends javax.swing.JPanel {
         reactorImage = new javax.swing.JLabel();
         reactorLabel = new javax.swing.JLabel();
 
-        actionLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
-        actionLabel.setText("Action n");
+        setBackground(new java.awt.Color(255, 255, 255));
 
         sensorImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/webcam_49x64.png"))); // NOI18N
+        sensorImage.setMaximumSize(new java.awt.Dimension(64, 64));
+        sensorImage.setMinimumSize(new java.awt.Dimension(64, 64));
         sensorImage.setPreferredSize(new java.awt.Dimension(64, 64));
 
         sensorLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
@@ -66,7 +71,6 @@ public class ConfigurationPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(actionLabel)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(sensorImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -85,8 +89,6 @@ public class ConfigurationPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(actionLabel)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(sensorLabel)
                     .addComponent(sensorImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -103,14 +105,33 @@ public class ConfigurationPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initCustomComponents() {
+        dumbIconInitialization();
         sensorLabel.setText(config.getSensor().getCanonicalString());
         stimulusLabel.setText(config.getStimulus().getCanonicalString());
         reactorLabel.setText(config.getReactor().getCanonicalString());
-        // TODO: Handling the motherfucking images somehow
+        sensorImage.setIcon(componentIconMap.get(config.getSensor().getCanonicalString()));
+        stimulusImage.setIcon(componentIconMap.get(config.getStimulus().getCanonicalString()));
+        reactorImage.setIcon(componentIconMap.get(config.getReactor().getCanonicalString()));
+    }
+
+    private void dumbIconInitialization() {
+        componentIconMap = new HashMap<>();
+        componentIconMap.put("Leap Motion", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/leap_64x64.png")));
+        componentIconMap.put("Circle", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/circle_64x64.png")));
+        componentIconMap.put("Finger Tracking", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/ftrack_64x52.png")));
+        componentIconMap.put("Key Tap", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/keytap_37x64.png")));
+        componentIconMap.put("Screen Tap", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/screentap_64x64.png")));
+        componentIconMap.put("Swipe", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/swipe_64x64.png")));
+        componentIconMap.put("Webcam", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/webcam_49x64.png")));
+        componentIconMap.put("Red Object Tracking", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/track_64x64.png")));
+        componentIconMap.put("Launch Application", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/rocket_64x64.png")));
+        componentIconMap.put("Left Click", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/left_click_64x64.png")));
+        componentIconMap.put("Move Mouse", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/cursor_64x64.png")));
+        componentIconMap.put("Play Sound", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/sound_64x58.png")));
+        componentIconMap.put("Right Click", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/right_click_64x64.png")));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel actionLabel;
     private javax.swing.JLabel reactorImage;
     private javax.swing.JLabel reactorLabel;
     private javax.swing.JLabel sensorImage;

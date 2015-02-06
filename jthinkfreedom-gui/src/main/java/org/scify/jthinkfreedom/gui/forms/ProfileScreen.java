@@ -102,6 +102,11 @@ public class ProfileScreen extends javax.swing.JFrame {
 
         addProfileButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         addProfileButton.setText("Add new profile");
+        addProfileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProfileButtonActionPerformed(evt);
+            }
+        });
 
         runButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         runButton.setText("Run");
@@ -203,6 +208,12 @@ public class ProfileScreen extends javax.swing.JFrame {
         }
         setVisible(false);
     }//GEN-LAST:event_runButtonActionPerformed
+
+    private void addProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProfileButtonActionPerformed
+        CreateUserScreen cus = new CreateUserScreen(this);
+        cus.setLocationRelativeTo(null);
+        cus.setVisible(true);
+    }//GEN-LAST:event_addProfileButtonActionPerformed
 
     private void initCustomComponents() {
         // Grid bag layout manager fill from left to right

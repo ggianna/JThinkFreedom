@@ -35,7 +35,9 @@ public class ApplicationLaunchReactor extends ReactorAdapter {
     @Override
     public void react() {
         try {
-            Process p = Runtime.getRuntime().exec(application);
+            if (application != null) {
+                Process p = Runtime.getRuntime().exec(application);
+            }
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
         }
@@ -52,6 +54,11 @@ public class ApplicationLaunchReactor extends ReactorAdapter {
     @Override
     public String getCanonicalString() {
         return "Launch Application";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Launch an application";
     }
 
 }

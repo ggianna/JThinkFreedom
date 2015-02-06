@@ -240,6 +240,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Add new profile"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addProfileButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="runButton">
           <Properties>

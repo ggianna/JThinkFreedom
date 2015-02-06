@@ -9,6 +9,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="componentResized" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="formComponentResized"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -33,7 +36,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="contentPane" max="32767" attributes="0"/>
+              <Component id="contentPane" pref="724" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -64,12 +67,19 @@
                               <Component id="pictureLabel" alignment="2" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="addProfileButton" max="32767" attributes="0"/>
+                      <Component id="addActionButton" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="profilesActionsLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="537" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="actionSelectionPanel" max="32767" attributes="0"/>
+                      <Component id="actionSelectionPanel" alignment="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="breadcrumbLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="undoLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="saveButton" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -90,9 +100,17 @@
                       <Component id="configurationPanel" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                  <Component id="addProfileButton" min="-2" max="-2" attributes="0"/>
+                  <Component id="addActionButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                  <Component id="actionSelectionPanel" pref="413" max="32767" attributes="0"/>
+                  <Component id="actionSelectionPanel" pref="370" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="saveButton" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="breadcrumbLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="undoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -142,13 +160,16 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
         </Container>
-        <Component class="javax.swing.JButton" name="addProfileButton">
+        <Component class="javax.swing.JButton" name="addActionButton">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Comfortaa" size="14" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Click to add a new action"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addActionButtonActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="actionSelectionPanel">
           <Properties>
@@ -159,6 +180,42 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
         </Container>
+        <Component class="javax.swing.JButton" name="saveButton">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Comfortaa" size="14" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Save"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="breadcrumbLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Comfortaa" size="14" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Currently selected: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="undoLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Comfortaa" size="14" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="33" red="33" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Undo"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="undoLabelMouseClicked"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="undoLabelMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="undoLabelMouseEntered"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

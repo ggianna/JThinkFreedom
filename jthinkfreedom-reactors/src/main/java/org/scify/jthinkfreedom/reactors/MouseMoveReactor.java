@@ -52,4 +52,9 @@ public class MouseMoveReactor<T extends Stimulus & Coordinates> extends ReactorA
         return "Move Mouse";
     }
 
+    @Override
+    public String getDescription() {
+        return "Move my mouse cursor";
+    }
+
 }

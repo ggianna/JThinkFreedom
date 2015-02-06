@@ -83,4 +83,11 @@ public interface Sensor<T> {
      * @return
      */
     public String getCanonicalString();
+
+    /**
+     * Returns a string that describes the sensor.
+     *
+     * @return
+     */
+    public String getDescription();
 }

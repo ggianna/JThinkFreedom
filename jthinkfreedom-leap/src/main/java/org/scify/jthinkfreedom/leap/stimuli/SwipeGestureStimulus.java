@@ -44,4 +44,9 @@ public class SwipeGestureStimulus extends LeapMotionGestureStimulus {
         return "Swipe";
     }
 
+    @Override
+    public String getDescription() {
+        return "Detecting a swipe gesture";
+    }
+
 }

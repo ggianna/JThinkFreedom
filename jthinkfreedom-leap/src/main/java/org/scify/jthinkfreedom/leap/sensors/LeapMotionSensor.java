@@ -75,4 +75,9 @@ public class LeapMotionSensor extends SensorAdapter<Frame> {
         return "Leap Motion";
     }
 
+    @Override
+    public String getDescription() {
+        return "Leap Motion";
+    }
+
 }

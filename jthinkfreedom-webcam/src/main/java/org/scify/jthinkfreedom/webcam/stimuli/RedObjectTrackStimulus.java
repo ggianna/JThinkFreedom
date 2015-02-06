@@ -130,4 +130,9 @@ public class RedObjectTrackStimulus extends StimulusAdapter implements Coordinat
     public String getCanonicalString() {
         return "Red Object Tracking";
     }
+
+    @Override
+    public String getDescription() {
+        return "Tracking a red object";
+    }
 }

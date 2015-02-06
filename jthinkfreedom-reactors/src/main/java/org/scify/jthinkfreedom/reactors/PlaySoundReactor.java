@@ -41,8 +41,10 @@ public class PlaySoundReactor extends ReactorAdapter {
 
     private void initComponents() {
         try {
-            clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(new File(soundFile)));
+            if (soundFile != null) {
+                clip = AudioSystem.getClip();
+                clip.open(AudioSystem.getAudioInputStream(new File(soundFile)));
+            }
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
             ex.printStackTrace(System.err);
         }
@@ -50,12 +52,14 @@ public class PlaySoundReactor extends ReactorAdapter {
 
     @Override
     public void react() {
-        if (clip.isRunning()) {
-            clip.stop();
-        }
-        clip.start();
-        while (clip.getFramePosition() < clip.getFrameLength()) {
-            // nop
+        if (clip != null) {
+            if (clip.isRunning()) {
+                clip.stop();
+            }
+            clip.start();
+            while (clip.getFramePosition() < clip.getFrameLength()) {
+                // nop
+            }
         }
 
     }
@@ -63,6 +67,11 @@ public class PlaySoundReactor extends ReactorAdapter {
     @Override
     public String getCanonicalString() {
         return "Play Sound";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Play a sound";
     }
 
 }
