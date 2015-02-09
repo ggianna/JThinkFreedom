@@ -6,6 +6,11 @@
 		<configurations>
 			<configuration>
 				<sensor>org.scify.jthinkfreedom.leap.sensors.LeapMotionSensor</sensor>
+				<stimulus>org.scify.jthinkfreedom.leap.stimuli.FingerTrackStimulus</stimulus>
+				<reactor>org.scify.jthinkfreedom.reactors.MouseMoveReactor</reactor>
+			</configuration>
+			<configuration>
+				<sensor>org.scify.jthinkfreedom.leap.sensors.LeapMotionSensor</sensor>
 				<stimulus>org.scify.jthinkfreedom.leap.stimuli.KeyTapGestureStimulus</stimulus>
 				<reactor>org.scify.jthinkfreedom.reactors.LeftClickReactor</reactor>
 			</configuration>

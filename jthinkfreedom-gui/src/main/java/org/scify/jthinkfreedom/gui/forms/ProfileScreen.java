@@ -13,7 +13,13 @@ import org.scify.jthinkfreedom.gui.utils.ConfigurationHandler;
  */
 public class ProfileScreen extends javax.swing.JFrame {
 
-    private static final int VIEW_LIMIT = 4;
+    private static final int STEP = 4;
+
+    private int profilePaginationCounterStart = 0;
+    private int profilePaginationCounterEnd = STEP;
+
+    private int configurationPaginationCounterStart = 0;
+    private int configurationPaginationCounterEnd = STEP;
 
     private ConfigurationHandler cf;
     private List<ProfilePanel> profiles;
@@ -78,14 +84,25 @@ public class ProfileScreen extends javax.swing.JFrame {
 
         nextProfileButton.setFont(new java.awt.Font("Comfortaa", 0, 10)); // NOI18N
         nextProfileButton.setText(">");
+        nextProfileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextProfileButtonActionPerformed(evt);
+            }
+        });
 
         previousProfileButton.setFont(new java.awt.Font("Comfortaa", 0, 10)); // NOI18N
         previousProfileButton.setText("<");
+        previousProfileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                previousProfileButtonActionPerformed(evt);
+            }
+        });
 
         profileCountLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         profileCountLabel.setText("n profiles");
 
         profilePanel.setBackground(new java.awt.Color(255, 255, 255));
+        profilePanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, new java.awt.Color(204, 204, 204), new java.awt.Color(102, 102, 102), null, null));
         profilePanel.setLayout(new java.awt.GridBagLayout());
 
         configurationTitleLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
@@ -93,11 +110,22 @@ public class ProfileScreen extends javax.swing.JFrame {
 
         previousConfigurationButton.setFont(new java.awt.Font("Comfortaa", 0, 10)); // NOI18N
         previousConfigurationButton.setText("<");
+        previousConfigurationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                previousConfigurationButtonActionPerformed(evt);
+            }
+        });
 
         nextConfigurationButton.setFont(new java.awt.Font("Comfortaa", 0, 10)); // NOI18N
         nextConfigurationButton.setText(">");
+        nextConfigurationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextConfigurationButtonActionPerformed(evt);
+            }
+        });
 
         configurationPanel.setBackground(new java.awt.Color(255, 255, 255));
+        configurationPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, new java.awt.Color(204, 204, 204), new java.awt.Color(102, 102, 102), null, null));
         configurationPanel.setLayout(new java.awt.GridBagLayout());
 
         addProfileButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
@@ -215,7 +243,43 @@ public class ProfileScreen extends javax.swing.JFrame {
         cus.setVisible(true);
     }//GEN-LAST:event_addProfileButtonActionPerformed
 
+    private void previousProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousProfileButtonActionPerformed
+        if (profilePaginationCounterStart - STEP >= 0) {
+            profilePaginationCounterStart -= STEP;
+            profilePaginationCounterEnd -= STEP;
+            repaintProfiles();
+        }
+    }//GEN-LAST:event_previousProfileButtonActionPerformed
+
+    private void nextProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextProfileButtonActionPerformed
+        if (profilePaginationCounterEnd < profiles.size()) {
+            profilePaginationCounterEnd += STEP;
+            profilePaginationCounterStart += STEP;
+            repaintProfiles();
+        }
+    }//GEN-LAST:event_nextProfileButtonActionPerformed
+
+    private void previousConfigurationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousConfigurationButtonActionPerformed
+        if (configurationPaginationCounterStart - STEP >= 0) {
+            configurationPaginationCounterStart -= STEP;
+            configurationPaginationCounterEnd -= STEP;
+            repaintConfigurations(selectedUser);
+        }
+    }//GEN-LAST:event_previousConfigurationButtonActionPerformed
+
+    private void nextConfigurationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextConfigurationButtonActionPerformed
+        if (configurationPaginationCounterEnd < configurations.size()) {
+            configurationPaginationCounterEnd += STEP;
+            configurationPaginationCounterStart += STEP;
+            repaintConfigurations(selectedUser);
+        }
+    }//GEN-LAST:event_nextConfigurationButtonActionPerformed
+
     private void initCustomComponents() {
+        profilePaginationCounterStart = 0;
+        profilePaginationCounterEnd = STEP;
+        configurationPaginationCounterStart = 0;
+        configurationPaginationCounterEnd = STEP;
         // Grid bag layout manager fill from left to right
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
@@ -225,19 +289,14 @@ public class ProfileScreen extends javax.swing.JFrame {
         for (User profile : cf.getProfiles()) {
             profiles.add(new ProfilePanel(this, profile));
         }
-        if (!profiles.isEmpty()) {
-            profileCountLabel.setText(profiles.size() + " profiles");
-            for (int i = 0; i < VIEW_LIMIT; i++) {
-                try {
-                    profilePanel.add(profiles.get(i), gbc);
-                } catch (IndexOutOfBoundsException e) {
-                    // Do nothing
-                }
-            }
-        }
+        repaintProfiles();
         configurations = new ArrayList<>();
         // Pack the fuck up
         pack();
+    }
+
+    public ConfigurationHandler getConfigurationHandler() {
+        return cf;
     }
 
     public List<ProfilePanel> getProfiles() {
@@ -264,11 +323,27 @@ public class ProfileScreen extends javax.swing.JFrame {
         this.selectedUser = selectedUser;
     }
 
+    public void repaintProfiles() {
+        profilePanel.removeAll();
+        if (!profiles.isEmpty()) {
+            profileCountLabel.setText(profiles.size() + " profiles");
+            for (int i = profilePaginationCounterStart; i < profilePaginationCounterEnd; i++) {
+                try {
+                    profilePanel.add(profiles.get(i), gbc);
+                } catch (IndexOutOfBoundsException e) {
+                    // Do nothing
+                }
+            }
+        }
+        pack();
+        profilePanel.repaint();
+    }
+
     public void repaintConfigurations(User user) {
         configurationTitleLabel.setText("Currently displaying configuration for " + user.getName());
         configurationPanel.removeAll();
         if (!configurations.isEmpty()) {
-            for (int i = 0; i < VIEW_LIMIT; i++) {
+            for (int i = configurationPaginationCounterStart; i < configurationPaginationCounterEnd; i++) {
                 try {
                     configurationPanel.add(configurations.get(i), gbc);
                 } catch (IndexOutOfBoundsException e) {
@@ -278,6 +353,7 @@ public class ProfileScreen extends javax.swing.JFrame {
         }
         runButton.setEnabled(true);
         pack();
+        configurationPanel.repaint();
     }
 
     private GridBagConstraints gbc;

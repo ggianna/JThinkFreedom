@@ -1,5 +1,8 @@
 package org.scify.jthinkfreedom.gui.forms;
 
+import javax.swing.ImageIcon;
+import org.scify.jthinkfreedom.gui.model.User;
+
 /**
  *
  * @author peustr
@@ -37,6 +40,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
         nameField = new javax.swing.JTextField();
         nameDescrLabel = new javax.swing.JLabel();
         continueButton = new javax.swing.JButton();
+        errorLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Think Freedom");
@@ -59,6 +63,15 @@ public class CreateUserScreen extends javax.swing.JFrame {
 
         continueButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         continueButton.setText("Continue");
+        continueButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                continueButtonActionPerformed(evt);
+            }
+        });
+
+        errorLabel.setFont(new java.awt.Font("Comfortaa", 0, 12)); // NOI18N
+        errorLabel.setForeground(new java.awt.Color(255, 51, 51));
+        errorLabel.setText("Error message");
 
         javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -70,15 +83,23 @@ public class CreateUserScreen extends javax.swing.JFrame {
                     .addComponent(pictureLabel)
                     .addComponent(pictureDescrLabel)
                     .addComponent(pictureResizeLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.CENTER, contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                        .addComponent(nameField)
-                        .addComponent(nameDescrLabel))
                     .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addGap(0, 63, Short.MAX_VALUE)
-                        .addComponent(continueButton)))
+                        .addGap(76, 76, 76)
+                        .addComponent(nameDescrLabel)
+                        .addGap(0, 0, 0))
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(contentPaneLayout.createSequentialGroup()
+                                .addComponent(errorLabel)
+                                .addGap(0, 0, 0))
+                            .addComponent(nameField))))
                 .addContainerGap())
+            .addGroup(contentPaneLayout.createSequentialGroup()
+                .addGap(289, 289, 289)
+                .addComponent(continueButton)
+                .addGap(12, 12, 12))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,7 +110,9 @@ public class CreateUserScreen extends javax.swing.JFrame {
                     .addGroup(contentPaneLayout.createSequentialGroup()
                         .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nameDescrLabel)))
+                        .addComponent(nameDescrLabel)
+                        .addGap(4, 4, 4)
+                        .addComponent(errorLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(contentPaneLayout.createSequentialGroup()
@@ -116,13 +139,35 @@ public class CreateUserScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void initCustomComponents() {
+    private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
+        String name = nameField.getText();
+        for (ProfilePanel pp : caller.getProfiles()) {
+            if (pp.getProfile().getName().equals(name)) {
+                errorLabel.setText("Name already exists!");
+                return;
+            }
+        }
+        if (!name.replaceAll("\\s+", "").isEmpty()) {
+            // Add profile panel to profile screen
+            // TODO: read image and resize it to 144x144
+            User createdUser = new User(name,
+                    new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/placeholder_144x144.png")));
+            caller.getProfiles().add(new ProfilePanel(caller, createdUser));
+            caller.repaintProfiles();
+            // Save to xml file
+            caller.getConfigurationHandler().saveUser(createdUser);
+            dispose();
+        }
+    }//GEN-LAST:event_continueButtonActionPerformed
 
+    private void initCustomComponents() {
+        errorLabel.setText("");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contentPane;
     private javax.swing.JButton continueButton;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel nameDescrLabel;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel pictureDescrLabel;

@@ -98,6 +98,7 @@ public class ConfigurationScreen extends javax.swing.JFrame {
         });
 
         configurationPanel.setBackground(new java.awt.Color(255, 255, 255));
+        configurationPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, new java.awt.Color(204, 204, 204), new java.awt.Color(102, 102, 102), null, null));
         configurationPanel.setLayout(new java.awt.GridBagLayout());
 
         addActionButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
@@ -109,6 +110,7 @@ public class ConfigurationScreen extends javax.swing.JFrame {
         });
 
         actionSelectionPanel.setBackground(new java.awt.Color(255, 255, 255));
+        actionSelectionPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, new java.awt.Color(204, 204, 204), new java.awt.Color(102, 102, 102), null, null));
         actionSelectionPanel.setLayout(new java.awt.GridBagLayout());
 
         saveButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
