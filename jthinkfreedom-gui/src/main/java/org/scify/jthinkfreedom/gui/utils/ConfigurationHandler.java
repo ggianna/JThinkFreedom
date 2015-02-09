@@ -129,10 +129,11 @@ public class ConfigurationHandler {
                 stimulusClass.appendChild(configFile.createTextNode(conf.getStimulus().getClass().getCanonicalName()));
                 Element reactorClass = configFile.createElement("reactor");
                 reactorClass.appendChild(configFile.createTextNode(conf.getReactor().getClass().getCanonicalName()));
-                configurations.appendChild(sensorClass);
-                configurations.appendChild(stimulusClass);
-                configurations.appendChild(reactorClass);
-
+                Element configuration = configFile.createElement("configuration");
+                configuration.appendChild(sensorClass);
+                configuration.appendChild(stimulusClass);
+                configuration.appendChild(reactorClass);
+                configurations.appendChild(configuration);
                 try {
                     Transformer tr = TransformerFactory.newInstance().newTransformer();
                     tr.setOutputProperty(OutputKeys.INDENT, "yes");

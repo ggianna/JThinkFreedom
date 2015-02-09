@@ -7,6 +7,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import org.scify.jthinkfreedom.leap.sensors.LeapMotionSensor;
+import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
 import org.scify.jthinkfreedom.webcam.sensors.WebcamSensor;
 
@@ -112,6 +113,10 @@ public class SensorPanel extends JPanel {
 
     public void updateBreadcrumbs(String addition) {
         parent.updateBreadcrumbs(addition);
+    }
+
+    public void setSensorClass(SensorAdapter sa) {
+        parent.setSensor(sa);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

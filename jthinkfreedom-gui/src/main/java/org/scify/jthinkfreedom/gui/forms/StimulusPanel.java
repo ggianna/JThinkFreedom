@@ -11,6 +11,7 @@ import org.scify.jthinkfreedom.leap.stimuli.FingerTrackStimulus;
 import org.scify.jthinkfreedom.leap.stimuli.KeyTapGestureStimulus;
 import org.scify.jthinkfreedom.leap.stimuli.ScreenTapGestureStimulus;
 import org.scify.jthinkfreedom.leap.stimuli.SwipeGestureStimulus;
+import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
 import org.scify.jthinkfreedom.webcam.stimuli.RedObjectTrackStimulus;
 
@@ -119,6 +120,10 @@ public class StimulusPanel extends JPanel {
 
     public void updateBreadcrumbs(String addition) {
         parent.updateBreadcrumbs(addition);
+    }
+    
+    public void setStimulusClass(StimulusAdapter sa) {
+        parent.setStimulus(sa);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

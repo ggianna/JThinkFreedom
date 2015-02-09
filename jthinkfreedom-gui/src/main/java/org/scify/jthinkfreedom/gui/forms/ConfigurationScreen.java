@@ -30,7 +30,7 @@ public class ConfigurationScreen extends javax.swing.JFrame {
     private ReactorAdapter reactor;
     private SensorAdapter sensor;
     private StimulusAdapter stimulus;
-    
+
     /**
      * Creates new form ConfigurationScreen
      */
@@ -116,6 +116,11 @@ public class ConfigurationScreen extends javax.swing.JFrame {
         saveButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         saveButton.setText("Save");
         saveButton.setEnabled(false);
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         breadcrumbLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         breadcrumbLabel.setText("Currently selected: ");
@@ -271,15 +276,14 @@ public class ConfigurationScreen extends javax.swing.JFrame {
     }
 
     public void updateBreadcrumbs(String addition) {
-        StringBuilder sb = new StringBuilder();
-        String curText = breadcrumbLabel.getText();
-        sb.append(curText).append(addition);
-        breadcrumbLabel.setText(sb.toString());
-        pack();
-    }
-    
-    public void updateSelection() {
-        
+        if (!saveButton.isEnabled()) {
+            StringBuilder sb = new StringBuilder();
+            String curText = breadcrumbLabel.getText();
+            sb.append(curText).append(addition);
+            breadcrumbLabel.setText(sb.toString());
+            pack();
+            configurationPanel.repaint();
+        }
     }
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
@@ -305,8 +309,19 @@ public class ConfigurationScreen extends javax.swing.JFrame {
             renderSensorPanel();
             String[] splitBread = breadcrumbLabel.getText().split("/");
             breadcrumbLabel.setText(splitBread[0] + "/");
+            saveButton.setEnabled(false);
         }
     }//GEN-LAST:event_undoLabelMouseClicked
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        if (sensor != null && stimulus != null && reactor != null) {
+            previous.getConfigurationHandler().saveConfiguration(new Configuration(sensor, stimulus, reactor),
+                    caller.getProfile());
+            actionSelectionPanel.removeAll();
+            pack();
+            actionSelectionPanel.repaint();
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     private void initCustomComponents() {
         reactorPanel = new ReactorPanel(this);
@@ -339,6 +354,30 @@ public class ConfigurationScreen extends javax.swing.JFrame {
 
     public JButton getSaveButton() {
         return saveButton;
+    }
+
+    public ReactorAdapter getReactor() {
+        return reactor;
+    }
+
+    public void setReactor(ReactorAdapter reactor) {
+        this.reactor = reactor;
+    }
+
+    public SensorAdapter getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(SensorAdapter sensor) {
+        this.sensor = sensor;
+    }
+
+    public StimulusAdapter getStimulus() {
+        return stimulus;
+    }
+
+    public void setStimulus(StimulusAdapter stimulus) {
+        this.stimulus = stimulus;
     }
 
     private Font originalFont;

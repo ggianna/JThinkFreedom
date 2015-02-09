@@ -117,6 +117,10 @@ public class ReactorPanel extends JPanel {
         parent.updateBreadcrumbs(addition);
     }
 
+    public void setReactorClass(ReactorAdapter ra) {
+        parent.setReactor(ra);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel iwanttoLabel;
     private javax.swing.JPanel reactorPanel;

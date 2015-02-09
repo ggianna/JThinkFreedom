@@ -158,43 +158,32 @@ public class MinorComponent extends javax.swing.JPanel {
     }//GEN-LAST:event_titlePlaceholderMouseExited
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        if (parent instanceof ReactorPanel) {
-            ((ReactorPanel) parent).transitionToSensors();
-            ((ReactorPanel) parent).updateBreadcrumbs(reactor.getCanonicalString() + "/");
-        } else if (parent instanceof SensorPanel) {
-            ((SensorPanel) parent).transitionToStimuli();
-            ((SensorPanel) parent).updateBreadcrumbs(sensor.getCanonicalString() + "/");
-        } else if (parent instanceof StimulusPanel) {
-            ((StimulusPanel) parent).activateSaveButton();
-            ((StimulusPanel) parent).updateBreadcrumbs(stimulus.getCanonicalString());
-        }
+        handleClicks();
     }//GEN-LAST:event_formMouseClicked
 
     private void imagePlaceholderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagePlaceholderMouseClicked
-        if (parent instanceof ReactorPanel) {
-            ((ReactorPanel) parent).transitionToSensors();
-            ((ReactorPanel) parent).updateBreadcrumbs(reactor.getCanonicalString() + "/");
-        } else if (parent instanceof SensorPanel) {
-            ((SensorPanel) parent).transitionToStimuli();
-            ((SensorPanel) parent).updateBreadcrumbs(sensor.getCanonicalString() + "/");
-        } else if (parent instanceof StimulusPanel) {
-            ((StimulusPanel) parent).activateSaveButton();
-            ((StimulusPanel) parent).updateBreadcrumbs(stimulus.getCanonicalString());
-        }
+        handleClicks();
     }//GEN-LAST:event_imagePlaceholderMouseClicked
 
     private void titlePlaceholderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titlePlaceholderMouseClicked
-        if (parent instanceof ReactorPanel) {
-            ((ReactorPanel) parent).transitionToSensors();
-            ((ReactorPanel) parent).updateBreadcrumbs(reactor.getCanonicalString() + "/");
-        } else if (parent instanceof SensorPanel) {
-            ((SensorPanel) parent).transitionToStimuli();
-            ((SensorPanel) parent).updateBreadcrumbs(sensor.getCanonicalString() + "/");
-        } else if (parent instanceof StimulusPanel) {
-            ((StimulusPanel) parent).activateSaveButton();
-            ((StimulusPanel) parent).updateBreadcrumbs(stimulus.getCanonicalString());
-        }
+        handleClicks();
     }//GEN-LAST:event_titlePlaceholderMouseClicked
+
+    private void handleClicks() {
+        if (parent instanceof ReactorPanel) {
+            ((ReactorPanel) parent).updateBreadcrumbs(reactor.getCanonicalString() + "/");
+            ((ReactorPanel) parent).transitionToSensors();
+            ((ReactorPanel) parent).setReactorClass(reactor);
+        } else if (parent instanceof SensorPanel) {
+            ((SensorPanel) parent).updateBreadcrumbs(sensor.getCanonicalString() + "/");
+            ((SensorPanel) parent).transitionToStimuli();
+            ((SensorPanel) parent).setSensorClass(sensor);
+        } else if (parent instanceof StimulusPanel) {
+            ((StimulusPanel) parent).updateBreadcrumbs(stimulus.getCanonicalString());
+            ((StimulusPanel) parent).activateSaveButton();
+            ((StimulusPanel) parent).setStimulusClass(stimulus);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imagePlaceholder;
