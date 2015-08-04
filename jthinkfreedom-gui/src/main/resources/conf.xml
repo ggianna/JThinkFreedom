@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <profiles>
-	<profile>
+<!--	<profile>
 		<name>Dimitris</name>
 		<picture>placeholder_144x144.png</picture>
 		<configurations>
@@ -15,7 +15,7 @@
 				<reactor>org.scify.jthinkfreedom.reactors.LeftClickReactor</reactor>
 			</configuration>
 		</configurations>
-	</profile>
+	</profile>-->
 	<profile>
 		<name>Giorgos</name>
 		<picture>placeholder_144x144.png</picture>
@@ -27,7 +27,7 @@
 			</configuration>
 		</configurations>
 	</profile>
-	<profile>
+<!--	<profile>
 		<name>Alex</name>
 		<picture>placeholder_144x144.png</picture>
 		<configurations>
@@ -37,5 +37,5 @@
 				<reactor>org.scify.jthinkfreedom.reactors.MouseMoveReactor</reactor>
 			</configuration>
 		</configurations>
-	</profile>
+	</profile>-->
 </profiles>

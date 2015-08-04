@@ -43,11 +43,11 @@
             <artifactId>jthinkfreedom.skeleton</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.scify.jthinkfreedom.leap</groupId>
             <artifactId>jthinkfreedom.leap</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.scify.jthinkfreedom.webcam</groupId>
             <artifactId>jthinkfreedom.webcam</artifactId>

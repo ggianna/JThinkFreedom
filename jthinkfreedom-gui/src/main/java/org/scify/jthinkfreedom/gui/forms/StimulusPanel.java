@@ -6,11 +6,11 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import org.scify.jthinkfreedom.leap.stimuli.CircularGestureStimulus;
+/*import org.scify.jthinkfreedom.leap.stimuli.CircularGestureStimulus;
 import org.scify.jthinkfreedom.leap.stimuli.FingerTrackStimulus;
 import org.scify.jthinkfreedom.leap.stimuli.KeyTapGestureStimulus;
 import org.scify.jthinkfreedom.leap.stimuli.ScreenTapGestureStimulus;
-import org.scify.jthinkfreedom.leap.stimuli.SwipeGestureStimulus;
+import org.scify.jthinkfreedom.leap.stimuli.SwipeGestureStimulus;*/
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
 import org.scify.jthinkfreedom.webcam.stimuli.RedObjectTrackStimulus;
@@ -94,12 +94,13 @@ public class StimulusPanel extends JPanel {
     private void initStimulusPanels() {
         stimuli = new HashMap<>();
         stimuli.put(new RedObjectTrackStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/track_64x64.png")));
-        stimuli.put(new CircularGestureStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/circle_64x64.png")));
+        /*stimuli.put(new CircularGestureStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/circle_64x64.png")));
         stimuli.put(new FingerTrackStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/ftrack_64x52.png")));
         stimuli.put(new KeyTapGestureStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/keytap_37x64.png")));
         stimuli.put(new ScreenTapGestureStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/screentap_64x64.png")));
         stimuli.put(new SwipeGestureStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/swipe_64x64.png")));
-    }
+        */
+                }
 
     private void initCustomComponents() {
         GridBagConstraints gbc = new GridBagConstraints();
