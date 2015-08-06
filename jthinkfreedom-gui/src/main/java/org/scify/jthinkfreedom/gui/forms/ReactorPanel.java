@@ -93,7 +93,7 @@ public class ReactorPanel extends JPanel {
         reactors.put(new LeftClickReactor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/left_click_64x64.png")));
         reactors.put(new RightClickReactor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/right_click_64x64.png")));
         reactors.put(new PlaySoundReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/sound_64x58.png")));
-        reactors.put(new MouseMoveReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/cursor_64x64.png")));
+        reactors.put(new MouseMoveReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/cursor_64x64.png")));     
     }
 
     private void initCustomComponents() {
