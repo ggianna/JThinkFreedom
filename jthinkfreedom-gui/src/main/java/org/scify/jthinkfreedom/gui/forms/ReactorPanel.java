@@ -12,6 +12,7 @@ import org.scify.jthinkfreedom.reactors.LeftClickReactor;
 import org.scify.jthinkfreedom.reactors.MouseMoveReactor;
 import org.scify.jthinkfreedom.reactors.PlaySoundReactor;
 import org.scify.jthinkfreedom.reactors.RightClickReactor;
+import org.scify.jthinkfreedom.reactors.SlideShowReactor;
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 
 /**
@@ -93,7 +94,10 @@ public class ReactorPanel extends JPanel {
         reactors.put(new LeftClickReactor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/left_click_64x64.png")));
         reactors.put(new RightClickReactor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/right_click_64x64.png")));
         reactors.put(new PlaySoundReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/sound_64x58.png")));
-        reactors.put(new MouseMoveReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/cursor_64x64.png")));     
+        reactors.put(new MouseMoveReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/cursor_64x64.png")));
+        /*new reactor for displaying images*/
+        reactors.put(new SlideShowReactor(),new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/leap_64x64.png")));
+        
     }
 
     private void initCustomComponents() {
