@@ -17,5 +17,6 @@
         <module>jthinkfreedom-webcam</module>
         <module>jthinkfreedom-reactors</module>
         <module>jthinkfreedom-gui</module>
+        <module>jthinkfreedom-keyboard</module>
     </modules>
 </project>

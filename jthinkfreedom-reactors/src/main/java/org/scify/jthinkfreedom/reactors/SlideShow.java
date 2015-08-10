@@ -5,8 +5,10 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 //import java.util.List;
 import javax.swing.ImageIcon;
 
@@ -16,16 +18,20 @@ import javax.swing.ImageIcon;
  */
 public class SlideShow extends javax.swing.JFrame {
 
-    String currentIcon;
-    String ImagesPath;
-    ArrayList<String> contentsNames;
-    int currentImage;
-    int numberOfImages;
+    private String currentIcon;
+    private final String ImagesPath;
+    private final ArrayList<String> contentsNames;
+    private int currentImage;
+    private final int numberOfImages;
+    private boolean perform_change;
 
     /**
      * Creates new form SlideShow
      */
     public SlideShow(String imagesPath) {
+
+        perform_change = true;
+
         contentsNames = new ArrayList();
         currentImage = 0;
         this.ImagesPath = imagesPath;
@@ -51,13 +57,15 @@ public class SlideShow extends javax.swing.JFrame {
     }
 
     public void SwitchPic() {
-        ImageIcon icon = null;
-        if (numberOfImages - 1 == currentImage) {
-            currentImage = 0;
+        if (perform_change == true) {
+            ImageIcon icon = null;
+            if (numberOfImages - 1 == currentImage) {
+                currentImage = 0;
+            }
+            icon = new ImageIcon(ImagesPath + "/" + contentsNames.get(currentImage));
+            ImageLabel.setIcon(icon);
+            currentImage++;
         }
-        icon = new ImageIcon(ImagesPath + "/" + contentsNames.get(currentImage));
-        ImageLabel.setIcon(icon);
-        currentImage++;
     }
 
     /**
@@ -75,6 +83,11 @@ public class SlideShow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         ImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ImageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ImageLabelMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,6 +102,29 @@ public class SlideShow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ImageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseClicked
+        // TODO add your handling code here:
+        /*if (perform_change = true) {
+            perform_change = false;
+            ImageLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5));
+        } else {
+            perform_change = true;
+            ImageLabel.setBorder(null);
+        }*/
+        //ImageLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5));
+        //BorderFactory.createLineBorder(Color.black)
+        if(perform_change == true){
+            perform_change = false;
+           
+            //ImageLabel.setBorder(BorderFactory.createLineBorder(Color.black));
+        }
+        else{
+            perform_change = true;
+            setBackground(null);
+            //ImageLabel.setBorder(null);
+        }
+    }//GEN-LAST:event_ImageLabelMouseClicked
 
     /**
      * @param args the command line arguments

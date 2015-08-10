@@ -7,9 +7,10 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 //import org.scify.jthinkfreedom.leap.sensors.LeapMotionSensor;
-import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
+//import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
 import org.scify.jthinkfreedom.webcam.sensors.WebcamSensor;
+import org.scify.jthinkfreedom.keyboard.sensors.KeyboardSensor;
 
 /**
  *
@@ -91,7 +92,8 @@ public class SensorPanel extends JPanel {
     private void initSensorPanels() {
         sensors = new HashMap<>();
         sensors.put(new WebcamSensor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/webcam_49x64.png")));
-       // sensors.put(new LeapMotionSensor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/leap_64x64.png")));
+        sensors.put(new KeyboardSensor(),new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/webcam_49x64.png")));
+        //sensors.put(new LeapMotionSensor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/leap_64x64.png")));
     }
 
     private void initCustomComponents() {

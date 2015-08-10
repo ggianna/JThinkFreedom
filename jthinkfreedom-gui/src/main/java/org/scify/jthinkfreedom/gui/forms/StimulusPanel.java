@@ -14,7 +14,7 @@ import org.scify.jthinkfreedom.leap.stimuli.SwipeGestureStimulus;*/
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
 import org.scify.jthinkfreedom.webcam.stimuli.RedObjectTrackStimulus;
-
+import org.scify.jthinkfreedom.keyboard.stimuli.CapturekeyStimulus;
 /**
  *
  * @author peustr
@@ -94,6 +94,7 @@ public class StimulusPanel extends JPanel {
     private void initStimulusPanels() {
         stimuli = new HashMap<>();
         stimuli.put(new RedObjectTrackStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/track_64x64.png")));
+        stimuli.put(new CapturekeyStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/track_64x64.png")));
         /*stimuli.put(new CircularGestureStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/circle_64x64.png")));
         stimuli.put(new FingerTrackStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/ftrack_64x52.png")));
         stimuli.put(new KeyTapGestureStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/keytap_37x64.png")));

@@ -85,6 +85,7 @@ public class ConfigurationHandler {
     private Object createInstanceFromClassName(String className) throws Exception {
         Class<?> clazz = Class.forName(className);
         Constructor<?> ctor = clazz.getConstructor();
+        
         return ctor.newInstance();
     }
 

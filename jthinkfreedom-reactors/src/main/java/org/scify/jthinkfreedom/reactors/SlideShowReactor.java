@@ -26,6 +26,13 @@ public class SlideShowReactor extends ReactorAdapter {
         super();
         open = false;
     }
+     
+    public String Configure()
+    {
+        //open file dialog and return the string
+        
+        return "";
+    }
 
     @Override
     public void react() {
