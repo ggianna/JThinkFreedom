@@ -96,7 +96,7 @@ public class ReactorPanel extends JPanel {
         reactors.put(new PlaySoundReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/sound_64x58.png")));
         reactors.put(new MouseMoveReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/cursor_64x64.png")));
         /*new reactor for displaying images*/
-        reactors.put(new SlideShowReactor(),new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/leap_64x64.png")));
+        reactors.put(new SlideShowReactor(),new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/slideshow_64x64.png")));
         
     }
 

@@ -122,6 +122,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         // Display configurations on the panel bellow
         parent.getConfigurations().clear();
         for (Configuration config : profile.getConfigurations()) {
+            //an diiourgithike tora na xanadiavasei to xml?
             parent.getConfigurations().add(new ConfigurationPanel(config));
         }
         parent.repaintConfigurations(profile);

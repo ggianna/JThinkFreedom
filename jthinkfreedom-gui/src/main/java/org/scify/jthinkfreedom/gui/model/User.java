@@ -47,5 +47,9 @@ public class User {
     public void setConfigurations(List<Configuration> configurations) {
         this.configurations = configurations;
     }
+    
+    public void addConfigurations(Configuration configuration){
+        this.configurations.add(configuration);
+    }
 
 }

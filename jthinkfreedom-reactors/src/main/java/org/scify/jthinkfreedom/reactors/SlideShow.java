@@ -45,8 +45,6 @@ public class SlideShow extends javax.swing.JFrame {
 
         numberOfImages = contentsNames.size();
         System.out.println(contentsNames);
-        //System.out.println(numberOfImages);
-        //System.out.println(contentsNames.get(0));
 
         initComponents();
         ImageIcon icon = new ImageIcon(imagesPath + "/" + contentsNames.get(currentImage));
@@ -104,62 +102,17 @@ public class SlideShow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ImageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseClicked
-        // TODO add your handling code here:
-        /*if (perform_change = true) {
+
+        if (perform_change == true) {
             perform_change = false;
-            ImageLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5));
+
         } else {
             perform_change = true;
-            ImageLabel.setBorder(null);
-        }*/
-        //ImageLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5));
-        //BorderFactory.createLineBorder(Color.black)
-        if(perform_change == true){
-            perform_change = false;
-           
-            //ImageLabel.setBorder(BorderFactory.createLineBorder(Color.black));
-        }
-        else{
-            perform_change = true;
             setBackground(null);
-            //ImageLabel.setBorder(null);
+
         }
     }//GEN-LAST:event_ImageLabelMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SlideShow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SlideShow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SlideShow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SlideShow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SlideShow("").setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImageLabel;

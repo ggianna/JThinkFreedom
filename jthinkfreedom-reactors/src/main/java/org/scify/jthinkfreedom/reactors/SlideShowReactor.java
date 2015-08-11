@@ -18,7 +18,7 @@ import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 public class SlideShowReactor extends ReactorAdapter {
 
     private boolean open;
-    // private final SlideShowGui gui;
+
     private SlideShow gui;
     private String imagesPath;
 
@@ -26,17 +26,13 @@ public class SlideShowReactor extends ReactorAdapter {
         super();
         open = false;
     }
-     
-    public String Configure()
-    {
-        //open file dialog and return the string
-        
+
+    public String Configure() {
         return "";
     }
 
     @Override
     public void react() {
-
         if (open == false) {
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new java.io.File("."));
@@ -65,27 +61,19 @@ public class SlideShowReactor extends ReactorAdapter {
             gui.SwitchPic();
         }
 
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String getCanonicalString() {
-        return "Slide show";
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "Slideshow";
+
     }
 
+        
     @Override
     public String getDescription() {
         return "Perform a slide show";
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
-    public static void main(String args[]) throws InterruptedException {
-        SlideShowReactor var = new SlideShowReactor();
-        while(true){
-            var.react();
-            Thread.sleep(2000);
-        }
     }
 
 }

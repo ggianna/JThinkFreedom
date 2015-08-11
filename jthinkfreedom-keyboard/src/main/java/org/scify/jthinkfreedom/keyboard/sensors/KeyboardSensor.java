@@ -16,39 +16,41 @@ import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
  *
  * @author xrousakis
  */
-public class KeyboardSensor extends SensorAdapter<Boolean> {
+public class KeyboardSensor extends SensorAdapter<Character> {
 
     private Provider provider;
-    //private Character keyPressed;
-    private boolean pressed;
+
+    private Character pressedKey;
+    HotKeyListener hl;
 
     public KeyboardSensor() {
         super();
-        pressed=false;
-        HotKeyListener hl = new HotKeyListener() {
+
+        hl = new HotKeyListener() {
             @Override
             public void onHotKey(HotKey hotkey) {
-                System.out.println("HEREEEEEEEEEEEEEEEE");
-                pressed=true;
+                String s = hotkey.toString();
+                    
+                pressedKey = s.charAt(7);
             }
         };
-        provider = Provider.getCurrentProvider(true);
-        provider.register(KeyStroke.getKeyStroke(" A"), hl);
+        
     }
-    
-    
 
     @Override
     public void start() {
         super.start();
+        provider = Provider.getCurrentProvider(false);
+        provider.register(KeyStroke.getKeyStroke(" A"), hl);
+        provider.register(KeyStroke.getKeyStroke(" B"), hl);
+        provider.register(KeyStroke.getKeyStroke(" C"), hl);
     }
 
     @Override
     public void stop() {
         super.stop();
+        provider.stop();
     }
-
-   
 
     @Override
     public String getCanonicalString() {
@@ -59,16 +61,21 @@ public class KeyboardSensor extends SensorAdapter<Boolean> {
     public String getDescription() {
         return "Keyboard";
     }
-    
-    public static void main(String args[]){
-        KeyboardSensor ks=new KeyboardSensor();
+
+    public static void main(String args[]) throws InterruptedException {
+        KeyboardSensor ks = new KeyboardSensor();
+        ks.start();
+        Thread.sleep(5000);
+        ks.stop();
+
     }
 
- 
     @Override
-    public Boolean getData() {
-        return pressed;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Character getData() {
+        
+        Character valueToReturn =  pressedKey ==null? null : new Character(pressedKey);
+        pressedKey = null;
+        return  valueToReturn;
     }
-   
+
 }

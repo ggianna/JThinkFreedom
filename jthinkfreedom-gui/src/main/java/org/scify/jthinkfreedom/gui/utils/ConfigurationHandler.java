@@ -33,19 +33,24 @@ public class ConfigurationHandler {
 
     private Document configFile;
     private List<User> profiles;
+    
 
     public ConfigurationHandler() {
         try {
-            configFile = DocumentBuilderFactory
+            String project_path=System.getProperty("user.dir")+"/target"+"/classes"+"/conf.xml";
+            /*configFile = DocumentBuilderFactory
                     .newInstance()
                     .newDocumentBuilder()
-                    .parse(new File(getClass().getResource("/conf.xml").toURI()));
+                    .parse(new File(getClass().getResource("/conf.xml").toURI()));*/
+            configFile=DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(project_path));
             configFile.normalize();
             profiles = parseXML();
         } catch (Exception e) {
             e.printStackTrace(System.err);
         }
     }
+    
+    
 
     public List<User> getProfiles() {
         return profiles;

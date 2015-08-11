@@ -12,31 +12,44 @@ import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
  *
  * @author xrousakis
  */
-public class CapturekeyStimulus  extends StimulusAdapter{
-    
-    Boolean key_pressed;
+public class CapturekeyStimulus extends StimulusAdapter {
+
+    Character pressedKey;
+
     @Override
     public void onDataReceived() {
-         for(Sensor<Boolean> sensor:sensors){
-            key_pressed=sensor.getData();
-            if(key_pressed=true)
-                callReactors();
+        for (Sensor<Character> sensor : sensors) {
+            pressedKey = sensor.getData();
+            if (pressedKey != null) {
+                if (shouldReact()) {
+                    System.out.println("Reactor called");
+                    callReactors();
+                   
+                }
+            }
+        }
+    }
+    /* */
+
+    @Override
+    public boolean shouldReact() {
+        //System.out.println(p);
+        if (pressedKey.equals('A')) {
+             
+            return true;
+        } else {
+            return false;
         }
     }
 
     @Override
-    public boolean shouldReact() {
-       return true;
-    }
-
-    @Override
     public String getCanonicalString() {
-        return "Sensoring for preseed Keys";
+        return "Sensoring pressed keys";
     }
 
     @Override
     public String getDescription() {
-        return "Tracking  k for being pressed";
+        return "Capturing pressed keys";
     }
-    
+
 }

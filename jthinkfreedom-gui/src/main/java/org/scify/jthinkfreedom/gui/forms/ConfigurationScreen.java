@@ -320,6 +320,8 @@ public class ConfigurationScreen extends javax.swing.JFrame {
             actionSelectionPanel.removeAll();
             pack();
             actionSelectionPanel.repaint();
+            //vale ta dedomena stin mnimi
+            caller.getProfile().addConfigurations(new Configuration(sensor, stimulus, reactor));  //setConfigurations(new Configuration(sensor,stimulus,reactor));
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 

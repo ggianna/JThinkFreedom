@@ -129,6 +129,11 @@ public class ConfigurationPanel extends javax.swing.JPanel {
         componentIconMap.put("Move Mouse", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/cursor_64x64.png")));
         componentIconMap.put("Play Sound", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/sound_64x58.png")));
         componentIconMap.put("Right Click", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/right_click_64x64.png")));
+        componentIconMap.put("Slideshow",  new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/slideshow_64x64.png")));
+        componentIconMap.put("Sensoring pressed keys", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/keycapture_64x64.png")));
+        componentIconMap.put("Keyboard", new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/keyboard_64x64.png")));
+
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

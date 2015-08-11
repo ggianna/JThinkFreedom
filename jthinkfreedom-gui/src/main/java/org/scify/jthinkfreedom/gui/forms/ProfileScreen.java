@@ -351,6 +351,8 @@ public class ProfileScreen extends javax.swing.JFrame {
                 }
             }
         }
+        /* */
+        
         runButton.setEnabled(true);
         pack();
         configurationPanel.repaint();
