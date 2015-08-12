@@ -17,24 +17,22 @@ import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
  * @author xrousakis
  */
 public class KeyboardSensor extends SensorAdapter<Character> {
-
+    
     private Provider provider;
-
+    private final Object lock = new Object();
     private Character pressedKey;
     HotKeyListener hl;
 
     public KeyboardSensor() {
         super();
-
         hl = new HotKeyListener() {
             @Override
             public void onHotKey(HotKey hotkey) {
                 String s = hotkey.toString();
-                    
+                
                 pressedKey = s.charAt(7);
             }
         };
-        
     }
 
     @Override
@@ -67,9 +65,9 @@ public class KeyboardSensor extends SensorAdapter<Character> {
         ks.start();
         Thread.sleep(5000);
         ks.stop();
-
     }
-
+    
+    
     @Override
     public Character getData() {
         

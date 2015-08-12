@@ -5,11 +5,8 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
-//import java.util.List;
 import javax.swing.ImageIcon;
 
 /**
@@ -44,14 +41,15 @@ public class SlideShow extends javax.swing.JFrame {
         }
 
         numberOfImages = contentsNames.size();
-        System.out.println(contentsNames);
 
         initComponents();
+
+        System.out.println(contentsNames.get(currentImage) + ": " + imagesPath + "/" + contentsNames.get(currentImage));
         ImageIcon icon = new ImageIcon(imagesPath + "/" + contentsNames.get(currentImage));
         System.out.println(contentsNames.get(currentImage) + currentImage);
-        icon.getImage().getScaledInstance(300, 10, java.awt.Image.SCALE_SMOOTH);
         ImageLabel.setIcon(icon);
         currentImage++;
+
     }
 
     public void SwitchPic() {
@@ -95,14 +93,15 @@ public class SlideShow extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void ImageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseClicked
-
         if (perform_change == true) {
             perform_change = false;
 
@@ -113,6 +112,7 @@ public class SlideShow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ImageLabelMouseClicked
 
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImageLabel;

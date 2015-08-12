@@ -23,6 +23,7 @@ import org.scify.jthinkfreedom.skeleton.stimuli.Stimulus;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -33,24 +34,22 @@ public class ConfigurationHandler {
 
     private Document configFile;
     private List<User> profiles;
-    
 
     public ConfigurationHandler() {
         try {
-            String project_path=System.getProperty("user.dir")+"/target"+"/classes"+"/conf.xml";
+            String project_path = System.getProperty("user.dir") + "/target" + "/classes" + "/conf.xml";
             /*configFile = DocumentBuilderFactory
-                    .newInstance()
-                    .newDocumentBuilder()
-                    .parse(new File(getClass().getResource("/conf.xml").toURI()));*/
-            configFile=DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(project_path));
+             .newInstance()
+             .newDocumentBuilder()
+             .parse(new File(getClass().getResource("/conf.xml").toURI()));*/
+            configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(project_path));
             configFile.normalize();
             profiles = parseXML();
         } catch (Exception e) {
             e.printStackTrace(System.err);
         }
+        //deleteUser("foo");
     }
-    
-    
 
     public List<User> getProfiles() {
         return profiles;
@@ -87,10 +86,36 @@ public class ConfigurationHandler {
         return list;
     }
 
+    public void deleteUser(String user_name) {
+        NodeList profiles = configFile.getElementsByTagName("profile");
+        Element profile;
+        Node parent;
+
+        for (int i = 0; i < profiles.getLength(); i++) {
+            profile = (Element) profiles.item(i);
+            if (profile.getElementsByTagName("name").item(0).getTextContent().equals(user_name)) {
+                System.out.println(i);
+                parent = profile.getParentNode();
+                parent.removeChild(profile);
+
+                try {
+                    Transformer tr = TransformerFactory.newInstance().newTransformer();
+                    tr.setOutputProperty(OutputKeys.INDENT, "yes");
+                    tr.transform(new DOMSource(configFile),
+                            new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
+                } catch (TransformerException | FileNotFoundException | URISyntaxException e) {
+                    e.printStackTrace(System.err);
+                }
+
+            }
+        }
+
+    }
+
     private Object createInstanceFromClassName(String className) throws Exception {
         Class<?> clazz = Class.forName(className);
         Constructor<?> ctor = clazz.getConstructor();
-        
+
         return ctor.newInstance();
     }
 

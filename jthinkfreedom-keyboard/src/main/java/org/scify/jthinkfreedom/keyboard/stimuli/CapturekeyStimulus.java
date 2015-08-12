@@ -24,7 +24,6 @@ public class CapturekeyStimulus extends StimulusAdapter {
                 if (shouldReact()) {
                     System.out.println("Reactor called");
                     callReactors();
-                   
                 }
             }
         }
@@ -33,9 +32,8 @@ public class CapturekeyStimulus extends StimulusAdapter {
 
     @Override
     public boolean shouldReact() {
-        //System.out.println(p);
+       
         if (pressedKey.equals('A')) {
-             
             return true;
         } else {
             return false;

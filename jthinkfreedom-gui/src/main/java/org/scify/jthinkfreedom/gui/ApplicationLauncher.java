@@ -1,5 +1,6 @@
 package org.scify.jthinkfreedom.gui;
 
+import javax.swing.ImageIcon;
 import org.scify.jthinkfreedom.gui.forms.ProfileScreen;
 import org.scify.jthinkfreedom.gui.utils.ConfigurationHandler;
 
@@ -10,6 +11,8 @@ import org.scify.jthinkfreedom.gui.utils.ConfigurationHandler;
 public class ApplicationLauncher {
 
     public static void main(String[] args) {
+        
+                  
         ConfigurationHandler cf = new ConfigurationHandler();
         ProfileScreen ps = new ProfileScreen(cf);
         ps.setLocationRelativeTo(null);

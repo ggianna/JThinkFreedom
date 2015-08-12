@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import org.scify.jthinkfreedom.gui.model.Configuration;
+import org.scify.jthinkfreedom.reactors.SlideShowReactor;
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
@@ -312,9 +314,33 @@ public class ConfigurationScreen extends javax.swing.JFrame {
             saveButton.setEnabled(false);
         }
     }//GEN-LAST:event_undoLabelMouseClicked
+    
+    private void SetImageGalleryPath(ReactorAdapter reactor) {
+        //System.out.println("yes");
+        String path="";
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setDialogTitle("Select Picture Folder");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
 
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+             path = chooser.getSelectedFile().getAbsolutePath();
+        } else {
+            System.out.println("No Selection ");
+        }
+        SlideShowReactor r = (SlideShowReactor) reactor;
+        r.setPath(path);
+       // r.setPath(path);
+    }
+    
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if (sensor != null && stimulus != null && reactor != null) {
+            
+            if (reactor instanceof SlideShowReactor) {
+                    SetImageGalleryPath(reactor);
+               }
+            
             previous.getConfigurationHandler().saveConfiguration(new Configuration(sensor, stimulus, reactor),
                     caller.getProfile());
             actionSelectionPanel.removeAll();

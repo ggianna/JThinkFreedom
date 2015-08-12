@@ -2,7 +2,9 @@ package org.scify.jthinkfreedom.gui.forms;
 
 import java.awt.Color;
 import javax.swing.Icon;
+
 import javax.swing.JPanel;
+
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
@@ -174,6 +176,7 @@ public class MinorComponent extends javax.swing.JPanel {
             ((ReactorPanel) parent).updateBreadcrumbs(reactor.getCanonicalString() + "/");
             ((ReactorPanel) parent).transitionToSensors();
             ((ReactorPanel) parent).setReactorClass(reactor);
+
         } else if (parent instanceof SensorPanel) {
             ((SensorPanel) parent).updateBreadcrumbs(sensor.getCanonicalString() + "/");
             ((SensorPanel) parent).transitionToStimuli();

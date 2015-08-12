@@ -18,7 +18,6 @@ import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 public class SlideShowReactor extends ReactorAdapter {
 
     private boolean open;
-
     private SlideShow gui;
     private String imagesPath;
 
@@ -33,34 +32,39 @@ public class SlideShowReactor extends ReactorAdapter {
 
     @Override
     public void react() {
-        if (open == false) {
-            JFileChooser chooser = new JFileChooser();
-            chooser.setCurrentDirectory(new java.io.File("."));
-            chooser.setDialogTitle("Select Picture Folder");
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            chooser.setAcceptAllFileFilterUsed(false);
-
-            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                imagesPath = chooser.getSelectedFile().getAbsolutePath();
-            } else {
-                System.out.println("No Selection ");
-            }
-
+       
+        if (open == false ) { 
+             
             gui = new SlideShow(imagesPath);
+            /*
             gui.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {
                     open = false;
                     System.out.println("closed");
                 }
             });
-            open = true;
-            gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            gui.setVisible(true);
-            gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            try {
+                open = true;
+                gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                gui.setVisible(true);
+                gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            } catch (Exception ex) {
+                System.out.println(ex.getCause());
+            }*/
+             
+            JFrame jf=new JFrame();
+            jf.setVisible(true);
+            
         } else {
             gui.SwitchPic();
         }
 
+    }
+
+    public void setPath(String path) {
+        
+        imagesPath = path;
+        System.out.println(path);
     }
 
     @Override
@@ -69,7 +73,6 @@ public class SlideShowReactor extends ReactorAdapter {
 
     }
 
-        
     @Override
     public String getDescription() {
         return "Perform a slide show";
