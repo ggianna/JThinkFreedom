@@ -17,6 +17,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.scify.jthinkfreedom.gui.model.Configuration;
 import org.scify.jthinkfreedom.gui.model.User;
+import org.scify.jthinkfreedom.reactors.SlideShowReactor;
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
 import org.scify.jthinkfreedom.skeleton.stimuli.Stimulus;
@@ -48,12 +49,13 @@ public class ConfigurationHandler {
         } catch (Exception e) {
             e.printStackTrace(System.err);
         }
-        //deleteUser("foo");
+        
     }
 
     public List<User> getProfiles() {
         return profiles;
     }
+    
 
     public void setProfiles(List<User> profiles) {
         this.profiles = profiles;
@@ -73,10 +75,17 @@ public class ConfigurationHandler {
                 SensorAdapter sensor = (SensorAdapter) createInstanceFromClassName(configuration.getElementsByTagName("sensor").item(0).getTextContent());
                 StimulusAdapter stimulus = (StimulusAdapter) createInstanceFromClassName(configuration.getElementsByTagName("stimulus").item(0).getTextContent());
                 ReactorAdapter reactor = null;
+                String path="";
+                if(configuration.getChildNodes().getLength()>7)
+                   path=configuration.getElementsByTagName("path").item(0).getTextContent();
+                  
                 try {
                     reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getElementsByTagName("reactor").item(0).getTextContent());
                 } catch (Exception e) {
                     reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getElementsByTagName("reactor").item(0).getTextContent(), stimulus);
+                }
+                if (reactor instanceof SlideShowReactor){
+                    ((SlideShowReactor) reactor).setPath(path);
                 }
                 Configuration conf = new Configuration(sensor, stimulus, reactor);
                 curUser.getConfigurations().add(conf);
@@ -86,18 +95,17 @@ public class ConfigurationHandler {
         return list;
     }
 
-    public void deleteUser(String user_name) {
+    public void deleteUser(User user) {
+        profiles.remove(user);
         NodeList profiles = configFile.getElementsByTagName("profile");
         Element profile;
         Node parent;
-
         for (int i = 0; i < profiles.getLength(); i++) {
             profile = (Element) profiles.item(i);
-            if (profile.getElementsByTagName("name").item(0).getTextContent().equals(user_name)) {
+            if (profile.getElementsByTagName("name").item(0).getTextContent().equals(user.getName())) {
                 System.out.println(i);
                 parent = profile.getParentNode();
                 parent.removeChild(profile);
-
                 try {
                     Transformer tr = TransformerFactory.newInstance().newTransformer();
                     tr.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -106,10 +114,8 @@ public class ConfigurationHandler {
                 } catch (TransformerException | FileNotFoundException | URISyntaxException e) {
                     e.printStackTrace(System.err);
                 }
-
             }
         }
-
     }
 
     private Object createInstanceFromClassName(String className) throws Exception {
@@ -144,6 +150,41 @@ public class ConfigurationHandler {
                     new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
         } catch (TransformerException | FileNotFoundException | URISyntaxException e) {
             e.printStackTrace(System.err);
+        }
+    }
+    
+    public void saveConfiguration(Configuration conf, User user,String folder){
+          NodeList profiles = configFile.getElementsByTagName("profile");
+        for (int i = 0; i < profiles.getLength(); i++) {
+            Element profile = (Element) profiles.item(i);
+            String name = profile.getElementsByTagName("name").item(0).getTextContent();
+            if (name.equals(user.getName())) {
+                Element configurations = (Element) profile.getElementsByTagName("configurations").item(0);
+                Element sensorClass = configFile.createElement("sensor");
+                sensorClass.appendChild(configFile.createTextNode(conf.getSensor().getClass().getCanonicalName()));
+                Element stimulusClass = configFile.createElement("stimulus");
+                stimulusClass.appendChild(configFile.createTextNode(conf.getStimulus().getClass().getCanonicalName()));
+                Element reactorClass = configFile.createElement("reactor");
+                reactorClass.appendChild(configFile.createTextNode(conf.getReactor().getClass().getCanonicalName()));
+                Element configuration = configFile.createElement("configuration");
+                Element path=configFile.createElement("path");
+                path.appendChild(configFile.createTextNode(folder));
+                
+                
+                configuration.appendChild(sensorClass);
+                configuration.appendChild(stimulusClass);
+                configuration.appendChild(reactorClass);
+                configuration.appendChild(path);
+                configurations.appendChild(configuration);
+                try {
+                    Transformer tr = TransformerFactory.newInstance().newTransformer();
+                    tr.setOutputProperty(OutputKeys.INDENT, "yes");
+                    tr.transform(new DOMSource(configFile),
+                            new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
+                } catch (TransformerException | FileNotFoundException | URISyntaxException e) {
+                    e.printStackTrace(System.err);
+                }
+            }
         }
     }
 

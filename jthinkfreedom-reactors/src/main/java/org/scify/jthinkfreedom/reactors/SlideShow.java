@@ -5,8 +5,13 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
+import java.awt.Image;
+import java.awt.Label;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -26,9 +31,7 @@ public class SlideShow extends javax.swing.JFrame {
      * Creates new form SlideShow
      */
     public SlideShow(String imagesPath) {
-
         perform_change = true;
-
         contentsNames = new ArrayList();
         currentImage = 0;
         this.ImagesPath = imagesPath;
@@ -39,17 +42,27 @@ public class SlideShow extends javax.swing.JFrame {
                 contentsNames.add(listOfFiles[i].getName());
             }
         }
-
         numberOfImages = contentsNames.size();
-
         initComponents();
-
-        System.out.println(contentsNames.get(currentImage) + ": " + imagesPath + "/" + contentsNames.get(currentImage));
-        ImageIcon icon = new ImageIcon(imagesPath + "/" + contentsNames.get(currentImage));
-        System.out.println(contentsNames.get(currentImage) + currentImage);
+        BufferedImage img = null;
+        ImageIcon icon = null;
+        try {
+            img = ImageIO.read(new File(imagesPath + "/" + contentsNames.get(currentImage)));
+            Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(), Image.SCALE_SMOOTH);
+            icon = new ImageIcon(dimg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //ImageIcon icon=new ImageIcon(imagesPath + "/" + contentsNames.get(currentImage));
+       
         ImageLabel.setIcon(icon);
         currentImage++;
 
+    }
+    
+    
+    public void setMaximizedLabel(){
+        ImageLabel.setSize(this.getSize());
     }
 
     public void SwitchPic() {
@@ -93,9 +106,7 @@ public class SlideShow extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(ImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(ImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
         );
 
         pack();
@@ -112,7 +123,6 @@ public class SlideShow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ImageLabelMouseClicked
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImageLabel;

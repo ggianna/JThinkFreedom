@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import org.scify.jthinkfreedom.gui.model.Configuration;
 import org.scify.jthinkfreedom.gui.model.User;
 
@@ -19,6 +20,10 @@ public class ProfilePanel extends javax.swing.JPanel {
     /**
      * Creates new form ProfilePanel
      */
+    public User getUser(){
+       return profile;
+    }
+    
     public ProfilePanel() {
         initComponents();
     }
@@ -43,6 +48,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         nameLabel = new javax.swing.JLabel();
         selectLabel = new javax.swing.JLabel();
         configureLabel = new javax.swing.JLabel();
+        deleteLabel = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -83,33 +89,55 @@ public class ProfilePanel extends javax.swing.JPanel {
             }
         });
 
+        deleteLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
+        deleteLabel.setForeground(new java.awt.Color(239, 8, 8));
+        deleteLabel.setText("Delete");
+        deleteLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        deleteLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteLabelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(selectLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(configureLabel))
-                    .addComponent(nameLabel)
-                    .addComponent(imageLabel))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(imageLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(selectLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(configureLabel))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(nameLabel)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addComponent(deleteLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(imageLabel)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nameLabel)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(configureLabel)
                     .addComponent(selectLabel))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deleteLabel)
+                .addGap(30, 30, 30))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -158,6 +186,16 @@ public class ProfilePanel extends javax.swing.JPanel {
         parent.setVisible(false);
     }//GEN-LAST:event_configureLabelMouseClicked
 
+    private void deleteLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteLabelMouseClicked
+        //int confirmation = 0;
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to delete this user profile ? ","Warning",0);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            parent.removeUser(profile);
+            
+        }
+            
+    }//GEN-LAST:event_deleteLabelMouseClicked
+
     private void initCustomComponents() {
         nameLabel.setText(profile.getName());
         imageLabel.setIcon(profile.getPhoto());
@@ -174,6 +212,7 @@ public class ProfilePanel extends javax.swing.JPanel {
     private Font originalFont;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel configureLabel;
+    private javax.swing.JLabel deleteLabel;
     private javax.swing.JLabel imageLabel;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel selectLabel;

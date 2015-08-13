@@ -314,10 +314,10 @@ public class ConfigurationScreen extends javax.swing.JFrame {
             saveButton.setEnabled(false);
         }
     }//GEN-LAST:event_undoLabelMouseClicked
-    
-    private void SetImageGalleryPath(ReactorAdapter reactor) {
+
+    private String SetImageGalleryPath(ReactorAdapter reactor) {
         //System.out.println("yes");
-        String path="";
+        String path = "";
         JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new java.io.File("."));
         chooser.setDialogTitle("Select Picture Folder");
@@ -325,24 +325,27 @@ public class ConfigurationScreen extends javax.swing.JFrame {
         chooser.setAcceptAllFileFilterUsed(false);
 
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-             path = chooser.getSelectedFile().getAbsolutePath();
+            path = chooser.getSelectedFile().getAbsolutePath();
         } else {
             System.out.println("No Selection ");
         }
         SlideShowReactor r = (SlideShowReactor) reactor;
         r.setPath(path);
-       // r.setPath(path);
+        return path;
     }
-    
+
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if (sensor != null && stimulus != null && reactor != null) {
-            
+
             if (reactor instanceof SlideShowReactor) {
-                    SetImageGalleryPath(reactor);
-               }
-            
-            previous.getConfigurationHandler().saveConfiguration(new Configuration(sensor, stimulus, reactor),
-                    caller.getProfile());
+                String path = SetImageGalleryPath(reactor);
+                previous.getConfigurationHandler().saveConfiguration(new Configuration(sensor, stimulus, reactor),
+                        caller.getProfile(), path);
+            } else {
+                previous.getConfigurationHandler().saveConfiguration(new Configuration(sensor, stimulus, reactor),
+                        caller.getProfile());
+            }
+
             actionSelectionPanel.removeAll();
             pack();
             actionSelectionPanel.repaint();

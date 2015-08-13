@@ -28,9 +28,11 @@ public class KeyboardSensor extends SensorAdapter<Character> {
         hl = new HotKeyListener() {
             @Override
             public void onHotKey(HotKey hotkey) {
+                 
                 String s = hotkey.toString();
-                
+                System.out.println("on hot key before: " + s);
                 pressedKey = s.charAt(7);
+                System.out.println("on hot key with key: " + pressedKey);
             }
         };
     }
@@ -67,13 +69,23 @@ public class KeyboardSensor extends SensorAdapter<Character> {
         ks.stop();
     }
     
+    public void restorePressedKey(){
+        pressedKey=null;
+    }
+    
     
     @Override
     public Character getData() {
+       // System.out.println("get data");
+        //Character valueToReturn =  pressedKey ==null? null : new Character(pressedKey);
+      //  pressedKey = null;
         
-        Character valueToReturn =  pressedKey ==null? null : new Character(pressedKey);
-        pressedKey = null;
-        return  valueToReturn;
+       // if (valueToReturn!=null)
+      //  {
+      //      System.out.println(valueToReturn);
+     //  }
+        return  pressedKey;
+      //  return null;
     }
 
 }

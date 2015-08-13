@@ -32,11 +32,10 @@ public class SlideShowReactor extends ReactorAdapter {
 
     @Override
     public void react() {
-       
-        if (open == false ) { 
-             
+        System.out.println("reactor called");
+        if (open == false) {
             gui = new SlideShow(imagesPath);
-            /*
+
             gui.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {
                     open = false;
@@ -46,15 +45,12 @@ public class SlideShowReactor extends ReactorAdapter {
             try {
                 open = true;
                 gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                gui.setMaximizedLabel();
                 gui.setVisible(true);
                 gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             } catch (Exception ex) {
                 System.out.println(ex.getCause());
-            }*/
-             
-            JFrame jf=new JFrame();
-            jf.setVisible(true);
-            
+            }
         } else {
             gui.SwitchPic();
         }
@@ -62,7 +58,6 @@ public class SlideShowReactor extends ReactorAdapter {
     }
 
     public void setPath(String path) {
-        
         imagesPath = path;
         System.out.println(path);
     }
@@ -70,13 +65,11 @@ public class SlideShowReactor extends ReactorAdapter {
     @Override
     public String getCanonicalString() {
         return "Slideshow";
-
     }
 
     @Override
     public String getDescription() {
         return "Perform a slide show";
-
     }
 
 }
