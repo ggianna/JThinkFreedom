@@ -9,6 +9,7 @@ import com.tulskiy.keymaster.common.HotKey;
 import com.tulskiy.keymaster.common.HotKeyListener;
 import com.tulskiy.keymaster.common.MediaKey;
 import com.tulskiy.keymaster.common.Provider;
+import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
 
@@ -28,11 +29,12 @@ public class KeyboardSensor extends SensorAdapter<Character> {
         hl = new HotKeyListener() {
             @Override
             public void onHotKey(HotKey hotkey) {
-                 
+                
                 String s = hotkey.toString();
-                System.out.println("on hot key before: " + s);
+                //System.out.println("on hot key before: " + s);
                 pressedKey = s.charAt(7);
-                System.out.println("on hot key with key: " + pressedKey);
+                //System.out.println("on hot key with key: " + pressedKey);
+                //pressedKey=new Character('A');
             }
         };
     }
@@ -44,6 +46,9 @@ public class KeyboardSensor extends SensorAdapter<Character> {
         provider.register(KeyStroke.getKeyStroke(" A"), hl);
         provider.register(KeyStroke.getKeyStroke(" B"), hl);
         provider.register(KeyStroke.getKeyStroke(" C"), hl);
+        //KeyEvent.VK_CONTROL, 
+          //KeyEvent.CTRL_DOWN_MASK
+        //provider.register(KeyStroke.getKeyStroke(" A"), hl);
     }
 
     @Override

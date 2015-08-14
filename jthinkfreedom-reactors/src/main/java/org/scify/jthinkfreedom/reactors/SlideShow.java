@@ -25,13 +25,12 @@ public class SlideShow extends javax.swing.JFrame {
     private final ArrayList<String> contentsNames;
     private int currentImage;
     private final int numberOfImages;
-    private boolean perform_change;
-
+    
     /**
      * Creates new form SlideShow
      */
     public SlideShow(String imagesPath) {
-        perform_change = true;
+        //perform_change = true;
         contentsNames = new ArrayList();
         currentImage = 0;
         this.ImagesPath = imagesPath;
@@ -54,27 +53,29 @@ public class SlideShow extends javax.swing.JFrame {
             e.printStackTrace();
         }
         //ImageIcon icon=new ImageIcon(imagesPath + "/" + contentsNames.get(currentImage));
-       
+
         ImageLabel.setIcon(icon);
         currentImage++;
 
     }
-    
-    
-    public void setMaximizedLabel(){
+
+    public void setMaximizedLabel() {
         ImageLabel.setSize(this.getSize());
     }
 
     public void SwitchPic() {
-        if (perform_change == true) {
+        
+      //while (true) {
             ImageIcon icon = null;
-            if (numberOfImages - 1 == currentImage) {
+            if (numberOfImages - 1 < currentImage) {
+               
                 currentImage = 0;
             }
             icon = new ImageIcon(ImagesPath + "/" + contentsNames.get(currentImage));
             ImageLabel.setIcon(icon);
             currentImage++;
-        }
+       // }
+        
     }
 
     /**
@@ -92,11 +93,6 @@ public class SlideShow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         ImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ImageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ImageLabelMouseClicked(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,22 +102,11 @@ public class SlideShow extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+            .addComponent(ImageLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ImageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageLabelMouseClicked
-        if (perform_change == true) {
-            perform_change = false;
-
-        } else {
-            perform_change = true;
-            setBackground(null);
-
-        }
-    }//GEN-LAST:event_ImageLabelMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

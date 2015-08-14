@@ -23,7 +23,7 @@ public class CapturekeyStimulus extends StimulusAdapter {
             //System.out.println("onDataReceived");
             pressedKey = sensor.getData();
             if (pressedKey != null) {
-                System.out.println(pressedKey);
+                //System.out.println(pressedKey);
                 if (shouldReact()) {
                     System.out.println("Reactor called");
                     callReactors();
