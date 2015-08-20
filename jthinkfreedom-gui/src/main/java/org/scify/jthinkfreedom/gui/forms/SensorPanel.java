@@ -17,7 +17,7 @@ import org.scify.jthinkfreedom.keyboard.sensors.KeyboardSensor;
  * @author peustr
  */
 public class SensorPanel extends JPanel {
-
+    
     private static final int GRID_X_LIMIT = 2; // Zero based indexing
 
     private ConfigurationScreen parent;

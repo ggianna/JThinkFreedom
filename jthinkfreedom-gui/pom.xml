@@ -23,7 +23,7 @@
                     <version>1.0</version>
                     <packaging>jar</packaging>
                     <file>target/jthinkfreedom.gui-1.0-SNAPSHOT.jar</file>
-                    <generatePom>true</generatePom>
+                    <generatePom>true</generatePom>                 
                 </configuration>
                 <executions>
                     <execution>
@@ -34,7 +34,62 @@
                         <phase>install</phase>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>        
+            
+              
+                
+                  
+                      
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.scify.jthinkfreedom.gui.ApplicationLauncher</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>    
+            
+                    
+                            
+                                    
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                  <execution>
+                    <id>create-my-bundle</id>
+                    <phase>package</phase>
+                    <goals>
+                      <goal>single</goal>
+                    </goals>
+                    <configuration>
+                        <archive>
+                        <manifest>
+                            <mainClass>org.scify.jthinkfreedom.gui.ApplicationLauncher</mainClass>
+                        </manifest>
+                    </archive>
+                      <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                      </descriptorRefs>
+                    </configuration>
+                  </execution>
+                </executions>
+              </plugin>                                
+                                                    
+                                                            
+                                                                    
+                                                                            
+                                                                                    
+                                                                                            
+                                                                                                    
+                                                                                                            
+                                                                                                                    
+                                                                                                                            
+                                                                                                                                            
         </plugins>
     </build>
     <dependencies>
@@ -43,7 +98,7 @@
             <artifactId>jthinkfreedom.skeleton</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>org.scify.jthinkfreedom.leap</groupId>
             <artifactId>jthinkfreedom.leap</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -52,11 +107,13 @@
             <groupId>org.scify.jthinkfreedom.webcam</groupId>
             <artifactId>jthinkfreedom.webcam</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.scify.jthinkfreedom.reactors</groupId>
             <artifactId>jthinkfreedom.reactors</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-SNAPSHOT</version>            
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.scify.jthinkfreedom.keyboard</groupId>

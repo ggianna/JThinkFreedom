@@ -4,14 +4,8 @@
  * and open the template in the editor.
  */
 package org.scify.jthinkfreedom.reactors;
-
-import java.awt.Image;
-import java.awt.Label;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -25,12 +19,11 @@ public class SlideShow extends javax.swing.JFrame {
     private final ArrayList<String> contentsNames;
     private int currentImage;
     private final int numberOfImages;
-    
+
     /**
      * Creates new form SlideShow
      */
     public SlideShow(String imagesPath) {
-        //perform_change = true;
         contentsNames = new ArrayList();
         currentImage = 0;
         this.ImagesPath = imagesPath;
@@ -43,39 +36,33 @@ public class SlideShow extends javax.swing.JFrame {
         }
         numberOfImages = contentsNames.size();
         initComponents();
-        BufferedImage img = null;
+        
+        //setLayout(null);
+        
         ImageIcon icon = null;
-        try {
-            img = ImageIO.read(new File(imagesPath + "/" + contentsNames.get(currentImage)));
-            Image dimg = img.getScaledInstance(ImageLabel.getWidth(), ImageLabel.getHeight(), Image.SCALE_SMOOTH);
-            icon = new ImageIcon(dimg);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //ImageIcon icon=new ImageIcon(imagesPath + "/" + contentsNames.get(currentImage));
-
+        icon = new ImageIcon(imagesPath + "/" + contentsNames.get(currentImage));
         ImageLabel.setIcon(icon);
         currentImage++;
 
     }
-
-    public void setMaximizedLabel() {
-        ImageLabel.setSize(this.getSize());
+     
+   
+    public boolean imageValidation(String imageName) {
+        return true;
     }
 
+    public void setMaximizedLabel() {
+          //ImageLabel.setSize(this.getSize());
+    }
+    
     public void SwitchPic() {
-        
-      //while (true) {
-            ImageIcon icon = null;
-            if (numberOfImages - 1 < currentImage) {
-               
-                currentImage = 0;
-            }
-            icon = new ImageIcon(ImagesPath + "/" + contentsNames.get(currentImage));
-            ImageLabel.setIcon(icon);
-            currentImage++;
-       // }
-        
+        ImageIcon icon = null;
+        if (numberOfImages - 1 < currentImage) {
+            currentImage = 0;
+        }
+        icon = new ImageIcon(ImagesPath + "/" + contentsNames.get(currentImage));
+        ImageLabel.setIcon(icon);
+        currentImage++;
     }
 
     /**
@@ -102,7 +89,7 @@ public class SlideShow extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ImageLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+            .addComponent(ImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
         );
 
         pack();

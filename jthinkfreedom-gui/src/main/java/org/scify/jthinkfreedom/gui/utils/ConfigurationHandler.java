@@ -3,6 +3,7 @@ package org.scify.jthinkfreedom.gui.utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -35,10 +36,22 @@ public class ConfigurationHandler {
 
     private Document configFile;
     private List<User> profiles;
+    private File file;
+    private String project_path;
 
     public ConfigurationHandler() {
         try {
-            String project_path = System.getProperty("user.dir") + "/target" + "/classes" + "/conf.xml";
+
+            //String project_path = System.getProperty("user.dir") + "/classes" + "/conf.xml";
+            project_path = System.getProperty("user.home") + "/conf.xml";
+
+            File f = new File(project_path);
+            if (!f.exists() || f.isDirectory()) {
+                PrintWriter writer = new PrintWriter(project_path, "UTF-8");
+                writer.println("<?xml version=\"1.0\"?>\n"
+                        + "<profiles></profiles>");
+                writer.close();
+            }
             /*configFile = DocumentBuilderFactory
              .newInstance()
              .newDocumentBuilder()
@@ -49,13 +62,12 @@ public class ConfigurationHandler {
         } catch (Exception e) {
             e.printStackTrace(System.err);
         }
-        
+
     }
 
     public List<User> getProfiles() {
         return profiles;
     }
-    
 
     public void setProfiles(List<User> profiles) {
         this.profiles = profiles;
@@ -75,16 +87,17 @@ public class ConfigurationHandler {
                 SensorAdapter sensor = (SensorAdapter) createInstanceFromClassName(configuration.getElementsByTagName("sensor").item(0).getTextContent());
                 StimulusAdapter stimulus = (StimulusAdapter) createInstanceFromClassName(configuration.getElementsByTagName("stimulus").item(0).getTextContent());
                 ReactorAdapter reactor = null;
-                String path="";
-                if(configuration.getChildNodes().getLength()>7)
-                   path=configuration.getElementsByTagName("path").item(0).getTextContent();
-                  
+                String path = "";
+                if (configuration.getChildNodes().getLength() > 7) {
+                    path = configuration.getElementsByTagName("path").item(0).getTextContent();
+                }
+
                 try {
                     reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getElementsByTagName("reactor").item(0).getTextContent());
                 } catch (Exception e) {
                     reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getElementsByTagName("reactor").item(0).getTextContent(), stimulus);
                 }
-                if (reactor instanceof SlideShowReactor){
+                if (reactor instanceof SlideShowReactor) {
                     ((SlideShowReactor) reactor).setPath(path);
                 }
                 Configuration conf = new Configuration(sensor, stimulus, reactor);
@@ -147,14 +160,17 @@ public class ConfigurationHandler {
             Transformer tr = TransformerFactory.newInstance().newTransformer();
             tr.setOutputProperty(OutputKeys.INDENT, "yes");
             tr.transform(new DOMSource(configFile),
-                    new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
-        } catch (TransformerException | FileNotFoundException | URISyntaxException e) {
+                    //new StreamResult( new FileOutputStream(ConfigurationHandler.class.getClass().getResourceAsStream("/conf.xml"))));
+                    //new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
+                    new StreamResult(new FileOutputStream(new File(project_path))));
+
+        } catch (TransformerException | FileNotFoundException e) {
             e.printStackTrace(System.err);
         }
     }
-    
-    public void saveConfiguration(Configuration conf, User user,String folder){
-          NodeList profiles = configFile.getElementsByTagName("profile");
+
+    public void saveConfiguration(Configuration conf, User user, String folder) {
+        NodeList profiles = configFile.getElementsByTagName("profile");
         for (int i = 0; i < profiles.getLength(); i++) {
             Element profile = (Element) profiles.item(i);
             String name = profile.getElementsByTagName("name").item(0).getTextContent();
@@ -167,10 +183,9 @@ public class ConfigurationHandler {
                 Element reactorClass = configFile.createElement("reactor");
                 reactorClass.appendChild(configFile.createTextNode(conf.getReactor().getClass().getCanonicalName()));
                 Element configuration = configFile.createElement("configuration");
-                Element path=configFile.createElement("path");
+                Element path = configFile.createElement("path");
                 path.appendChild(configFile.createTextNode(folder));
-                
-                
+
                 configuration.appendChild(sensorClass);
                 configuration.appendChild(stimulusClass);
                 configuration.appendChild(reactorClass);
@@ -180,8 +195,9 @@ public class ConfigurationHandler {
                     Transformer tr = TransformerFactory.newInstance().newTransformer();
                     tr.setOutputProperty(OutputKeys.INDENT, "yes");
                     tr.transform(new DOMSource(configFile),
-                            new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
-                } catch (TransformerException | FileNotFoundException | URISyntaxException e) {
+                            //new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
+                            new StreamResult(new FileOutputStream(new File(project_path))));
+                } catch (TransformerException | FileNotFoundException e) {
                     e.printStackTrace(System.err);
                 }
             }
@@ -210,8 +226,9 @@ public class ConfigurationHandler {
                     Transformer tr = TransformerFactory.newInstance().newTransformer();
                     tr.setOutputProperty(OutputKeys.INDENT, "yes");
                     tr.transform(new DOMSource(configFile),
-                            new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
-                } catch (TransformerException | FileNotFoundException | URISyntaxException e) {
+                            //new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
+                            new StreamResult(new FileOutputStream(new File(project_path))));
+                } catch (TransformerException | FileNotFoundException e) {
                     e.printStackTrace(System.err);
                 }
             }

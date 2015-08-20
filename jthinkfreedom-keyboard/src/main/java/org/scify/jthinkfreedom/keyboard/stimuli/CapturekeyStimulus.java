@@ -20,12 +20,9 @@ public class CapturekeyStimulus extends StimulusAdapter {
     @Override
     public void onDataReceived() {
         for (Sensor<Character> sensor : sensors) {
-            //System.out.println("onDataReceived");
             pressedKey = sensor.getData();
             if (pressedKey != null) {
-                //System.out.println(pressedKey);
                 if (shouldReact()) {
-                    System.out.println("Reactor called");
                     callReactors();
                     if(sensor instanceof KeyboardSensor)
                         ((KeyboardSensor)sensor).restorePressedKey();
@@ -37,7 +34,6 @@ public class CapturekeyStimulus extends StimulusAdapter {
 
     @Override
     public boolean shouldReact() {
-        //System.out.println(pressedKey);
         if (pressedKey.equals('A')) {
             return true;
         } else {
