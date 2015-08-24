@@ -93,7 +93,7 @@ public class StimulusPanel extends JPanel {
 
     private void initStimulusPanels() {
         stimuli = new HashMap<>();
-        stimuli.put(new RedObjectTrackStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/track_64x64.png")));
+        //stimuli.put(new RedObjectTrackStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/track_64x64.png")));
         stimuli.put(new CapturekeyStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/keycapture_64x64.png")));
         /*stimuli.put(new CircularGestureStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/circle_64x64.png")));
         stimuli.put(new FingerTrackStimulus(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/ftrack_64x52.png")));

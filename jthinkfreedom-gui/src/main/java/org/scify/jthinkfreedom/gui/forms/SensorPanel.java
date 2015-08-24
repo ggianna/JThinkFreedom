@@ -91,7 +91,7 @@ public class SensorPanel extends JPanel {
 
     private void initSensorPanels() {
         sensors = new HashMap<>();
-        sensors.put(new WebcamSensor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/webcam_49x64.png")));
+        //sensors.put(new WebcamSensor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/webcam_49x64.png")));
         sensors.put(new KeyboardSensor(),new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/keyboard_64x64.png")));
         //sensors.put(new LeapMotionSensor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/leap_64x64.png")));
     }

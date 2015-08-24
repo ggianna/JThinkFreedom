@@ -108,7 +108,6 @@ public class MultipleImages extends javax.swing.JFrame {
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 contentsNames.add(listOfFiles[i].getName());
-                //System.out.println(listOfFiles[i].getName());
             }
         }
         TotalImages = contentsNames.size();
@@ -117,11 +116,10 @@ public class MultipleImages extends javax.swing.JFrame {
 
             @Override
             public int compare(String o1, String o2) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                String[] var1 = o1.split("\\.");
-                String[] var2 = o2.split("\\.");
-                //System.out.println(var1.length + " " + var2.length);
-                return Integer.parseInt(var1[0]) - Integer.parseInt(var2[0]);
+                String var1 = o1.split("\\.")[0];
+                String var2 = o2.split("\\.")[0];
+                return var1.compareTo(var2);
+                //return Integer.parseInt(var1[0]) - Integer.parseInt(var2[0]);
             }
         });
     }
@@ -167,6 +165,7 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     public void playMusic() {
+        
         String path = System.getProperty("user.home") + "/water-dripping-1.wav";
         File audioFile = new File(path);
         try {
@@ -176,11 +175,7 @@ public class MultipleImages extends javax.swing.JFrame {
             audioClip = (Clip) AudioSystem.getLine(info);
             audioClip.open(audioStream);
             audioClip.start();
-        } catch (UnsupportedAudioFileException ex) {
-            Logger.getLogger(MultipleImages.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MultipleImages.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (LineUnavailableException ex) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
             Logger.getLogger(MultipleImages.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -194,32 +189,39 @@ public class MultipleImages extends javax.swing.JFrame {
         }
     }
 
+    
     private Dimension getImageScale(JLabel l, Image img) {
         Dimension d = new Dimension();
 
-        int labelW = l.getWidth();
-        int labelH = l.getHeight();
+        int labelW = l.getWidth()-(2 * IMAGE_GAP) - (2 * BORDER_SIZE);
+        int labelH = l.getHeight()-(2 * IMAGE_GAP) - (2 * BORDER_SIZE);
         int imgW = img.getWidth(rootPane);
         int imgH = img.getHeight(rootPane);
-
-        float ratio = Math.min((float) labelW / imgW, (float) labelH / imgH);
-
+                
+        double ratio = Math.min((double) labelW / imgW, (double) labelH / imgH);
+        
+        //System.out.println(ratio);
+         
         d.setSize(imgW * ratio, imgH * ratio);
 
         return d;
     }
 
     private void addLabel(String file_path, JLabel label) {
-        ImageIcon icon = new ImageIcon(file_path);
+        ImageIcon icon = new ImageIcon(file_path); 
         Image img = icon.getImage();
-
+        
         Dimension d = getImageScale(label, img);
 
         Double w = d.getWidth();
         Double h = d.getHeight();
-        int width = w.intValue() - (2 * IMAGE_GAP) - (2 * BORDER_SIZE);
-        int height = h.intValue() - (2 * IMAGE_GAP) - (2 * BORDER_SIZE);
+        
+       
+        int width = w.intValue();//- (2 * IMAGE_GAP) - (2 * BORDER_SIZE);
+        int height = h.intValue();//-  (2 * IMAGE_GAP) - (2 * BORDER_SIZE);
 
+         //
+        System.out.println(w+" "+h+"|||||"+width+" "+height);
 //        System.out.println("New width: " + width + " | new height: " + height);
 
         Image newimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);

@@ -16,7 +16,7 @@ import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
  * @author xrousakis
  */
 public class KeyboardSensor extends SensorAdapter<Character> {
-    
+
     private Provider provider;
     private final Object lock = new Object();
     private Character pressedKey;
@@ -37,7 +37,8 @@ public class KeyboardSensor extends SensorAdapter<Character> {
     public void start() {
         super.start();
         provider = Provider.getCurrentProvider(false);
-        provider.register(KeyStroke.getKeyStroke(" A"), hl);
+        provider.register(KeyStroke.getKeyStroke("A"), hl);
+        provider.register(KeyStroke.getKeyStroke(" SPACE"), hl);
         provider.register(KeyStroke.getKeyStroke(" B"), hl);
         provider.register(KeyStroke.getKeyStroke(" C"), hl);
     }
@@ -58,20 +59,13 @@ public class KeyboardSensor extends SensorAdapter<Character> {
         return "Keyboard";
     }
 
-    public static void main(String args[]) throws InterruptedException {
-        KeyboardSensor ks = new KeyboardSensor();
-        ks.start();
-        Thread.sleep(5000);
-        ks.stop();
+    public void restorePressedKey() {
+        pressedKey = null;
     }
-    
-    public void restorePressedKey(){
-        pressedKey=null;
-    }
-    
+
     @Override
     public Character getData() {
-        return  pressedKey;
+        return pressedKey;
     }
 
 }

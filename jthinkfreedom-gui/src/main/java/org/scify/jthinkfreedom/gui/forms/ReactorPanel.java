@@ -91,15 +91,16 @@ public class ReactorPanel extends JPanel {
     private void initReactorPanels() {
         reactors = new HashMap<>();
         reactors.put(new ApplicationLaunchReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/rocket_64x64.png")));
-        reactors.put(new LeftClickReactor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/left_click_64x64.png")));
-        reactors.put(new RightClickReactor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/right_click_64x64.png")));
-        reactors.put(new PlaySoundReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/sound_64x58.png")));
-        reactors.put(new MouseMoveReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/cursor_64x64.png")));
+        //reactors.put(new LeftClickReactor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/left_click_64x64.png")));
+        //reactors.put(new RightClickReactor(), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/right_click_64x64.png")));
+        //reactors.put(new PlaySoundReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/sound_64x58.png")));
+        //reactors.put(new MouseMoveReactor(null), new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/cursor_64x64.png")));
         /*new reactor for displaying images*/
         reactors.put(new SlideShowReactor(),new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/slideshow_64x64.png")));
         
     }
-
+    
+          
     private void initCustomComponents() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.weightx = 1;
