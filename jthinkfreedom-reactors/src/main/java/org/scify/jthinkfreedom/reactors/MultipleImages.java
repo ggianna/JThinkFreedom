@@ -5,8 +5,10 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
@@ -43,12 +46,16 @@ public class MultipleImages extends javax.swing.JFrame {
     private int TotalImages;
     private AudioInputStream audioStream;
     private Clip audioClip;
-    private ArrayList<JLabel> lista;
+    private ArrayList<JPanel> lista;
     private int usedImages;
     private boolean redraw;
     private Object lock;
+    
     private final int BORDER_SIZE = 5;
-    private final int IMAGE_GAP = 20;
+    private final int IMAGE_GAP = 10;
+    
+    private Map<String, String> hierarchy;
+    private Map<String, ArrayList<Tile>> childTiles;
 
     /**
      * Creates new form Test
@@ -58,6 +65,7 @@ public class MultipleImages extends javax.swing.JFrame {
     public MultipleImages(String imagesPath) {
         initComponents();
         this.imagesPath = imagesPath;
+        lock = new Object();
         //initImages(2, 3);
     }
 
@@ -72,9 +80,8 @@ public class MultipleImages extends javax.swing.JFrame {
             return redraw;
         }
     }
-
-    private void initImages(int rows, int columns) {
-        lock = new Object();
+    
+    private void initImages(int rows, int columns) {  
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
@@ -85,11 +92,21 @@ public class MultipleImages extends javax.swing.JFrame {
         usedImages = rows * columns;
         lista = new ArrayList();
         for (int i = 1; i <= usedImages; i++) {
+            JPanel panel = new JPanel(new BorderLayout());
 
-            JLabel l = new JLabel();
-            l.setBorder(createBorder(Color.WHITE));
-            lista.add(l);
-            imagesPanel.add(l);
+            lista.add(panel);
+            JLabel imgLabel = new JLabel();
+            JLabel txtLabel = new JLabel("<html><body><b>Sample textttttttttttttttttttt</b></body></html>");
+            txtLabel.setFont(new Font("Courier New", Font.PLAIN, 22));
+            
+            panel.setBorder(createBorder(Color.WHITE));
+            panel.setBackground(Color.LIGHT_GRAY);
+            //lista.add(l);
+
+            panel.add(imgLabel,BorderLayout.CENTER);
+            panel.add(txtLabel,BorderLayout.SOUTH);
+            txtLabel.setHorizontalAlignment(JLabel.CENTER);
+            imagesPanel.add(panel);
         }
         currentImage = 0;
 
@@ -122,6 +139,7 @@ public class MultipleImages extends javax.swing.JFrame {
                 //return Integer.parseInt(var1[0]) - Integer.parseInt(var2[0]);
             }
         });
+
     }
 
     public void redrawImages() {
@@ -151,7 +169,6 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     public void SwithcPic() {
-
         if (currentImage - 1 < 0) {
             lista.get(usedImages - 1).setBorder(createBorder(Color.WHITE));
         } else {
@@ -165,7 +182,6 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     public void playMusic() {
-        
         String path = System.getProperty("user.home") + "/water-dripping-1.wav";
         File audioFile = new File(path);
         try {
@@ -189,50 +205,45 @@ public class MultipleImages extends javax.swing.JFrame {
         }
     }
 
-    
     private Dimension getImageScale(JLabel l, Image img) {
         Dimension d = new Dimension();
-
-        int labelW = l.getWidth()-(2 * IMAGE_GAP) - (2 * BORDER_SIZE);
-        int labelH = l.getHeight()-(2 * IMAGE_GAP) - (2 * BORDER_SIZE);
+        
+        int labelW = l.getWidth() - (2 * IMAGE_GAP) - (2 * BORDER_SIZE);
+        int labelH = l.getHeight() - (2 * IMAGE_GAP) - (2 * BORDER_SIZE);
         int imgW = img.getWidth(rootPane);
         int imgH = img.getHeight(rootPane);
-                
-        double ratio = Math.min((double) labelW / imgW, (double) labelH / imgH);
-        
-        //System.out.println(ratio);
-         
-        d.setSize(imgW * ratio, imgH * ratio);
 
+        double ratio = Math.min((double) labelW / imgW, (double) labelH / imgH);
+        d.setSize(imgW * ratio, imgH * ratio);
+      
         return d;
     }
 
-    private void addLabel(String file_path, JLabel label) {
-        ImageIcon icon = new ImageIcon(file_path); 
+    private void addLabel(String file_path, JPanel panel) {
+        JLabel label = (JLabel) panel.getComponents()[0];
+
+        ImageIcon icon = new ImageIcon(file_path);
         Image img = icon.getImage();
-        
+
         Dimension d = getImageScale(label, img);
 
         Double w = d.getWidth();
         Double h = d.getHeight();
-        
-       
-        int width = w.intValue();//- (2 * IMAGE_GAP) - (2 * BORDER_SIZE);
-        int height = h.intValue();//-  (2 * IMAGE_GAP) - (2 * BORDER_SIZE);
 
-         //
-        System.out.println(w+" "+h+"|||||"+width+" "+height);
-//        System.out.println("New width: " + width + " | new height: " + height);
+        int width = w.intValue();
+        int height = h.intValue();
 
         Image newimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 
         ImageIcon newIcon = new ImageIcon(newimg);
         label.setIcon(newIcon);
+
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.BOTTOM);
+
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
 
-//        imagesPanel.revalidate();
-//        imagesPanel.repaint();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
