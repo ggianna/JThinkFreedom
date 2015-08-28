@@ -50,5 +50,4 @@ public class CapturekeyStimulus extends StimulusAdapter {
     public String getDescription() {
         return "Capturing pressed keys";
     }
-
 }

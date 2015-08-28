@@ -13,13 +13,23 @@ public class Tile {
 
     private String imagePath;
     private String txt;
+    private String category;
     
 
-    public Tile(String imagePath, String txt) {
+    public Tile(String imagePath, String txt,String category) {
         this.imagePath = imagePath;
         this.txt = txt;
+        this.category=category;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    
     public String getImagePath() {
         return imagePath;
     }

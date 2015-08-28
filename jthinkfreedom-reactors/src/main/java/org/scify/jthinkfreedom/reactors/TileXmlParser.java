@@ -29,6 +29,7 @@ public class TileXmlParser {
     //private Map<String, ArrayList<Tile>> categories;
     private Map<String, String> hierarchy;
     private Map<String, ArrayList<Tile>> childTiles;
+    private String rootNode;
 
     public TileXmlParser() {
         childTiles = new HashMap();
@@ -50,9 +51,8 @@ public class TileXmlParser {
             System.out.println(entry.getKey());
 
             for (Tile t : lista) {
-                System.out.println("\t" + t.getImagePath());
+                System.out.println("\t" + t.getCategory()+"|||"+t.getImagePath());
             }
-
         }
     }
 
@@ -77,6 +77,8 @@ public class TileXmlParser {
         for (int i = 0; i < categories.getLength(); i++) {
             Node category = categories.item(i);
             Element cElement = (Element) category;
+            if(i==0)
+                rootNode=cElement.getAttribute("name");
 
             NodeList alltiles = cElement.getElementsByTagName("tile");
             ArrayList<Node> tiles = getImmediateElementsByTagName(cElement, "tile");;
@@ -90,7 +92,7 @@ public class TileXmlParser {
             //String filename = cElement.getElementsByTagName("filename").item(0).getTextContent();
             String filename = getImmediateElementsByTagName(cElement, "filename").get(0).getTextContent();
 
-            Tile categoryTile = new Tile(folder + "/" + filename, categoryText);
+            Tile categoryTile = new Tile(folder + "/" + filename, categoryText,cElement.getAttribute("name"));
 
             //System.out.println("Category: " + categoryText);
             ArrayList<Tile> lista = new ArrayList<>();
@@ -102,7 +104,7 @@ public class TileXmlParser {
                 String txt = tile.getElementsByTagName("text").item(0).getTextContent();
 
                 //System.out.println("\tTile: " + txt);
-                lista.add(new Tile(fullname, txt));
+                lista.add(new Tile(fullname, txt,cElement.getAttribute("name")));
             }
 
             childTiles.put(cElement.getAttribute("name"), lista);
@@ -114,6 +116,10 @@ public class TileXmlParser {
             }
 
         }
+    }
+    
+    public String getRoot(){
+        return rootNode;
     }
 
     public Map getTiles() {
@@ -128,5 +134,7 @@ public class TileXmlParser {
         TileXmlParser var = new TileXmlParser();
         var.parseXML();
         var.print();
+        //System.out.println(var.getRoot());
+        
     }
 }

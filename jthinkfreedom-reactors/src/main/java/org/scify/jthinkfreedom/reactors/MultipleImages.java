@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Panel;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
@@ -40,22 +41,25 @@ import javax.swing.border.Border;
 public class MultipleImages extends javax.swing.JFrame {
 
     private String currentIcon;
-    private String imagesPath;
+    private final String imagesPath;
     private ArrayList<String> contentsNames;
     private int currentImage;
     private int TotalImages;
     private AudioInputStream audioStream;
     private Clip audioClip;
-    private ArrayList<JPanel> lista;
+    private ArrayList<JPanel> paneList;
     private int usedImages;
     private boolean redraw;
-    private Object lock;
-    
+    private final Object lock;
+
     private final int BORDER_SIZE = 5;
     private final int IMAGE_GAP = 10;
-    
+
+    private int tmpCurrentImage;
+    private String currentCategory;
     private Map<String, String> hierarchy;
     private Map<String, ArrayList<Tile>> childTiles;
+    private ArrayList<Tile> contents;
 
     /**
      * Creates new form Test
@@ -66,7 +70,7 @@ public class MultipleImages extends javax.swing.JFrame {
         initComponents();
         this.imagesPath = imagesPath;
         lock = new Object();
-        //initImages(2, 3);
+        parse();
     }
 
     public void setRedraw(boolean value) {
@@ -80,44 +84,110 @@ public class MultipleImages extends javax.swing.JFrame {
             return redraw;
         }
     }
-    
-    private void initImages(int rows, int columns) {  
+
+    /*Sets the dimension for the gridLayout of the imagesPanel ,creates panel with images and text and stores them,calls function to put info(image,data) in the panels*/
+    private void initImages(int rows, int columns) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
         imagesPanel.setLayout(new GridLayout(rows, columns, IMAGE_GAP, IMAGE_GAP));
         imagesPanel.setBackground(Color.WHITE);
         optionPanel.setBackground(Color.WHITE);
-        readImages();
-        usedImages = rows * columns;
-        lista = new ArrayList();
+        paneList = new ArrayList();
+        // For each image
         for (int i = 1; i <= usedImages; i++) {
-            JPanel panel = new JPanel(new BorderLayout());
-
-            lista.add(panel);
-            JLabel imgLabel = new JLabel();
-            JLabel txtLabel = new JLabel("<html><body><b>Sample textttttttttttttttttttt</b></body></html>");
-            txtLabel.setFont(new Font("Courier New", Font.PLAIN, 22));
-            
-            panel.setBorder(createBorder(Color.WHITE));
-            panel.setBackground(Color.LIGHT_GRAY);
-            //lista.add(l);
-
-            panel.add(imgLabel,BorderLayout.CENTER);
-            panel.add(txtLabel,BorderLayout.SOUTH);
-            txtLabel.setHorizontalAlignment(JLabel.CENTER);
+            JPanel panel = createLabeledImageItem("");
+            // Add to image panel list
             imagesPanel.add(panel);
         }
-        currentImage = 0;
+        if (!currentCategory.equalsIgnoreCase("main menu")) {
+            usedImages++;
+            JPanel panel = new JPanel(new BorderLayout());
+            paneList.add(panel);
+            JLabel imgLabel = new JLabel("");
+            JLabel txtLabel = new JLabel("BACK");
+            txtLabel.setFont((new Font("Courier New", Font.PLAIN, 40)));
+            panel.setBorder(createBorder(Color.WHITE));
+            panel.setBackground(Color.LIGHT_GRAY);
+            panel.add(txtLabel, BorderLayout.CENTER);
+            panel.add(imgLabel, BorderLayout.SOUTH);
+            txtLabel.setHorizontalAlignment(JLabel.CENTER);
+            imagesPanel.add(panel);
+            contents.add(new Tile("", "", "none"));
+        }
 
+        currentImage = 0;
         this.revalidate();
         this.repaint();
-
         setImages(usedImages);
-
         setRedraw(false);
     }
 
+    /*Creates new panel with image and text label and positions them with border layout then adds this panel ti panel list which hols all the panels that contain image and text label*/
+    private JPanel createLabeledImageItem(String value) {
+        JPanel panel = new JPanel(new BorderLayout());
+        paneList.add(panel);
+        JLabel imgLabel = new JLabel();
+        JLabel txtLabel = new JLabel("");
+        panel.setBorder(createBorder(Color.WHITE));
+        panel.setBackground(Color.LIGHT_GRAY);
+        panel.add(imgLabel, BorderLayout.CENTER);
+        panel.add(txtLabel, BorderLayout.SOUTH);
+        txtLabel.setHorizontalAlignment(JLabel.CENTER);
+        return panel;
+    }
+
+    /*parse information about images from the categories.xml in the home folder and pass the information about the tiles in to the local variables*/
+    private void parse() {
+        contents = new ArrayList<>();
+        TileXmlParser parser = new TileXmlParser();
+        hierarchy = parser.getHierarchy();
+        childTiles = parser.getTiles();
+        String rootNode = parser.getRoot();
+        usedImages = childTiles.get(rootNode).size();
+        TotalImages = childTiles.get(rootNode).size();
+        currentCategory = rootNode;
+        contents = (ArrayList<Tile>) childTiles.get(rootNode).clone();
+    }
+
+    /*Gives to contents variable the tiles of the subcategory and changes the number of active images then redraws the jframe componetns with the new information*/
+    private void enterSubCategory() {
+        for (Map.Entry<String, String> entry : hierarchy.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(currentCategory)) {
+                //System.out.println("Current image is asdasd" + tmpCurrentImage);
+                String subCategory = childTiles.get(currentCategory).get(tmpCurrentImage).getCategory();
+                if (!currentCategory.equalsIgnoreCase("main menu")) {
+                    System.out.println("removed back");
+                    contents.remove(contents.size() - 1);
+                }
+                contents = childTiles.get(subCategory);
+                usedImages = contents.size();
+                System.out.println("enter used images " + usedImages);
+                currentCategory = subCategory;
+                break;
+            }
+        }
+        this.redrawImages();
+    }
+
+    /*Gives to contents variable the tiles of the higher category and changes the number of active images then redraws the the jframe componetns with the new information(image,text)*/
+    private void exitSubCategory() {
+        for (Map.Entry<String, String> entry : hierarchy.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(currentCategory)) {
+                String higherCategory = entry.getValue();
+                contents.remove(contents.size() - 1);
+                System.out.println("removed back ");
+                contents = childTiles.get(entry.getValue());
+                usedImages = contents.size();
+                System.out.println("exit used images " + usedImages);
+                currentCategory = higherCategory;
+                break;
+            }
+        }
+        this.redrawImages();
+    }
+
+    /*Reads images from image folder and the folders path is stored in imagesPath*/
     private void readImages() {
         contentsNames = new ArrayList();
         File folder = new File(imagesPath);
@@ -136,51 +206,56 @@ public class MultipleImages extends javax.swing.JFrame {
                 String var1 = o1.split("\\.")[0];
                 String var2 = o2.split("\\.")[0];
                 return var1.compareTo(var2);
-                //return Integer.parseInt(var1[0]) - Integer.parseInt(var2[0]);
             }
         });
 
     }
 
+    /*Wipes the JFrame clean from any components and calls init to repaint it */
     public void redrawImages() {
         int numOfRows = (Integer) spinner1.getValue();
         int numOfCols = (Integer) spinner2.getValue();
         imagesPanel.removeAll();
+        /*Rows and Columns for the gridLayoyt */
         initImages(numOfRows, numOfCols);
         this.repaint();
         this.revalidate();
     }
 
+    /*Sets */
     private void setImages(int activeImages) {
         for (int i = 0; i < activeImages; i++) {
-            addLabel(imagesPath + "/" + contentsNames.get(currentImage++), lista.get(i));
+            addLabel(contents.get(i).getImagePath(), paneList.get(i), contents.get(i).getTxt());
         }
-
-        currentImage = 0;
     }
 
+    /*Returns the value of the slider which determines the frequency in which the images change*/
     public int GetElapsedTime() {
         int value = epicSlider.getValue();
         return value;
     }
 
+    /*Creates border given the color*/
     private Border createBorder(Color c) {
         return BorderFactory.createLineBorder(c, BORDER_SIZE);
     }
 
+    /*Changes the border of the current image to black and of the previous to white*/
     public void SwithcPic() {
+        tmpCurrentImage = currentImage;
         if (currentImage - 1 < 0) {
-            lista.get(usedImages - 1).setBorder(createBorder(Color.WHITE));
+            paneList.get(usedImages - 1).setBorder(createBorder(Color.WHITE));
         } else {
-            lista.get(currentImage - 1).setBorder(createBorder(Color.WHITE));
+            paneList.get(currentImage - 1).setBorder(createBorder(Color.WHITE));
         }
-        lista.get(currentImage).setBorder(createBorder(Color.BLACK));
         currentImage++;
         if (currentImage + 1 > usedImages) {
             currentImage = 0;
         }
+        paneList.get(tmpCurrentImage).setBorder(createBorder(Color.BLACK));
     }
 
+    /*Plays the a wav file */
     public void playMusic() {
         String path = System.getProperty("user.home") + "/water-dripping-1.wav";
         File audioFile = new File(path);
@@ -196,6 +271,7 @@ public class MultipleImages extends javax.swing.JFrame {
         }
     }
 
+    //stop wav file from playing
     public void stopMusic() {
         audioClip.close();
         try {
@@ -205,47 +281,68 @@ public class MultipleImages extends javax.swing.JFrame {
         }
     }
 
+    /*Scales the image to fit at a better ratio in the dimensions of the grid cell*/
     private Dimension getImageScale(JLabel l, Image img) {
         Dimension d = new Dimension();
-        
         int labelW = l.getWidth() - (2 * IMAGE_GAP) - (2 * BORDER_SIZE);
         int labelH = l.getHeight() - (2 * IMAGE_GAP) - (2 * BORDER_SIZE);
         int imgW = img.getWidth(rootPane);
         int imgH = img.getHeight(rootPane);
-
         double ratio = Math.min((double) labelW / imgW, (double) labelH / imgH);
         d.setSize(imgW * ratio, imgH * ratio);
-      
         return d;
     }
 
-    private void addLabel(String file_path, JPanel panel) {
+    /*Scales and adds image to image label and also sets text to text label*/
+    private void addLabel(String file_path, JPanel panel, String txtName) {
         JLabel label = (JLabel) panel.getComponents()[0];
+        JLabel txtLabel = (JLabel) panel.getComponents()[1];
+        txtLabel.setFont(new Font("Courier New", Font.PLAIN, 22));
+        txtLabel.setText(txtName);
+        ImageIcon icon;
 
-        ImageIcon icon = new ImageIcon(file_path);
-        Image img = icon.getImage();
-
-        Dimension d = getImageScale(label, img);
-
-        Double w = d.getWidth();
-        Double h = d.getHeight();
-
-        int width = w.intValue();
-        int height = h.intValue();
-
-        Image newimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
-        ImageIcon newIcon = new ImageIcon(newimg);
-        label.setIcon(newIcon);
+        if (!file_path.equalsIgnoreCase("")) {
+            icon = new ImageIcon(file_path);
+            Image img = icon.getImage();
+            Dimension d = getImageScale(label, img);
+            Double w = d.getWidth();
+            Double h = d.getHeight();
+            int width = w.intValue();
+            int height = h.intValue();
+            Image newimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            ImageIcon newIcon = new ImageIcon(newimg);
+            label.setIcon(newIcon);
+        }
 
         label.setHorizontalTextPosition(JLabel.CENTER);
         label.setVerticalTextPosition(JLabel.BOTTOM);
-
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
-
     }
 
+    /*Returns true if the the chosen tile belongs to another category shich means it has sub tiles*/
+    public boolean tileHasSubTiles(String tilesCategory) {
+        if (currentCategory.equalsIgnoreCase(tilesCategory)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /*Returns true if the chossen image represents category or is the back image and changes to the appropriate category else it changes between picks*/
+    public boolean changeCategory() {
+        this.setRedraw(true);
+        if (childTiles.get(currentCategory).get(tmpCurrentImage).getCategory().equalsIgnoreCase("none")) {
+            exitSubCategory();
+            return true;
+        } else if (tileHasSubTiles(childTiles.get(currentCategory).get(tmpCurrentImage).getCategory())) {
+            enterSubCategory();
+            return true;
+        } else {
+            setRedraw(false);
+        }
+        return false;
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -391,6 +488,12 @@ public class MultipleImages extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.setRedraw(true);
+        //
+        if (!currentCategory.equalsIgnoreCase("main menu")) {
+            //System.out.println(contents.size());
+            usedImages--;
+        }
+      
         this.redrawImages();
     }//GEN-LAST:event_jButton1ActionPerformed
 
