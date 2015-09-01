@@ -5,12 +5,8 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
-import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 
@@ -21,11 +17,8 @@ import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 public class SlideShowReactor extends ReactorAdapter {
 
     private boolean open;
-    //private SlideShow gui;
     private MultipleImages gui;
     private String imagesPath;
-    private boolean keepRunning;
-    Thread t;
 
     public SlideShowReactor() {
         super();
@@ -69,45 +62,16 @@ public class SlideShowReactor extends ReactorAdapter {
                 gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gui.setVisible(true);
                 gui.redrawImages();
-                keepRunning = true;
-                Run();
+                gui.run();
             } catch (Exception ex) {
                 System.out.println(ex.getCause());
             }
         } else {
-            if (keepRunning == true) {
-                //gui.print();
-                if (!gui.changeCategory()) {
-                    t.suspend();
-                    gui.playMusic();
-                    keepRunning = false;
-                }
-
-            } else {
-                gui.stopMusic();
-                t.resume();
-                keepRunning = true;
-            }
+            if(gui.isState())
+                gui.stopThread();
+            else
+               gui.beginThread();
         }
-    }
-
-    public void Run() {
-        t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(gui.GetElapsedTime() * 1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(SlideShowReactor.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    if (gui.getRedraw() == false) {
-                        gui.SwithcPic();
-                    }
-                }
-            }
-        });
-        t.start();
     }
 
     public void setPath(String path) {

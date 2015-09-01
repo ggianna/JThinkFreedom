@@ -5,7 +5,6 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
-import java.awt.List;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +12,6 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -35,7 +33,8 @@ public class TileXmlParser {
         childTiles = new HashMap();
         hierarchy = new HashMap();
         try {
-            xmlPath = System.getProperty("user.home") + "/categories.xml";
+            //xmlPath = System.getProperty("user.home") + "/categories.xml";
+            xmlPath=System.getProperty("user.dir")+"/categories.xml";
             configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xmlPath));
             configFile.normalize();
         } catch (Exception ex) {
@@ -43,7 +42,7 @@ public class TileXmlParser {
         }
         parseXML();
     }
-
+    
     public void print() {
         System.out.println("");
         for (Map.Entry entry : childTiles.entrySet()) {
@@ -56,6 +55,7 @@ public class TileXmlParser {
         }
     }
 
+    /*Gets elements that belong only to this category and not any of its subcategories*/
     private ArrayList<Node> getImmediateElementsByTagName(Element element, String tagName) {
         /*TODO: na epistrefei ta stoixeia mono tou sigegrimenou category element*/
         ArrayList<Node> list = new ArrayList<>();
@@ -71,7 +71,8 @@ public class TileXmlParser {
         }
         return list;
     }
-
+    
+    /*Parses the xml and stores the information we need in the maps*/
     private void parseXML() {
         NodeList categories = configFile.getElementsByTagName("category");
         for (int i = 0; i < categories.getLength(); i++) {
@@ -83,27 +84,21 @@ public class TileXmlParser {
             NodeList alltiles = cElement.getElementsByTagName("tile");
             ArrayList<Node> tiles = getImmediateElementsByTagName(cElement, "tile");;
 
-            //String folder = cElement.getElementsByTagName("folder").item(0).getTextContent();
             String folder = getImmediateElementsByTagName(cElement, "folder").get(0).getTextContent();
 
-            //String categoryText = cElement.getElementsByTagName("text").item(0).getTextContent();
             String categoryText = getImmediateElementsByTagName(cElement, "text").get(0).getTextContent();
 
-            //String filename = cElement.getElementsByTagName("filename").item(0).getTextContent();
             String filename = getImmediateElementsByTagName(cElement, "filename").get(0).getTextContent();
 
             Tile categoryTile = new Tile(folder + "/" + filename, categoryText,cElement.getAttribute("name"));
 
-            //System.out.println("Category: " + categoryText);
             ArrayList<Tile> lista = new ArrayList<>();
-            //lista.add(categoryTile);
-
+           
             for (int j = 0; j < tiles.size(); j++) {
                 Element tile = (Element) tiles.get(j);
                 String fullname = folder + "/" + tile.getElementsByTagName("filename").item(0).getTextContent();
                 String txt = tile.getElementsByTagName("text").item(0).getTextContent();
 
-                //System.out.println("\tTile: " + txt);
                 lista.add(new Tile(fullname, txt,cElement.getAttribute("name")));
             }
 
@@ -114,18 +109,20 @@ public class TileXmlParser {
                 hierarchy.put(cElement.getAttribute("name"), el.getAttribute("name"));
                 childTiles.get(el.getAttribute("name")).add(categoryTile);
             }
-
         }
     }
     
+    /*Returns root element of the xml*/
     public String getRoot(){
         return rootNode;
     }
-
+    
+    /*Returns the map that contains for keys the caregory names and value array list of tiles of this category*/
     public Map getTiles() {
         return childTiles;
     }
 
+    /*Returns the map that contains for keys category names and for value the name of the exact higher category*/
     public Map getHierarchy() {
         return hierarchy;
     }

@@ -1,6 +1,5 @@
 package org.scify.jthinkfreedom.gui;
 
-import javax.swing.ImageIcon;
 import org.scify.jthinkfreedom.gui.forms.ProfileScreen;
 import org.scify.jthinkfreedom.gui.utils.ConfigurationHandler;
 

@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -43,7 +42,7 @@ public class ConfigurationHandler {
         try {
 
             //String project_path = System.getProperty("user.dir") + "/classes" + "/conf.xml";
-            project_path = System.getProperty("user.home") + "/conf.xml";
+            project_path = System.getProperty("user.dir") + "/conf.xml";
 
             File f = new File(project_path);
             if (!f.exists() || f.isDirectory()) {
@@ -65,9 +64,7 @@ public class ConfigurationHandler {
 
     }
     
-    
-    
-
+  
     public List<User> getProfiles() {
         return profiles;
     }
@@ -126,8 +123,9 @@ public class ConfigurationHandler {
                     Transformer tr = TransformerFactory.newInstance().newTransformer();
                     tr.setOutputProperty(OutputKeys.INDENT, "yes");
                     tr.transform(new DOMSource(configFile),
-                            new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
-                } catch (TransformerException | FileNotFoundException | URISyntaxException e) {
+                            //new StreamResult(new FileOutputStream (new File(getClass().getResource("/conf.xml").toURI())) ));
+                            new StreamResult(new FileOutputStream (new File(project_path)) ));
+                } catch (TransformerException | FileNotFoundException e) {
                     e.printStackTrace(System.err);
                 }
             }
@@ -171,8 +169,9 @@ public class ConfigurationHandler {
             e.printStackTrace(System.err);
         }
     }
-
-    public void saveConfiguration(Configuration conf, User user, String folder) {
+    
+    /*Saves configuration to xml but also saves the path to the file thas has the images*/
+    /*public void saveConfiguration(Configuration conf, User user, String folder) {
         NodeList profiles = configFile.getElementsByTagName("profile");
         for (int i = 0; i < profiles.getLength(); i++) {
             Element profile = (Element) profiles.item(i);
@@ -205,7 +204,7 @@ public class ConfigurationHandler {
                 }
             }
         }
-    }
+    }*/
 
     public void saveConfiguration(Configuration conf, User user) {
         NodeList profiles = configFile.getElementsByTagName("profile");

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<category name="main menu">
+	<text>main menu</text>
+	<folder>main menu </folder>
+	<filename>main menu filename</filename>
+	<category name="Τουαλέτα">
+		<folder>/home/xrousakis/Desktop/images/toilet</folder>
+		<filename>1.png</filename>
+		<text>Τουαλέτα</text>
+		<tile>
+			<filename>1.png</filename>
+			<text>Τουαλέτα</text>
+		</tile>
+		<tile>
+			<filename>2.png</filename>
+			<text>Ποτήρι</text>
+		</tile>
+		<tile>
+			<filename>9.png</filename>
+			<text>Μπανιέρα</text>
+		</tile>
+	</category>
+	<category name="Φαγητό">
+		<category name="burger">
+			<folder>/home/xrousakis/Desktop/food/burger</folder>
+			<filename>logo.png</filename>
+			<text>Burger</text>
+			<tile>
+				<filename>burger_sandwich_PNG4160.png</filename>
+				<text>Burger</text>
+			</tile>
+		</category>
+		<folder>/home/xrousakis/Desktop/food</folder>
+		<filename>fast-food-icon.png</filename>
+		<text>Φαγητό</text>	
+		<tile>
+			<filename>pizza_PNG7134.png</filename>
+			<text>Pizza</text>
+		</tile>
+		<tile>
+			<filename>12.png</filename>
+			<text>Κανονικό φαγητό</text>
+		</tile>
+	</category>
+	<category name="Φάρμακα">
+		<folder>/home/xrousakis/Desktop/medicine</folder>
+		<filename>medicine.png</filename>
+		<text>Φάρμακα</text>
+		<tile>
+			<filename>15.png</filename>
+			<text>Παυσίπονο</text>
+		</tile>
+	</category>
+	<category name="Ψυχαγωγία">
+		<folder>/home/xrousakis/Desktop/images/entertainment</folder>
+		<filename>8.png</filename>
+		<text>Ψυχαγωγία</text>
+		<tile>
+			<filename>14.png</filename>
+			<text>Ειδήσεις</text>
+		</tile>
+		<tile>
+			<filename>13.png</filename>
+			<text>Μουσική</text>
+		</tile>
+		<tile>
+			<filename>7.png</filename>
+			<text>Τηλεόραση</text>
+		</tile>
+	</category>
+</category>

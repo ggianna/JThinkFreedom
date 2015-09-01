@@ -179,6 +179,7 @@ public class ProfilePanel extends javax.swing.JPanel {
 
     private void configureLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_configureLabelMouseClicked
         ConfigurationScreen cs = new ConfigurationScreen(this, parent);
+        cs.hideUndo();
         cs.setLocationRelativeTo(null);
         cs.setVisible(true);
         parent.setVisible(false);

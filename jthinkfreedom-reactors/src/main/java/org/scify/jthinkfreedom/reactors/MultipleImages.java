@@ -11,8 +11,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Panel;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,26 +38,29 @@ import javax.swing.border.Border;
  */
 public class MultipleImages extends javax.swing.JFrame {
 
-    private String currentIcon;
-    private final String imagesPath;
-    private ArrayList<String> contentsNames;
-    private int currentImage;
-    private int TotalImages;
-    private AudioInputStream audioStream;
-    private Clip audioClip;
-    private ArrayList<JPanel> paneList;
-    private int usedImages;
-    private boolean redraw;
-    private final Object lock;
+    protected String currentIcon;
+    protected final String imagesPath;
+    protected ArrayList<String> contentsNames;
+    protected int currentImage;
+    protected int TotalImages;
+    protected AudioInputStream audioStream;
+    protected Clip audioClip;
+    protected ArrayList<JPanel> paneList;
+    protected int usedImages;
+    protected boolean redraw;
+    protected final Object lock;
 
-    private final int BORDER_SIZE = 5;
-    private final int IMAGE_GAP = 10;
+    protected Thread thread;
 
-    private int tmpCurrentImage;
-    private String currentCategory;
-    private Map<String, String> hierarchy;
-    private Map<String, ArrayList<Tile>> childTiles;
-    private ArrayList<Tile> contents;
+    protected boolean state;
+    protected final int BORDER_SIZE = 5;
+    protected final int IMAGE_GAP = 10;
+
+    protected int tmpCurrentImage;
+    protected String currentCategory;
+    protected Map<String, String> hierarchy;
+    protected Map<String, ArrayList<Tile>> childTiles;
+    protected ArrayList<Tile> contents;
 
     /**
      * Creates new form Test
@@ -87,9 +88,7 @@ public class MultipleImages extends javax.swing.JFrame {
 
     /*Sets the dimension for the gridLayout of the imagesPanel ,creates panel with images and text and stores them,calls function to put info(image,data) in the panels*/
     private void initImages(int rows, int columns) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
+        //imagesPanel.setLayout(new GridLayout(1, 1, IMAGE_GAP, IMAGE_GAP));
         imagesPanel.setLayout(new GridLayout(rows, columns, IMAGE_GAP, IMAGE_GAP));
         imagesPanel.setBackground(Color.WHITE);
         optionPanel.setBackground(Color.WHITE);
@@ -97,25 +96,13 @@ public class MultipleImages extends javax.swing.JFrame {
         // For each image
         for (int i = 1; i <= usedImages; i++) {
             JPanel panel = createLabeledImageItem("");
+
             // Add to image panel list
             imagesPanel.add(panel);
         }
         if (!currentCategory.equalsIgnoreCase("main menu")) {
-            usedImages++;
-            JPanel panel = new JPanel(new BorderLayout());
-            paneList.add(panel);
-            JLabel imgLabel = new JLabel("");
-            JLabel txtLabel = new JLabel("BACK");
-            txtLabel.setFont((new Font("Courier New", Font.PLAIN, 40)));
-            panel.setBorder(createBorder(Color.WHITE));
-            panel.setBackground(Color.LIGHT_GRAY);
-            panel.add(txtLabel, BorderLayout.CENTER);
-            panel.add(imgLabel, BorderLayout.SOUTH);
-            txtLabel.setHorizontalAlignment(JLabel.CENTER);
-            imagesPanel.add(panel);
-            contents.add(new Tile("", "", "none"));
+            setBack();
         }
-
         currentImage = 0;
         this.revalidate();
         this.repaint();
@@ -123,16 +110,34 @@ public class MultipleImages extends javax.swing.JFrame {
         setRedraw(false);
     }
 
-    /*Creates new panel with image and text label and positions them with border layout then adds this panel ti panel list which hols all the panels that contain image and text label*/
+    /*Create a new panel that contains the text BACK ,if selected by ther user show the contents of the previous category*/
+    private void setBack() {
+        JPanel panel = new JPanel(new BorderLayout());
+        usedImages++;
+        paneList.add(panel);
+        JLabel imgLabel = new JLabel("");
+        JLabel txtLabel = new JLabel("BACK");
+        txtLabel.setFont(new Font("Courier New", Font.PLAIN, 40));
+        panel.setBorder(createBorder(Color.WHITE));
+        panel.setBackground(Color.LIGHT_GRAY);
+        panel.add(txtLabel, BorderLayout.CENTER);
+        panel.add(imgLabel, BorderLayout.SOUTH);
+        txtLabel.setHorizontalAlignment(JLabel.CENTER);
+        imagesPanel.add(panel);
+        contents.add(new Tile("", "", "none"));
+    }
+
+    /*Creates new panel with image and text label and positions them with border layout then adds this panel to panel list which holds all the panels that contain image and text label*/
     private JPanel createLabeledImageItem(String value) {
         JPanel panel = new JPanel(new BorderLayout());
         paneList.add(panel);
         JLabel imgLabel = new JLabel();
-        JLabel txtLabel = new JLabel("");
+        JLabel txtLabel = new JLabel(" ");
+        txtLabel.setFont(new Font("Courier New", Font.PLAIN, 40));
         panel.setBorder(createBorder(Color.WHITE));
         panel.setBackground(Color.LIGHT_GRAY);
         panel.add(imgLabel, BorderLayout.CENTER);
-        panel.add(txtLabel, BorderLayout.SOUTH);
+        panel.add(txtLabel, BorderLayout.NORTH);
         txtLabel.setHorizontalAlignment(JLabel.CENTER);
         return panel;
     }
@@ -208,7 +213,6 @@ public class MultipleImages extends javax.swing.JFrame {
                 return var1.compareTo(var2);
             }
         });
-
     }
 
     /*Wipes the JFrame clean from any components and calls init to repaint it */
@@ -217,7 +221,7 @@ public class MultipleImages extends javax.swing.JFrame {
         int numOfCols = (Integer) spinner2.getValue();
         imagesPanel.removeAll();
         /*Rows and Columns for the gridLayoyt */
-        initImages(numOfRows, numOfCols);
+        initImages(numOfRows, numOfRows);
         this.repaint();
         this.revalidate();
     }
@@ -230,7 +234,7 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     /*Returns the value of the slider which determines the frequency in which the images change*/
-    public int GetElapsedTime() {
+    public int getElapsedTime() {
         int value = epicSlider.getValue();
         return value;
     }
@@ -240,8 +244,55 @@ public class MultipleImages extends javax.swing.JFrame {
         return BorderFactory.createLineBorder(c, BORDER_SIZE);
     }
 
+    /*Creates and begins the thread thats responsible for the change of border*/
+    public void run() {
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(getElapsedTime() * 1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(SlideShowReactor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (getRedraw() == false) {
+                        swithcPic();
+                    }
+                }
+            }
+        });
+        thread.start();
+        state = true;
+    }
+
+    /*Stops music and begins thread that changes border*/
+    public void beginThread() {
+        stopMusic();
+        thread.resume();
+        state = true;
+    }
+
+    /*Stops the thread that chages the border of images and plays music*/
+    public void stopThread() {
+        if (!changeCategory()) {
+            thread.suspend();
+            playMusic();
+            state = false;
+        }
+    }
+
+    /*Retruns the stete of the thread that chages border*/
+    public boolean isState() {
+        return state;
+    }
+
+    /*Sets stete of thread*/
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
     /*Changes the border of the current image to black and of the previous to white*/
-    public void SwithcPic() {
+    public void swithcPic() {
         tmpCurrentImage = currentImage;
         if (currentImage - 1 < 0) {
             paneList.get(usedImages - 1).setBorder(createBorder(Color.WHITE));
@@ -257,7 +308,7 @@ public class MultipleImages extends javax.swing.JFrame {
 
     /*Plays the a wav file */
     public void playMusic() {
-        String path = System.getProperty("user.home") + "/water-dripping-1.wav";
+        String path = System.getProperty("user.dir") + "/water-dripping-1.wav";
         File audioFile = new File(path);
         try {
             audioStream = AudioSystem.getAudioInputStream(audioFile);
@@ -297,10 +348,9 @@ public class MultipleImages extends javax.swing.JFrame {
     private void addLabel(String file_path, JPanel panel, String txtName) {
         JLabel label = (JLabel) panel.getComponents()[0];
         JLabel txtLabel = (JLabel) panel.getComponents()[1];
-        txtLabel.setFont(new Font("Courier New", Font.PLAIN, 22));
+        txtLabel.setFont(new Font("Courier New", Font.PLAIN, 40));
         txtLabel.setText(txtName);
         ImageIcon icon;
-
         if (!file_path.equalsIgnoreCase("")) {
             icon = new ImageIcon(file_path);
             Image img = icon.getImage();
@@ -329,7 +379,7 @@ public class MultipleImages extends javax.swing.JFrame {
         }
     }
 
-    /*Returns true if the chossen image represents category or is the back image and changes to the appropriate category else it changes between picks*/
+    /*Returns true if the chossen image represents category or is the back image and changes to the appropriate category else it returns false which means that the programm must switch pics*/
     public boolean changeCategory() {
         this.setRedraw(true);
         if (childTiles.get(currentCategory).get(tmpCurrentImage).getCategory().equalsIgnoreCase("none")) {
@@ -493,7 +543,6 @@ public class MultipleImages extends javax.swing.JFrame {
             //System.out.println(contents.size());
             usedImages--;
         }
-      
         this.redrawImages();
     }//GEN-LAST:event_jButton1ActionPerformed
 

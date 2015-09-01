@@ -248,6 +248,7 @@ public class ConfigurationScreen extends javax.swing.JFrame {
     }
 
     public void renderSensorPanel() {
+        /*                    */this.showUndo();
         actionSelectionPanel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
@@ -287,7 +288,19 @@ public class ConfigurationScreen extends javax.swing.JFrame {
             configurationPanel.repaint();
         }
     }
-
+    
+    /*Hides the undo functionality*/
+    public void hideUndo(){
+        breadcrumbLabel.setVisible(false);
+        undoLabel.setVisible(false);
+    }
+    
+    /*Show the undo functionality and the current selections*/
+    public void showUndo(){
+        breadcrumbLabel.setVisible(true);
+        undoLabel.setVisible(true);
+    }
+    
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
 
     }//GEN-LAST:event_formComponentResized
@@ -337,14 +350,14 @@ public class ConfigurationScreen extends javax.swing.JFrame {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if (sensor != null && stimulus != null && reactor != null) {
 
-            if (reactor instanceof SlideShowReactor) {
+            /*if (reactor instanceof SlideShowReactor) {
                 String path = SetImageGalleryPath(reactor);
                 previous.getConfigurationHandler().saveConfiguration(new Configuration(sensor, stimulus, reactor),
                         caller.getProfile(), path);
-            } else {
+            } */  //else {
                 previous.getConfigurationHandler().saveConfiguration(new Configuration(sensor, stimulus, reactor),
                         caller.getProfile());
-            }
+            //}
 
             actionSelectionPanel.removeAll();
             pack();
