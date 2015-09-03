@@ -28,7 +28,12 @@ public class KeyboardSensor extends SensorAdapter<Character> {
             @Override
             public void onHotKey(HotKey hotkey) {
                 String s = hotkey.toString();
-                pressedKey = s.charAt(7);
+                if (s.equalsIgnoreCase("HotKey{SPACE}")) {
+                    pressedKey = ' ';
+                } else {
+                    pressedKey = s.charAt(7);
+                }
+                //System.out.println(s);
             }
         };
     }
@@ -37,7 +42,7 @@ public class KeyboardSensor extends SensorAdapter<Character> {
     public void start() {
         super.start();
         provider = Provider.getCurrentProvider(false);
-        provider.register(KeyStroke.getKeyStroke("A"), hl);
+        provider.register(KeyStroke.getKeyStroke(" A"), hl);
         provider.register(KeyStroke.getKeyStroke(" SPACE"), hl);
         provider.register(KeyStroke.getKeyStroke(" B"), hl);
         provider.register(KeyStroke.getKeyStroke(" C"), hl);

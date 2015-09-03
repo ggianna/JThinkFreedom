@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.scify.jthinkfreedom.reactors;
+package org.scify.jthinkfreedom.gui.utils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -28,13 +29,19 @@ public class TileXmlParser {
     private Map<String, String> hierarchy;
     private Map<String, ArrayList<Tile>> childTiles;
     private String rootNode;
+    private Map<String, String> categoryFolders;
+    // private Map<String,>
+    //private Map<String,Integer[2]> categoryDimensions;
+    private Map<String, List<Integer>> categoryDimensions;
 
     public TileXmlParser() {
         childTiles = new HashMap();
         hierarchy = new HashMap();
+        categoryFolders = new HashMap();
+        categoryDimensions =new HashMap();
         try {
             //xmlPath = System.getProperty("user.home") + "/categories.xml";
-            xmlPath=System.getProperty("user.dir")+"/categories.xml";
+            xmlPath = System.getProperty("user.dir") + "/categories.xml";
             configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xmlPath));
             configFile.normalize();
         } catch (Exception ex) {
@@ -42,15 +49,26 @@ public class TileXmlParser {
         }
         parseXML();
     }
-    
+
+    public void printDimensions() {
+        for (Map.Entry entry : categoryDimensions.entrySet()) {
+            ArrayList<Integer> lista = (ArrayList<Integer>) entry.getValue();
+            System.out.println(entry.getKey());
+
+            for (Integer i : lista) {
+                System.out.println("\t" + i);
+            }
+        }
+    }
+
     public void print() {
-        System.out.println("");
+        //System.out.println("");
         for (Map.Entry entry : childTiles.entrySet()) {
             ArrayList<Tile> lista = (ArrayList<Tile>) entry.getValue();
             System.out.println(entry.getKey());
 
             for (Tile t : lista) {
-                System.out.println("\t" + t.getCategory()+"|||"+t.getImagePath());
+                System.out.println("\t" + t.getCategory() + "|||" + t.getImagePath());
             }
         }
     }
@@ -71,15 +89,16 @@ public class TileXmlParser {
         }
         return list;
     }
-    
+
     /*Parses the xml and stores the information we need in the maps*/
     private void parseXML() {
         NodeList categories = configFile.getElementsByTagName("category");
         for (int i = 0; i < categories.getLength(); i++) {
             Node category = categories.item(i);
             Element cElement = (Element) category;
-            if(i==0)
-                rootNode=cElement.getAttribute("name");
+            if (i == 0) {
+                rootNode = cElement.getAttribute("name");
+            }
 
             NodeList alltiles = cElement.getElementsByTagName("tile");
             ArrayList<Node> tiles = getImmediateElementsByTagName(cElement, "tile");;
@@ -90,16 +109,31 @@ public class TileXmlParser {
 
             String filename = getImmediateElementsByTagName(cElement, "filename").get(0).getTextContent();
 
-            Tile categoryTile = new Tile(folder + "/" + filename, categoryText,cElement.getAttribute("name"));
-
+            Tile categoryTile = new Tile(folder + "/" + filename, categoryText, cElement.getAttribute("name"));
+            
+            Integer rows =Integer.parseInt( getImmediateElementsByTagName(cElement,"rows").get(0).getTextContent() );
+            
+            Integer columns =Integer.parseInt( getImmediateElementsByTagName(cElement,"columns").get(0).getTextContent() );
+            
+            ArrayList<Integer> dimensions =new ArrayList<>();
+            dimensions.add(rows);
+            dimensions.add(columns);
+            
+            //System.out.println("Rows:"+rows);
+            //System.out.println("Columns:"+columns);
+            //ctegoryDimensions.put(cElement.getAttribute("name"),dimensions);
+            
+            categoryDimensions.put(cElement.getAttribute("name"), dimensions);
+            
+            categoryFolders.put(cElement.getAttribute("name"), folder);
             ArrayList<Tile> lista = new ArrayList<>();
-           
+
             for (int j = 0; j < tiles.size(); j++) {
                 Element tile = (Element) tiles.get(j);
                 String fullname = folder + "/" + tile.getElementsByTagName("filename").item(0).getTextContent();
                 String txt = tile.getElementsByTagName("text").item(0).getTextContent();
 
-                lista.add(new Tile(fullname, txt,cElement.getAttribute("name")));
+                lista.add(new Tile(fullname, txt, cElement.getAttribute("name")));
             }
 
             childTiles.put(cElement.getAttribute("name"), lista);
@@ -111,27 +145,41 @@ public class TileXmlParser {
             }
         }
     }
-    
+
+    public void printFolders() {
+        for (Map.Entry entry : categoryFolders.entrySet()) {
+            System.out.println(entry.getKey() + "|||" + entry.getValue());
+        }
+    }
+
     /*Returns root element of the xml*/
-    public String getRoot(){
+    public String getRoot() {
         return rootNode;
     }
-    
+
     /*Returns the map that contains for keys the caregory names and value array list of tiles of this category*/
     public Map getTiles() {
         return childTiles;
+    }
+
+    public Map getCategoryFolders() {
+        return categoryFolders;
     }
 
     /*Returns the map that contains for keys category names and for value the name of the exact higher category*/
     public Map getHierarchy() {
         return hierarchy;
     }
+    
+    public Map getCategoryDimensions(){
+        return categoryDimensions;
+    }
 
     public static void main(String[] args) {
         TileXmlParser var = new TileXmlParser();
         var.parseXML();
-        var.print();
+        var.printDimensions();
         //System.out.println(var.getRoot());
-        
+
     }
 }

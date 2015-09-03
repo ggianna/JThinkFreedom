@@ -264,13 +264,13 @@ public class ProfileScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_addProfileButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
-     
+        /*Message to confirm button when showing images*/
         for (Configuration config : selectedUser.getConfigurations()) {
             config.getSensor().addStimulus(config.getStimulus());
             config.getStimulus().addSensor(config.getSensor());
             config.getStimulus().addReactor(config.getReactor());
             if (config.getReactor() instanceof SlideShowReactor) {
-                JOptionPane.showMessageDialog(this, "Press A to begin the slide show");
+                JOptionPane.showMessageDialog(this, "Press Space to start :)");
             }
             config.getSensor().start();
             runButton.setEnabled(false);

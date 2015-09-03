@@ -18,6 +18,7 @@ import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
  *
  * @author peustr
  */
+
 public class ConfigurationScreen extends javax.swing.JFrame {
 
     private static final int VIEW_LIMIT = 2;

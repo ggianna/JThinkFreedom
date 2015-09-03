@@ -34,7 +34,7 @@ public class CapturekeyStimulus extends StimulusAdapter {
 
     @Override
     public boolean shouldReact() {
-        if (pressedKey.equals('A')) {
+        if (pressedKey.equals(' ')) {
             return true;
         } else {
             return false;

@@ -1,10 +1,13 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.scify.jthinkfreedom.reactors;
 
+package org.scify.jthinkfreedom.reactors;
+import org.scify.jthinkfreedom.gui.utils.Tile;
+import org.scify.jthinkfreedom.gui.utils.TileXmlParser;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -88,8 +91,8 @@ public class MultipleImages extends javax.swing.JFrame {
 
     /*Sets the dimension for the gridLayout of the imagesPanel ,creates panel with images and text and stores them,calls function to put info(image,data) in the panels*/
     private void initImages(int rows, int columns) {
-        //imagesPanel.setLayout(new GridLayout(1, 1, IMAGE_GAP, IMAGE_GAP));
-        imagesPanel.setLayout(new GridLayout(rows, columns, IMAGE_GAP, IMAGE_GAP));
+        imagesPanel.setLayout(new GridLayout(1, 1, IMAGE_GAP, IMAGE_GAP));
+        //imagesPanel.setLayout(new GridLayout(rows, columns, IMAGE_GAP, IMAGE_GAP));
         imagesPanel.setBackground(Color.WHITE);
         optionPanel.setBackground(Color.WHITE);
         paneList = new ArrayList();
