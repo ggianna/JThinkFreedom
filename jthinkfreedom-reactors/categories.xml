@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<category name="main menu">
+<category name="main menu" resource="no">
 	<rows>2</rows>
 	<columns>2</columns>
 	<text>main menu</text>
@@ -49,6 +49,18 @@
 			<filename>12.png</filename>
 			<text>Κανονικό φαγητό</text>
 		</tile>
+		<category name="Φαγητό2" resource="no">
+			<rows>12</rows>
+			<columns>12</columns>
+			<folder>/home/xrousakis/Desktop/food</folder>
+			<filename>fast-food-icon.png</filename>
+			<text>Φαγητό2</text>
+			<tile>
+				<filename>12.png</filename>
+				<text>Κανονικό φαγητό</text>
+			</tile>
+		</category>	
+
 	</category>
 	<category name="Φάρμακα" resource="no">
 		<rows>1</rows>

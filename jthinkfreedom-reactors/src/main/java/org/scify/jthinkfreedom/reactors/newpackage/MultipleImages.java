@@ -5,7 +5,8 @@
  * and open the template in the editor.
  */
 
-package org.scify.jthinkfreedom.reactors;
+package org.scify.jthinkfreedom.reactors.newpackage;
+import org.scify.jthinkfreedom.reactors.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,8 +39,8 @@ import javax.swing.border.Border;
  * @author xrousakis
  */
 public class MultipleImages extends javax.swing.JFrame {
-    
-    /*its used if you want to read images from directly from the file*/
+
+    protected String currentIcon;
     protected final String imagesPath;
     protected ArrayList<String> contentsNames;
     protected int currentImage;
@@ -54,11 +55,12 @@ public class MultipleImages extends javax.swing.JFrame {
     protected boolean state;
     protected final int BORDER_SIZE = 5;
     protected final int IMAGE_GAP = 10;
+    protected int tmpCurrentImage;
     protected String currentCategory;
-    
+    protected Map<String, String> hierarchy;
+    protected Map<String, ArrayList<Tile>> childTiles;
     protected ArrayList<Tile> contents;
-    
-    protected ArrayList<Category> categories;
+    protected Map<String, ArrayList> categoryDimensions;
 
     /**
      * Creates new form Test
@@ -66,7 +68,6 @@ public class MultipleImages extends javax.swing.JFrame {
      * @param imagesPath
      */
     public MultipleImages(String imagesPath) {
-        
         initComponents();
         this.imagesPath = imagesPath;
         lock = new Object();
@@ -88,23 +89,23 @@ public class MultipleImages extends javax.swing.JFrame {
     /*Sets the dimension for the gridLayout of the imagesPanel ,creates panel with images and text and stores them,calls function to put info(image,data) in the panels*/
     private void initImages(int rows, int columns) {
         imagesPanel.setLayout(new GridLayout(rows, columns, IMAGE_GAP, IMAGE_GAP));
+        //imagesPanel.setLayout(new GridLayout(rows, columns, IMAGE_GAP, IMAGE_GAP));
         imagesPanel.setBackground(Color.WHITE);
         optionPanel.setBackground(Color.WHITE);
         paneList = new ArrayList();
         // For each image
         for (int i = 1; i <= usedImages; i++) {
-            JPanel panel = createLabeledImageItem();
+            JPanel panel = createLabeledImageItem("");
+
             // Add to image panel list
             imagesPanel.add(panel);
         }
-        if (!currentCategory.equalsIgnoreCase("main menu")) 
+        if (!currentCategory.equalsIgnoreCase("main menu")) {
             setBack();
-       
+        }
         currentImage = 0;
-        
         this.revalidate();
         this.repaint();
-        
         setImages(usedImages);
         setRedraw(false);
         System.out.println(usedImages+" "+currentImage);
@@ -128,7 +129,7 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     /*Creates new panel with image and text label and positions them with border layout then adds this panel to panel list which holds all the panels that contain image and text label*/
-    private JPanel createLabeledImageItem() {
+    private JPanel createLabeledImageItem(String value) {
         JPanel panel = new JPanel(new BorderLayout());
         paneList.add(panel);
         JLabel imgLabel = new JLabel();
@@ -142,19 +143,57 @@ public class MultipleImages extends javax.swing.JFrame {
         return panel;
     }
 
-    
-    
-    private void parse(){
-        /*where the data of iamge path and text is lcoated*/
+    /*parse information about images from the categories.xml in the home folder and pass the information about the tiles in to the local variables*/
+    private void parse() {
         contents = new ArrayList<>();
-        Parser parser = new Parser();
-        categories = parser.getCategories();
+        TileXmlParser parser = new TileXmlParser();
+        /*the map that holds the structure of the xml pecking order*/
+        hierarchy = parser.getHierarchy();
+        /*hold the tiles per category*/
+        childTiles = parser.getTiles();
+        /*hold the rootnode of the categories xml*/
+        String rootNode = parser.getRoot();
+        usedImages = childTiles.get(rootNode).size();
         
+        TotalImages = childTiles.get(rootNode).size();
+        
+        currentCategory = rootNode;
+        contents = (ArrayList<Tile>) childTiles.get(rootNode).clone();
+        /*hold the grid dimensions of each category*/
+        categoryDimensions=parser.getCategoryDimensions();
     }
 
-    
+    /*Gives to contents variable the tiles of the subcategory and changes the number of active images then redraws the jframe componetns with the new information*/
+    /*private void enterSubCategory() {
+        for (Map.Entry<String, String> entry : hierarchy.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(currentCategory)) {
+                String subCategory = childTiles.get(currentCategory).get(tmpCurrentImage).getCategory();
+                if (!currentCategory.equalsIgnoreCase("main menu")) {
+                    contents.remove(contents.size() - 1);
+                }
+                contents = childTiles.get(subCategory);
+                usedImages = contents.size();
+                currentCategory = subCategory;
+                break;
+            }
+        }
+        this.redrawImages();
+    }*/
 
-    
+    /*Gives to contents variable the tiles of the higher category and changes the number of active images then redraws the the jframe componetns with the new information(image,text)*/
+    private void exitSubCategory() {
+        for (Map.Entry<String, String> entry : hierarchy.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(currentCategory)) {
+                String higherCategory = entry.getValue();
+                contents.remove(contents.size() - 1);
+                contents = childTiles.get(entry.getValue());
+                usedImages = contents.size();
+                currentCategory = higherCategory;
+                break;
+            }
+        }
+        this.redrawImages();
+    }
 
     /*Reads images from image folder and the folders path is stored in imagesPath*/
     private void readImages() {
@@ -181,14 +220,14 @@ public class MultipleImages extends javax.swing.JFrame {
 
     /*Wipes the JFrame clean from any components and calls init to repaint it */
     public void redrawImages() {
-        /*imagesPanel.removeAll();
+        imagesPanel.removeAll();
         ArrayList<Integer> list =categoryDimensions.get(currentCategory);
         int numOfRows=list.get(0);
         int numOfColumns=list.get(1);
-        
+        /*Rows and Columns for the gridLayoyt*/
         initImages(numOfRows, numOfColumns);
         this.repaint();
-        this.revalidate();*/
+        this.revalidate();
     }
 
     /*Sets */
@@ -239,7 +278,7 @@ public class MultipleImages extends javax.swing.JFrame {
 
     /*Stops the thread that chages the border of images and plays music*/
     public void stopThread() {
-       // if (changeCategory) {
+       // if  {
             System.out.println(currentImage);
             thread.suspend();
             playMusic();
@@ -257,7 +296,7 @@ public class MultipleImages extends javax.swing.JFrame {
         this.state = state;
     }
 
-    /*Changes the border of the current image to color black and restores the border of the previous image to white*/
+    /*Changes the border of the current image to black and of the previous to white*/
     public void swithcPic() {
         //tmpCurrentImage = currentImage;
         if (currentImage - 1 < 0) {
@@ -337,7 +376,29 @@ public class MultipleImages extends javax.swing.JFrame {
         label.setVerticalAlignment(JLabel.CENTER);
     }
 
-    
+    /*Returns true if the the chosen tile belongs to another category shich means it has sub tiles*/
+    /*public boolean tileHasSubTiles(String tilesCategory) {
+        if (currentCategory.equalsIgnoreCase(tilesCategory)) {
+            return false;
+        } else {
+            return true;
+        }
+    }*/
+
+    /*Returns true if the chossen image represents category or is the back image and changes to the appropriate category else it returns false which means that the programm must switch pics*/
+    /*public boolean changeCategory() {
+        this.setRedraw(true);
+        if (childTiles.get(currentCategory).get(tmpCurrentImage).getCategory().equalsIgnoreCase("none")) {
+            exitSubCategory();
+            return true;
+        } else if (tileHasSubTiles(childTiles.get(currentCategory).get(tmpCurrentImage).getCategory())) {
+            enterSubCategory();
+            return true;
+        } else {
+            setRedraw(false);
+        }
+        return false;
+    }*/
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -347,6 +408,10 @@ public class MultipleImages extends javax.swing.JFrame {
         optionPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         epicSlider = new javax.swing.JSlider();
+        spinner1 = new javax.swing.JSpinner();
+        spinner2 = new javax.swing.JSpinner();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
@@ -381,7 +446,7 @@ public class MultipleImages extends javax.swing.JFrame {
         );
         imagesPanelLayout.setVerticalGroup(
             imagesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
+            .addGap(0, 210, Short.MAX_VALUE)
         );
 
         jLabel1.setText("Change Frequency");
@@ -393,7 +458,17 @@ public class MultipleImages extends javax.swing.JFrame {
         epicSlider.setPaintTicks(true);
         epicSlider.setValue(1);
 
-        jButton1.setText("Restore images");
+        spinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 4, 1));
+        spinner1.setValue(2);
+
+        spinner2.setModel(new javax.swing.SpinnerNumberModel(1, 1, 4, 1));
+        spinner2.setValue(3);
+
+        jLabel2.setText("Rows");
+
+        jLabel3.setText("Columns");
+
+        jButton1.setText("Submit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -405,26 +480,43 @@ public class MultipleImages extends javax.swing.JFrame {
         optionPanelLayout.setHorizontalGroup(
             optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(23, 23, 23)
+                .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(spinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(optionPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 393, Short.MAX_VALUE))
+                    .addGroup(optionPanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(spinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(23, 23, 23)))
                 .addComponent(epicSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         optionPanelLayout.setVerticalGroup(
             optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(optionPanelLayout.createSequentialGroup()
                 .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(epicSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+                    .addComponent(epicSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
                     .addGroup(optionPanelLayout.createSequentialGroup()
+                        .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
                         .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(optionPanelLayout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(spinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(spinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(optionPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButton1)))
+                                .addGap(9, 9, 9)
+                                .addComponent(jLabel1)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -434,7 +526,9 @@ public class MultipleImages extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(optionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(imagesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(imagesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,8 +557,12 @@ public class MultipleImages extends javax.swing.JFrame {
     private javax.swing.JPanel imagesPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel optionPanel;
+    private javax.swing.JSpinner spinner1;
+    private javax.swing.JSpinner spinner2;
     // End of variables declaration//GEN-END:variables
 }

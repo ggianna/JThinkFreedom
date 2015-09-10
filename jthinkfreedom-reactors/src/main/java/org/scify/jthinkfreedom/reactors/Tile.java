@@ -14,12 +14,20 @@ public class Tile {
     private String imagePath;
     private String txt;
     private String category;
-    
 
-    public Tile(String imagePath, String txt,String category) {
+    public Tile(String imagePath, String txt, String category) {
         this.imagePath = imagePath;
         this.txt = txt;
-        this.category=category;
+        this.category = category;
+    }
+
+    public Tile(String imagePath, String txt) {
+        this.imagePath = imagePath;
+        this.txt = txt;
+    }
+
+    public Tile() {
+
     }
 
     public String getCategory() {
@@ -29,7 +37,7 @@ public class Tile {
     public void setCategory(String category) {
         this.category = category;
     }
-    
+
     public String getImagePath() {
         return imagePath;
     }

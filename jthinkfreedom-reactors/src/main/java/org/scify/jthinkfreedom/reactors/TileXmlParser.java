@@ -232,10 +232,14 @@ public class TileXmlParser {
     public Map getCategoryDimensions() {
         return categoryDimensions;
     }
-
-    public Map<String, List<String>> getCategoryItems() {
+    
+    public Map getCategoryItems(){
         return categoryItems;
     }
+
+    /*public Map<String, List<String>> getCategoryItems() {
+        return categoryItems;
+    }*/
 
     public static void main(String[] args) {
         TileXmlParser var = new TileXmlParser();

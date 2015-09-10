@@ -12,25 +12,83 @@ import java.util.ArrayList;
  * @author xrousakis
  */
 public class Category {
+    
+    private int rows,columns;
     private String name;
     private String folder;
     private String filename;
     private String text;
+    private String resourcePath;
     private ArrayList<Tile> tiles;
-    private String parentCategory;
+    private ArrayList<Tile> resources;
+    private Category parentCategory;
+    //private String 
+    private ArrayList<Category> subCategories;
 
-    public Category(String name, String folder, String filename, String text, ArrayList<Tile> tiles, String parentCategory) {
+    public Category(String name, String folder, String filename, String text, ArrayList<Tile> tiles, Category parentCategory,ArrayList<Category> subCategories) {
         this.name = name;
         this.folder = folder;
         this.filename = filename;
         this.text = text;
         this.tiles = tiles;
         this.parentCategory = parentCategory;
+        this.subCategories = subCategories;
+    }
+    
+    public ArrayList<Tile> getResources(){
+        return resources;
+    }
+    
+    public void storeToResources(Tile tile){
+        resources.add(tile);
+    }
+    
+    public String getResourcePath() {
+        return resourcePath;
     }
 
-    public Category() {
-        this.tiles = new ArrayList<Tile>();
+    public void setResourcePath(String resourcePath) {
+        this.resourcePath = resourcePath;
     }
+    
+    public Category(){
+        tiles = new ArrayList<>();
+        subCategories = new ArrayList<>();
+        resources = new ArrayList<>();
+    }
+    
+    public void storeTile(Tile tile){
+        tiles.add(tile);
+    }
+    
+    public void storeSubCategory(Category category){
+        subCategories.add(category);
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
+    public void setColumns(int columns) {
+        this.columns = columns;
+    }
+
+    public ArrayList<Category> getSubCategories() {
+        return subCategories;
+    }
+
+    public void setSubCategories(ArrayList<Category> subCategories) {
+        this.subCategories = subCategories;
+    }
+    
     
     public String getName() {
         return name;
@@ -72,12 +130,22 @@ public class Category {
         this.tiles = tiles;
     }
 
-    public String getParentCategory() {
+    public Category getParentCategory() {
         return parentCategory;
     }
 
-    public void setParentCategory(String parentCategory) {
+    public void setParentCategory(Category parentCategory) {
         this.parentCategory = parentCategory;
+    }
+    
+    public int deptfOfCategory(){
+        int depth=0;
+        Category parent =this.getParentCategory();
+        while(parent.getName()!=null){
+            depth++;
+            parent = parent.getParentCategory();
+        }
+        return depth;
     }
     
 }

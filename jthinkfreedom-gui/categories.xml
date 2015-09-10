@@ -1,74 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<category name="main menu">
+<category name="main menu" resource="no">
 	<rows>2</rows>
 	<columns>2</columns>
-	<text>main menu</text>
 	<folder>main menu </folder>
 	<filename>main menu filename</filename>
+	<text>main menu</text>
 	<category name="Τουαλέτα" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
-		<folder>/home/xrousakis/Desktop/images/toilet</folder>
-		<filename>1.png</filename>
+		<folder>/home/rou/Desktop/images/toilet</folder>
+		<filename>toilet_1552924.png</filename>
 		<text>Τουαλέτα</text>
 		<tile>
-			<filename>1.png</filename>
-			<text>Τουαλέτα</text>
-		</tile>
-		<tile>
-			<filename>9.png</filename>
-			<text>Ποτήριa</text>
+			<filename>glass_of_water_1327027.png</filename>
+			<text>Ποτήρι</text>
 		</tile>
 		<!--<resource>
 			<filename></filename>
 			<text>Sample</text>
 		</resource>-->
 	</category>
-	<category name="sample" resource="yes">
-		<rows>1</rows>
-		<columns>1</columns>
-		<folder>Images1</folder>
-		<filename>2.png</filename>
-		<text>sample</text>
-		<resource>
-			<filename>2.png</filename>
-			<text>Resource</text>
-		</resource>
-	</category>
+	
 	<category name="Φαγητό" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
-		<folder>/home/xrousakis/Desktop/food</folder>
-		<filename>fast-food-icon.png</filename>
+		<folder>/home/rou/Desktop/images/food</folder>
+		<filename>RM-050_Food_sign.png</filename>
 		<text>Φαγητό</text>	
 		<tile>
-			<filename>pizza_PNG7134.png</filename>
-			<text>Pizza</text>
+			<filename>red_apple_and_yellow_apples_1322301.png</filename>
+			<text>Φρούτα</text>
 		</tile>
 		<tile>
-			<filename>12.png</filename>
-			<text>Κανονικό φαγητό</text>
+			<filename>red_apple_and_yellow_apples_1322301.png</filename>
+			<text>Λαχανικά</text>
 		</tile>
-		<category name="foo^2" resource="no">
-			<rows>1</rows>
-			<columns>1</columns>
-			<folder>/home/xrousakis/Desktop/images/farmaka</folder>
-			<filename>3.png</filename>
-			<text>ad</text>
-		</category>
+		
 	</category>
 	<category name="Ψυχαγωγία" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
-		<folder>/home/xrousakis/Desktop/images/entertainment</folder>
-		<filename>8.png</filename>
+		<folder>/home/rou/Desktop/images/entairtainment</folder>
+		<filename></filename>
 		<text>Ψυχαγωγία</text>
 		<tile>
-			<filename>14.png</filename>
+			<filename>news.png</filename>
 			<text>Ειδήσεις</text>
 		</tile>
 		<tile>
-			<filename>13.png</filename>
+			<filename>music.png</filename>
 			<text>Μουσική</text>
 		</tile>
 	</category>
