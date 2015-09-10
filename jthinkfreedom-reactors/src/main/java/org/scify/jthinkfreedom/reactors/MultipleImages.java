@@ -6,8 +6,6 @@
  */
 
 package org.scify.jthinkfreedom.reactors;
-import org.scify.jthinkfreedom.gui.utils.Tile;
-import org.scify.jthinkfreedom.gui.utils.TileXmlParser;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -52,18 +50,16 @@ public class MultipleImages extends javax.swing.JFrame {
     protected int usedImages;
     protected boolean redraw;
     protected final Object lock;
-
     protected Thread thread;
-
     protected boolean state;
     protected final int BORDER_SIZE = 5;
     protected final int IMAGE_GAP = 10;
-
     protected int tmpCurrentImage;
     protected String currentCategory;
     protected Map<String, String> hierarchy;
     protected Map<String, ArrayList<Tile>> childTiles;
     protected ArrayList<Tile> contents;
+    protected Map<String, ArrayList> categoryDimensions;
 
     /**
      * Creates new form Test
@@ -91,7 +87,7 @@ public class MultipleImages extends javax.swing.JFrame {
 
     /*Sets the dimension for the gridLayout of the imagesPanel ,creates panel with images and text and stores them,calls function to put info(image,data) in the panels*/
     private void initImages(int rows, int columns) {
-        imagesPanel.setLayout(new GridLayout(1, 1, IMAGE_GAP, IMAGE_GAP));
+        imagesPanel.setLayout(new GridLayout(rows, columns, IMAGE_GAP, IMAGE_GAP));
         //imagesPanel.setLayout(new GridLayout(rows, columns, IMAGE_GAP, IMAGE_GAP));
         imagesPanel.setBackground(Color.WHITE);
         optionPanel.setBackground(Color.WHITE);
@@ -149,28 +145,32 @@ public class MultipleImages extends javax.swing.JFrame {
     private void parse() {
         contents = new ArrayList<>();
         TileXmlParser parser = new TileXmlParser();
+        /*the map that holds the structure of the xml pecking order*/
         hierarchy = parser.getHierarchy();
+        /*hold the tiles per category*/
         childTiles = parser.getTiles();
+        /*hold the rootnode of the categories xml*/
         String rootNode = parser.getRoot();
         usedImages = childTiles.get(rootNode).size();
+        
         TotalImages = childTiles.get(rootNode).size();
+        
         currentCategory = rootNode;
         contents = (ArrayList<Tile>) childTiles.get(rootNode).clone();
+        /*hold the grid dimensions of each category*/
+        categoryDimensions=parser.getCategoryDimensions();
     }
 
     /*Gives to contents variable the tiles of the subcategory and changes the number of active images then redraws the jframe componetns with the new information*/
     private void enterSubCategory() {
         for (Map.Entry<String, String> entry : hierarchy.entrySet()) {
             if (entry.getValue().equalsIgnoreCase(currentCategory)) {
-                //System.out.println("Current image is asdasd" + tmpCurrentImage);
                 String subCategory = childTiles.get(currentCategory).get(tmpCurrentImage).getCategory();
                 if (!currentCategory.equalsIgnoreCase("main menu")) {
-                    System.out.println("removed back");
                     contents.remove(contents.size() - 1);
                 }
                 contents = childTiles.get(subCategory);
                 usedImages = contents.size();
-                System.out.println("enter used images " + usedImages);
                 currentCategory = subCategory;
                 break;
             }
@@ -184,10 +184,8 @@ public class MultipleImages extends javax.swing.JFrame {
             if (entry.getKey().equalsIgnoreCase(currentCategory)) {
                 String higherCategory = entry.getValue();
                 contents.remove(contents.size() - 1);
-                System.out.println("removed back ");
                 contents = childTiles.get(entry.getValue());
                 usedImages = contents.size();
-                System.out.println("exit used images " + usedImages);
                 currentCategory = higherCategory;
                 break;
             }
@@ -220,11 +218,12 @@ public class MultipleImages extends javax.swing.JFrame {
 
     /*Wipes the JFrame clean from any components and calls init to repaint it */
     public void redrawImages() {
-        int numOfRows = (Integer) spinner1.getValue();
-        int numOfCols = (Integer) spinner2.getValue();
         imagesPanel.removeAll();
-        /*Rows and Columns for the gridLayoyt */
-        initImages(numOfRows, numOfRows);
+        ArrayList<Integer> list =categoryDimensions.get(currentCategory);
+        int numOfRows=list.get(0);
+        int numOfColumns=list.get(1);
+        /*Rows and Columns for the gridLayoyt*/
+        initImages(numOfRows, numOfColumns);
         this.repaint();
         this.revalidate();
     }
@@ -543,7 +542,6 @@ public class MultipleImages extends javax.swing.JFrame {
         this.setRedraw(true);
         //
         if (!currentCategory.equalsIgnoreCase("main menu")) {
-            //System.out.println(contents.size());
             usedImages--;
         }
         this.redrawImages();

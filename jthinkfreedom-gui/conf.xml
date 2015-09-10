@@ -13,14 +13,6 @@
 </configurations>
 </profile>
 
-<profile>
-<name>test</name>
-<picture>placeholder_144x144.png</picture>
-<configurations/>
-</profile>
-<profile>
-<name>test2</name>
-<picture>placeholder_144x144.png</picture>
-<configurations/>
-</profile>
+
+
 </profiles>
