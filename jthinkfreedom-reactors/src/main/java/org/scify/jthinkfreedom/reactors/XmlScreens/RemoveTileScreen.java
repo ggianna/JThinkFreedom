@@ -3,29 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.scify.jthinkfreedom.gui.forms;
+package org.scify.jthinkfreedom.reactors.XmlScreens;
 
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.scify.jthinkfreedom.reactors.Category;
+import org.scify.jthinkfreedom.reactors.Parser;
 import org.scify.jthinkfreedom.reactors.Tile;
-import org.scify.jthinkfreedom.reactors.TileXmlParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -37,41 +35,51 @@ import org.w3c.dom.NodeList;
  */
 public class RemoveTileScreen extends javax.swing.JFrame {
 
-    private Map<String, String> peckingOrder;
-    private Map<String, ArrayList<Tile>> tiles;
-    private Map<String, List<String>> categoryItems;
     private String selectedImage;
-    private String xml = System.getProperty("user.dir") + "/categories.xml";
     private DefaultListModel categoriesDlm;
     private DefaultListModel imagesDlm;
     private Document configFile;
     private String selectedCategory;
+    private ArrayList<Category> categories;
+    private Parser parser;
 
     public RemoveTileScreen() {
         imagesDlm = new DefaultListModel();
         categoriesDlm = new DefaultListModel();
+
         initComponents();
-        categoryList.setSelectionMode(SINGLE_SELECTION);
-        TileXmlParser parser = new TileXmlParser();
-        categoryItems = parser.getCategoryItems();
-        peckingOrder = parser.getHierarchy();
-        tiles = parser.getTiles();
+
+        categoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        imageList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        foo();
+    }
+
+    private void fillCategoriesDlm() {
+        categoriesDlm.clear();
+        ArrayList<String> categoryNames = parser.getCategoryNames();
+        for (String s : categoryNames) {
+            categoriesDlm.addElement(s);
+
+        }
+    }
+
+    private void foo() {
+        parser = new Parser();
+        configFile = parser.getConfigFile();
+        categories = parser.getCategories();
+
         fillCategoriesDlm();
     }
 
-    public void fillCategoriesDlm() {
-        for (Map.Entry<String, String> entry : peckingOrder.entrySet()) {
-            categoriesDlm.addElement(entry.getKey());
-        }
-    }
-
-    public void fillImagesDlm() {
-        ArrayList<String> items = (ArrayList<String>) categoryItems.get(selectedCategory);
+    private void fillImagesDlm() {
         imagesDlm.clear();
-        for (String s : items) {
-            imagesDlm.addElement(s);
-            //System.out.println(s);
+        int value = categoriesDlm.indexOf(selectedCategory);
+        Category category = categories.get(value);
+        ArrayList<Tile> categoryTiles = category.getTiles();
+        for (Tile t : categoryTiles) {
+            imagesDlm.addElement(t.getFileName());
         }
+
     }
 
     /**
@@ -204,6 +212,8 @@ public class RemoveTileScreen extends javax.swing.JFrame {
     private void categoryListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoryListValueChanged
         if (evt.getValueIsAdjusting()) {
             selectedCategory = (String) categoryList.getSelectedValue();
+            /*remove leading and trailing whitespaces*/
+            //selectedCategory = selectedCategory.trim();
             selectedImage = null;
             fillImagesDlm();
         }
@@ -213,7 +223,9 @@ public class RemoveTileScreen extends javax.swing.JFrame {
     private void imageListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_imageListValueChanged
         if (evt.getValueIsAdjusting()) {
             selectedImage = (String) imageList.getSelectedValue();
+            System.out.println(selectedImage);
         }
+
     }//GEN-LAST:event_imageListValueChanged
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
@@ -247,35 +259,34 @@ public class RemoveTileScreen extends javax.swing.JFrame {
     /* 
      Delete from xml file the chosen tile (image and text)
      */
-    public void deleteFromXml() {
-        try {
-            configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xml));
-            configFile.normalize();
-        } catch (Exception ex) {
-            ex.printStackTrace(System.err);
-        }
+    private void deleteFromXml() {
+        System.out.println("Selected category " + selectedCategory);
+        System.out.println("Selected Image" + selectedImage);
         NodeList categories = configFile.getElementsByTagName("category");
-
+        System.out.println(categories.getLength());
         for (int i = 0; i < categories.getLength(); i++) {
             Element el = (Element) categories.item(i);
-            if (el.getAttribute("name").equals(selectedCategory)) {
+            if (el.getAttribute("name").equals(selectedCategory.trim())) {
                 ArrayList<Node> childTiles = getImmediateElementsByTagName(el);
-                System.out.println(childTiles.size());
                 for (int j = 0; j < childTiles.size(); j++) {
                     Element tile = (Element) childTiles.get(j);
                     String fullname = tile.getElementsByTagName("filename").item(0).getTextContent();
                     if (fullname.equals(selectedImage)) {
+                        //System.out.println("removed");
                         el.removeChild(tile);
                         try {
                             Transformer tr = TransformerFactory.newInstance().newTransformer();
                             tr.setOutputProperty(OutputKeys.INDENT, "yes");
                             tr.transform(new DOMSource(configFile),
                                     //new StreamResult(new FileOutputStream (new File(getClass().getResource("/conf.xml").toURI())) ));
-                                    new StreamResult(new FileOutputStream(new File(xml))));
+                                    new StreamResult(new FileOutputStream(new File(parser.getXmlPath()))));
                         } catch (TransformerException | FileNotFoundException e) {
                             e.printStackTrace(System.err);
                         }
-                         JOptionPane.showMessageDialog(this, "Image Removed.");
+                        JOptionPane.showMessageDialog(this, "Image Removed.");
+                        foo();
+                        this.revalidate();
+                        this.repaint();
                     }
                 }
             }

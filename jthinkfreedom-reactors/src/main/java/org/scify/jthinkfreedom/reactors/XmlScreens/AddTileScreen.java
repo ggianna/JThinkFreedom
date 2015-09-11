@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.scify.jthinkfreedom.gui.forms;
+package org.scify.jthinkfreedom.reactors.XmlScreens;
 
 import java.awt.Color;
 import java.io.File;

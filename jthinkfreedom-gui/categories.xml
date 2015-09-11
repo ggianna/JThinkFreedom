@@ -2,17 +2,25 @@
 <category name="main menu" resource="no">
 	<rows>2</rows>
 	<columns>2</columns>
+	<text>main menu</text>
 	<folder>main menu </folder>
 	<filename>main menu filename</filename>
-	<text>main menu</text>
+	<tile>
+		<filename></filename>
+		<text> </text>
+	</tile>
 	<category name="Τουαλέτα" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
-		<folder>/home/rou/Desktop/images/toilet</folder>
-		<filename>toilet_1552924.png</filename>
+		<folder>/home/xrousakis/Desktop/images/toilet</folder>
+		<filename>1.png</filename>
 		<text>Τουαλέτα</text>
 		<tile>
-			<filename>glass_of_water_1327027.png</filename>
+			<filename>2.png</filename>
+			<text>Τουαλέτα</text>
+		</tile>
+		<tile>
+			<filename>9.png</filename>
 			<text>Ποτήρι</text>
 		</tile>
 		<!--<resource>
@@ -20,36 +28,80 @@
 			<text>Sample</text>
 		</resource>-->
 	</category>
-	
+	<category name="sample" resource="yes">
+		<rows>1</rows>
+		<columns>1</columns>
+		<folder>Images1</folder>
+		<filename>2.png</filename>
+		<text>sample</text>
+		<resource>
+			<filename>10.png</filename>
+			<text>Resource</text>
+		</resource>
+	</category>
 	<category name="Φαγητό" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
-		<folder>/home/rou/Desktop/images/food</folder>
-		<filename>RM-050_Food_sign.png</filename>
+		<folder>/home/xrousakis/Desktop/food</folder>
+		<filename>fast-food-icon.png</filename>
 		<text>Φαγητό</text>	
 		<tile>
-			<filename>red_apple_and_yellow_apples_1322301.png</filename>
-			<text>Φρούτα</text>
+			<filename>pizza_PNG7134.png</filename>
+			<text>Pizza</text>
 		</tile>
 		<tile>
-			<filename>red_apple_and_yellow_apples_1322301.png</filename>
-			<text>Λαχανικά</text>
+			<filename>12.png</filename>
+			<text>Κανονικό φαγητό</text>
 		</tile>
-		
+		<category name="Φαγητό2" resource="no">
+			<rows>12</rows>
+			<columns>12</columns>
+			<folder>/home/xrousakis/Desktop/food</folder>
+			<filename>fast-food-icon.png</filename>
+			<text>Φαγητό2</text>
+			<tile>
+				<filename>12.png</filename>
+				<text>Κανονικό φαγητό</text>
+			</tile>
+		</category>	
+
+	</category>
+	<category name="Φάρμακα" resource="no">
+		<rows>1</rows>
+		<columns>1</columns>
+		<folder>/home/xrousakis/Desktop/medicine</folder>
+		<filename>medicine.png</filename>
+		<text>Φάρμακα</text>
+		<tile>
+			<filename>15.png</filename>
+			<text>Παυσίπονο</text>
+		</tile>
+		<tile>
+			<filename>15.png</filename>
+			<text>1111111111</text>
+		</tile>
+		<tile>
+			<filename>medicine.png</filename>
+			<text>2222222222</text>
+		</tile>
 	</category>
 	<category name="Ψυχαγωγία" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
-		<folder>/home/rou/Desktop/images/entairtainment</folder>
-		<filename></filename>
+		<folder>/home/xrousakis/Desktop/images/entertainment</folder>
+		<filename>8.png</filename>
 		<text>Ψυχαγωγία</text>
 		<tile>
-			<filename>news.png</filename>
+			<filename>14.png</filename>
 			<text>Ειδήσεις</text>
 		</tile>
 		<tile>
-			<filename>music.png</filename>
+			<filename>13.png</filename>
 			<text>Μουσική</text>
+		</tile>
+		<tile>
+			<filename>7.png</filename>
+			<text>Τηλεόραση</text>
 		</tile>
 	</category>
 </category>

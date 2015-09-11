@@ -4,8 +4,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.scify.jthinkfreedom.reactors;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,9 +15,6 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
@@ -38,27 +35,34 @@ import javax.swing.border.Border;
  * @author xrousakis
  */
 public class MultipleImages extends javax.swing.JFrame {
-    
-    /*its used if you want to read images from directly from the file*/
+
+    /*these 2 variables can be used if you want to read images directly from the file and avoid the xml*/
     protected final String imagesPath;
     protected ArrayList<String> contentsNames;
+
     protected int currentImage;
-    protected int TotalImages;
     protected AudioInputStream audioStream;
     protected Clip audioClip;
+
     protected ArrayList<JPanel> paneList;
     protected int usedImages;
     protected boolean redraw;
+
     protected final Object lock;
     protected Thread thread;
     protected boolean state;
+
     protected final int BORDER_SIZE = 5;
     protected final int IMAGE_GAP = 10;
-    protected String currentCategory;
-    
-    protected ArrayList<Tile> contents;
-    
+
+    protected int tmpCurrentImage;
+
+    protected Category currentCategory;
+    protected ArrayList<Tile> directTiles;
+    protected ArrayList<Tile> subCategoriesTiles;
+
     protected ArrayList<Category> categories;
+    protected ArrayList<Tile> contents;
 
     /**
      * Creates new form Test
@@ -66,7 +70,6 @@ public class MultipleImages extends javax.swing.JFrame {
      * @param imagesPath
      */
     public MultipleImages(String imagesPath) {
-        
         initComponents();
         this.imagesPath = imagesPath;
         lock = new Object();
@@ -97,17 +100,17 @@ public class MultipleImages extends javax.swing.JFrame {
             // Add to image panel list
             imagesPanel.add(panel);
         }
-        if (!currentCategory.equalsIgnoreCase("main menu")) 
+        if (!currentCategory.getName().equalsIgnoreCase("main menu")) {
             setBack();
-       
+        }
+
         currentImage = 0;
-        
+
         this.revalidate();
         this.repaint();
-        
+
         setImages(usedImages);
         setRedraw(false);
-        System.out.println(usedImages+" "+currentImage);
     }
 
     /*Create a new panel that contains the text BACK ,if selected by ther user show the contents of the previous category*/
@@ -124,7 +127,7 @@ public class MultipleImages extends javax.swing.JFrame {
         panel.add(imgLabel, BorderLayout.SOUTH);
         txtLabel.setHorizontalAlignment(JLabel.CENTER);
         imagesPanel.add(panel);
-        contents.add(new Tile("", "", "none"));
+        contents.add(new Tile("", "", "none",""));
     }
 
     /*Creates new panel with image and text label and positions them with border layout then adds this panel to panel list which holds all the panels that contain image and text label*/
@@ -142,53 +145,66 @@ public class MultipleImages extends javax.swing.JFrame {
         return panel;
     }
 
-    
-    
-    private void parse(){
-        /*where the data of iamge path and text is lcoated*/
-        contents = new ArrayList<>();
+    private void parse() {
+        contents = new ArrayList();
         Parser parser = new Parser();
         categories = parser.getCategories();
-        
+        currentCategory = categories.get(categories.size() - 1);
+        directTiles = currentCategory.getTiles();
+        subCategoriesTiles = currentCategory.getSubCategoriesTiles();
+        usedImages = directTiles.size() + subCategoriesTiles.size();
+        contents.addAll(directTiles);
+        contents.addAll(subCategoriesTiles);
     }
 
-    
-
-    
-
-    /*Reads images from image folder and the folders path is stored in imagesPath*/
-    private void readImages() {
-        contentsNames = new ArrayList();
-        File folder = new File(imagesPath);
-        File[] listOfFiles = folder.listFiles();
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isFile()) {
-                contentsNames.add(listOfFiles[i].getName());
-            }
+    /*Change the content in orber to be relevant to this category*/
+    public void changeCategory() {
+        if (contents.get(tmpCurrentImage).getCategory().equals("none")) {
+            exitSubCategory();
+            return;
         }
-        TotalImages = contentsNames.size();
-        Collections.sort(contentsNames);
-        Collections.sort(contentsNames, new Comparator<String>() {
+        
+        int chosenCategory = tmpCurrentImage - directTiles.size();
+        currentCategory = currentCategory.getSubCategories().get(chosenCategory);
+        adjustStoredInfo(currentCategory);
+        /*for (Tile t : contents) {
+         System.out.println(t.getTxt());
+         }*/
+    }
 
-            @Override
-            public int compare(String o1, String o2) {
-                String var1 = o1.split("\\.")[0];
-                String var2 = o2.split("\\.")[0];
-                return var1.compareTo(var2);
-            }
-        });
+    public void adjustStoredInfo(Category currentCategory) {
+        contents = new ArrayList();
+        //currentCategory = currentCategory.getSubCategories().get(category);
+        directTiles = currentCategory.getTiles();
+        subCategoriesTiles = currentCategory.getSubCategoriesTiles();
+        usedImages = directTiles.size() + subCategoriesTiles.size();
+        contents.addAll(directTiles);
+        contents.addAll(subCategoriesTiles);
+        redrawImages();
+    }
+
+    /*Retrieve to the previous category(to the direct parent category)*/
+    public void exitSubCategory() {
+        /*first find if the back button was pressed and not another button*/
+        currentCategory = currentCategory.getParentCategory();
+        adjustStoredInfo(currentCategory);
+
+    }
+
+    private boolean currentImageIsCategory() {
+        if (tmpCurrentImage > directTiles.size() - 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /*Wipes the JFrame clean from any components and calls init to repaint it */
     public void redrawImages() {
-        /*imagesPanel.removeAll();
-        ArrayList<Integer> list =categoryDimensions.get(currentCategory);
-        int numOfRows=list.get(0);
-        int numOfColumns=list.get(1);
-        
-        initImages(numOfRows, numOfColumns);
-        this.repaint();
-        this.revalidate();*/
+        imagesPanel.removeAll();
+        initImages(currentCategory.getRows(), currentCategory.getColumns());
+        repaint();
+        revalidate();
     }
 
     /*Sets */
@@ -239,12 +255,13 @@ public class MultipleImages extends javax.swing.JFrame {
 
     /*Stops the thread that chages the border of images and plays music*/
     public void stopThread() {
-       // if (changeCategory) {
-            System.out.println(currentImage);
+        if (!currentImageIsCategory()) {
             thread.suspend();
             playMusic();
             state = false;
-        //}
+        } else {
+            changeCategory();
+        }
     }
 
     /*Retruns the stete of the thread that chages border*/
@@ -257,9 +274,8 @@ public class MultipleImages extends javax.swing.JFrame {
         this.state = state;
     }
 
-    /*Changes the border of the current image to color black and restores the border of the previous image to white*/
     public void swithcPic() {
-        //tmpCurrentImage = currentImage;
+        tmpCurrentImage = currentImage;
         if (currentImage - 1 < 0) {
             paneList.get(usedImages - 1).setBorder(createBorder(Color.WHITE));
         } else {
@@ -270,10 +286,10 @@ public class MultipleImages extends javax.swing.JFrame {
         if (currentImage + 1 > usedImages) {
             currentImage = 0;
         }
-        
+
     }
 
-    /*Plays the a wav file */
+    /*Plays the  wav file*/
     public void playMusic() {
         String path = System.getProperty("user.dir") + "/water-dripping-1.wav";
         File audioFile = new File(path);
@@ -311,7 +327,7 @@ public class MultipleImages extends javax.swing.JFrame {
         return d;
     }
 
-    /*Scales and adds image to image label and also sets text to text label*/
+    /*adds images with their representing text into the jlabels*/
     private void addLabel(String file_path, JPanel panel, String txtName) {
         JLabel label = (JLabel) panel.getComponents()[0];
         JLabel txtLabel = (JLabel) panel.getComponents()[1];
@@ -336,8 +352,6 @@ public class MultipleImages extends javax.swing.JFrame {
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
     }
-
-    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -418,13 +432,13 @@ public class MultipleImages extends javax.swing.JFrame {
                 .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(epicSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
                     .addGroup(optionPanelLayout.createSequentialGroup()
-                        .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, optionPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(optionPanelLayout.createSequentialGroup()
                                 .addGap(36, 36, 36)
-                                .addComponent(jLabel1))
-                            .addGroup(optionPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButton1)))
+                                .addComponent(jLabel1)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -448,10 +462,8 @@ public class MultipleImages extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         this.setRedraw(true);
-        //
-        if (!currentCategory.equalsIgnoreCase("main menu")) {
+        if (!currentCategory.getName().equalsIgnoreCase("main menu")) {
             usedImages--;
         }
         this.redrawImages();

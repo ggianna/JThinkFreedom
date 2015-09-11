@@ -5,6 +5,10 @@
 	<text>main menu</text>
 	<folder>main menu </folder>
 	<filename>main menu filename</filename>
+	<tile>
+		<filename>kati</filename>	
+		<text>akoma kati</text>
+	</tile>
 	<category name="Τουαλέτα" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
@@ -15,10 +19,7 @@
 			<filename>1.png</filename>
 			<text>Τουαλέτα</text>
 		</tile>
-		<tile>
-			<filename>2.png</filename>
-			<text>Ποτήρι</text>
-		</tile>
+		
 		<!--<resource>
 			<filename></filename>
 			<text>Sample</text>
@@ -91,13 +92,6 @@
 			<filename>14.png</filename>
 			<text>Ειδήσεις</text>
 		</tile>
-		<tile>
-			<filename>13.png</filename>
-			<text>Μουσική</text>
-		</tile>
-		<tile>
-			<filename>7.png</filename>
-			<text>Τηλεόραση</text>
-		</tile>
+		
 	</category>
 </category>

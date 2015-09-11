@@ -12,8 +12,8 @@ import java.util.ArrayList;
  * @author xrousakis
  */
 public class Category {
-    
-    private int rows,columns;
+
+    private int rows, columns;
     private String name;
     private String folder;
     private String filename;
@@ -25,7 +25,7 @@ public class Category {
     //private String 
     private ArrayList<Category> subCategories;
 
-    public Category(String name, String folder, String filename, String text, ArrayList<Tile> tiles, Category parentCategory,ArrayList<Category> subCategories) {
+    public Category(String name, String folder, String filename, String text, ArrayList<Tile> tiles, Category parentCategory, ArrayList<Category> subCategories) {
         this.name = name;
         this.folder = folder;
         this.filename = filename;
@@ -34,15 +34,15 @@ public class Category {
         this.parentCategory = parentCategory;
         this.subCategories = subCategories;
     }
-    
-    public ArrayList<Tile> getResources(){
+
+    public ArrayList<Tile> getResources() {
         return resources;
     }
-    
-    public void storeToResources(Tile tile){
+
+    public void storeToResources(Tile tile) {
         resources.add(tile);
     }
-    
+
     public String getResourcePath() {
         return resourcePath;
     }
@@ -50,18 +50,18 @@ public class Category {
     public void setResourcePath(String resourcePath) {
         this.resourcePath = resourcePath;
     }
-    
-    public Category(){
+
+    public Category() {
         tiles = new ArrayList<>();
         subCategories = new ArrayList<>();
         resources = new ArrayList<>();
     }
-    
-    public void storeTile(Tile tile){
+
+    public void storeTile(Tile tile) {
         tiles.add(tile);
     }
-    
-    public void storeSubCategory(Category category){
+
+    public void storeSubCategory(Category category) {
         subCategories.add(category);
     }
 
@@ -88,8 +88,7 @@ public class Category {
     public void setSubCategories(ArrayList<Category> subCategories) {
         this.subCategories = subCategories;
     }
-    
-    
+
     public String getName() {
         return name;
     }
@@ -126,6 +125,17 @@ public class Category {
         return tiles;
     }
 
+    public ArrayList<Tile> getSubCategoriesTiles() {
+        ArrayList<Tile> tiles = new ArrayList();
+        Tile tile;
+        for (Category c : subCategories) {
+            tile = new Tile(c.getFolder() + "/" + c.getFilename(), c.getText(), "",c.getFilename());
+            tiles.add(tile);
+        }
+
+        return tiles;
+    }
+
     public void setTiles(ArrayList<Tile> tiles) {
         this.tiles = tiles;
     }
@@ -137,15 +147,27 @@ public class Category {
     public void setParentCategory(Category parentCategory) {
         this.parentCategory = parentCategory;
     }
+
     
-    public int deptfOfCategory(){
-        int depth=0;
-        Category parent =this.getParentCategory();
-        while(parent.getName()!=null){
+    /*Returns the distance from the main*/ 
+    public int deptfOfCategory() {
+        int depth = 0;
+        Category parent = this.getParentCategory();
+        while (parent.getName() != null) {
             depth++;
             parent = parent.getParentCategory();
         }
         return depth;
     }
-    
+
+    /*this function checks if another category exists with the name categoryToAddName for the level of the category given*/
+    public boolean categoryExists(Category category,String categoryToAddName) {
+        for (Category c : category.getSubCategories()) {
+            /*if there is a subcategory that matches the given name then return*/
+            if(c.getName().equals(categoryToAddName))
+                return true;
+        }
+        return false;
+    }
+
 }
