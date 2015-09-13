@@ -298,6 +298,7 @@ public class MultipleImages extends javax.swing.JFrame {
 
     /*Changes the border of the current image to black and of the previous to white*/
     public void swithcPic() {
+        System.out.println(currentImage);
         //tmpCurrentImage = currentImage;
         if (currentImage - 1 < 0) {
             paneList.get(usedImages - 1).setBorder(createBorder(Color.WHITE));
@@ -306,6 +307,7 @@ public class MultipleImages extends javax.swing.JFrame {
         }
         paneList.get(currentImage).setBorder(createBorder(Color.BLACK));
         currentImage++;
+        System.out.println("Made");
         if (currentImage + 1 > usedImages) {
             currentImage = 0;
         }

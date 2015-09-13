@@ -40,14 +40,20 @@ public class Parser {
     public void print() {
         ArrayList<Tile> foo;
         for (Category c : categories) {
+            foo = c.getTiles();
             System.out.println(c.getName());
-            System.out.println(c.deptfOfCategory());
+            for(Tile t: foo){
+                System.out.println("\t"+t.getFileName());
+            }
+            //System.out.println(c.getName());
+            //System.out.println(c.deptfOfCategory());
         }
 
     }
 
     private Category storeInfo(Element element) {
         Category category = new Category();
+        categories.add(category);
         category.setName(element.getAttribute("name"));
         if (element.getAttribute("name").equals("main menu")) {
             category.setParentCategory(new Category());
@@ -74,7 +80,7 @@ public class Parser {
                         storeFilename(el, category);
                         break;
                     case "tile":
-                        storeTile(children.item(i), category, "tile", category.getFolder());
+                        storeTile(children.item(i), category, category.getFolder());
                         break;
                     case "category":
                         Category newCategory = storeInfo(el);
@@ -85,13 +91,11 @@ public class Parser {
                         setPathForResources(category.getFolder(), category);
                         String newFolder = createFolder(category.getFolder());
                         category.setFolder(newFolder);
-                        storeTile(children.item(i), category, "resource", category.getResourcePath());
+                        storeTile(children.item(i), category, category.getResourcePath());
                         break;
                 }
             }
         }
-
-        categories.add(category);
         return category;
     }
 
@@ -131,7 +135,7 @@ public class Parser {
         category.setFilename(el.getTextContent());
     }
 
-    private void storeTile(Node node, Category category, String type, String categoryFolder) {
+    private void storeTile(Node node, Category category, String categoryFolder) {
         String imagePath = null;
         String text = null;
         String fileName =null;
@@ -144,11 +148,11 @@ public class Parser {
             }
         }
         Tile tile = new Tile(imagePath, text, "",fileName);
-        if (type.equals("tile")) {
-            category.storeTile(tile);
-        } else {
-            category.storeToResources(tile);
-        }
+        //if (type.equals("tile")) {
+        category.storeTile(tile);
+        //} else {
+            //category.storeToResources(tile);
+        //}
     }
 
     private void storeResource(Node node, Category category,String folderName) {
@@ -192,9 +196,9 @@ public class Parser {
 
     public static void main(String[] args) {
         Parser parser = new Parser();
-        //parser.print();
-        ArrayList<String> lista = parser.getCategoryNames();
-        System.out.println(lista.size());
+        parser.print();
+        //ArrayList<String> lista = parser.getCategoryNames();
+        //System.out.println(lista.size());
         /*for(String s:lista){
             System.out.println(s+"fail");
         }*/

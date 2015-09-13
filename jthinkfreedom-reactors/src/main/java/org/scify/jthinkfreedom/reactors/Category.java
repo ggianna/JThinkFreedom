@@ -129,7 +129,7 @@ public class Category {
         ArrayList<Tile> tiles = new ArrayList();
         Tile tile;
         for (Category c : subCategories) {
-            tile = new Tile(c.getFolder() + "/" + c.getFilename(), c.getText(), "",c.getFilename());
+            tile = new Tile(c.getFolder() + "/" + c.getFilename(), c.getText(), "", c.getFilename());
             tiles.add(tile);
         }
 
@@ -148,8 +148,7 @@ public class Category {
         this.parentCategory = parentCategory;
     }
 
-    
-    /*Returns the distance from the main*/ 
+    /*Returns the distance from the main*/
     public int deptfOfCategory() {
         int depth = 0;
         Category parent = this.getParentCategory();
@@ -161,12 +160,32 @@ public class Category {
     }
 
     /*this function checks if another category exists with the name categoryToAddName for the level of the category given*/
-    public boolean categoryExists(Category category,String categoryToAddName) {
+    public boolean categoryExists(Category category, String categoryToAddName) {
         for (Category c : category.getSubCategories()) {
             /*if there is a subcategory that matches the given name then return*/
-            if(c.getName().equals(categoryToAddName))
+            if (c.getName().equals(categoryToAddName)) {
                 return true;
+            }
         }
+        
+        if(category.getName().equals(categoryToAddName)){
+            return true;
+        }
+        
+        return false;
+    }
+
+    public boolean tileExists(String fileName) {
+        for (Tile tile : this.getTiles()) {
+            if(tile.getFileName().equals(fileName)){
+                return true;
+            }
+        }
+        
+        if(this.filename.equals(fileName)){
+            return true;
+        }
+        
         return false;
     }
 

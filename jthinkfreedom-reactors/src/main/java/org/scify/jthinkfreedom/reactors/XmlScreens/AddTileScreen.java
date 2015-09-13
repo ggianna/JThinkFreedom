@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -25,7 +24,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.scify.jthinkfreedom.reactors.TileXmlParser;
+import org.scify.jthinkfreedom.reactors.Category;
+import org.scify.jthinkfreedom.reactors.Parser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -37,33 +37,30 @@ import org.w3c.dom.NodeList;
  */
 public class AddTileScreen extends javax.swing.JFrame {
 
-    private Map<String, String> peckingOrder;
-    private Map<String, String> categoryFolders;
     DefaultListModel dlm;
-    String selectedCategory;
-    private String imageName;
-    private String xml = System.getProperty("user.dir") + "/categories.xml";//"/home/xrousakis/JThinkFreedom/jthinkfreedom-reactors/categories.xml";
     public boolean reWrite;
     private Document configFile;
+    private Parser parser;
     private String existingCategory;
     private String existingImage;
+    private String imageName;
+    private String selectedCategory;
+    private ArrayList<Category> categories;
 
     /**
      * Creates new form TileScreen
      */
     public AddTileScreen(String existingCategory, String existingText, String existingImage) {
-        dlm = new DefaultListModel();
         reWrite = true;
+        dlm = new DefaultListModel();
         initComponents();
+
         categoryList.setSelectionMode(SINGLE_SELECTION);
-        TileXmlParser parser = new TileXmlParser();
-        peckingOrder = parser.getHierarchy();
-        categoryFolders = parser.getCategoryFolders();
-        /*category should remain the same*/
         selectedCategory = existingCategory;
-        fillDlm();
+        init();
         this.existingCategory = existingCategory;
         this.existingImage = existingImage;
+
         fillInfo(existingText, existingImage);
     }
 
@@ -71,23 +68,29 @@ public class AddTileScreen extends javax.swing.JFrame {
         reWrite = false;
         dlm = new DefaultListModel();
         initComponents();
+
         categoryList.setSelectionMode(SINGLE_SELECTION);
-        TileXmlParser parser = new TileXmlParser();
-        peckingOrder = parser.getHierarchy();
-        categoryFolders = parser.getCategoryFolders();
+        init();
+    }
+
+    private void init() {
+        parser = new Parser();
+        configFile = parser.getConfigFile();
+        categories = parser.getCategories();
         fillDlm();
     }
 
     public void fillDlm() {
-        for (Map.Entry<String, String> entry : peckingOrder.entrySet()) {
-            dlm.addElement(entry.getKey());
+        dlm.clear();
+        ArrayList<String> categoryNames = parser.getCategoryNames();
+        for (String s : categoryNames) {
+            dlm.addElement(s);
         }
+
     }
 
     public void fillInfo(String existingText, String existingImage) {
-        //categoryList.setValueIsAdjusting(existingCategory);
         categoryList.setSelectedValue(existingCategory, true);
-
         jTextField1.setText(existingText);
     }
 
@@ -110,6 +113,8 @@ public class AddTileScreen extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         textField = new javax.swing.JScrollPane();
         categoryList = new javax.swing.JList();
+        jLabel2 = new javax.swing.JLabel();
+        soundButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -153,14 +158,20 @@ public class AddTileScreen extends javax.swing.JFrame {
         });
         textField.setViewportView(categoryList);
 
+        jLabel2.setText("Select Sound:");
+
+        soundButton.setText("Select Sound");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(imageLabel)
                     .addComponent(txtLabel)
-                    .addComponent(imageLabel))
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -169,16 +180,17 @@ public class AddTileScreen extends javax.swing.JFrame {
                         .addComponent(cancelButton)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(imageButton)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(imageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                            .addComponent(soundButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                                 .addComponent(categoryLabel)
-                                .addContainerGap(59, Short.MAX_VALUE))
+                                .addContainerGap(53, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
+                                .addGap(35, 35, 35)
                                 .addComponent(textField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -205,17 +217,22 @@ public class AddTileScreen extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtLabel)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(soundButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(submitButton)
+                            .addComponent(cancelButton))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(categoryLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(textField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(submitButton)
-                    .addComponent(cancelButton))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -223,25 +240,36 @@ public class AddTileScreen extends javax.swing.JFrame {
 
     /*Show the folder of the the category selected from the list*/
     private void imageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageButtonActionPerformed
-               Border border = BorderFactory.createLineBorder(Color.RED, 2);
+        Border border = BorderFactory.createLineBorder(Color.RED, 2);
         if (selectedCategory == null) {
             categoryList.setBorder(border);
             return;
         }
         imageName = "";
         JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File(categoryFolders.get(selectedCategory)));
+
+        chooser.setCurrentDirectory(new java.io.File(chosenCategory().getFolder()));
         chooser.setDialogTitle("Select Picture");
         chooser.setAcceptAllFileFilterUsed(false);
         chooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "png"));
-
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             imageName = chooser.getSelectedFile().getName();
         } else {
-
+            imageName = null;
         }
+
+        if (chosenCategory().tileExists(imageName)) {
+            JOptionPane.showMessageDialog(this, "This image is already being used try again");
+            imageName = null;
+        }
+
     }//GEN-LAST:event_imageButtonActionPerformed
 
+    private Category chosenCategory() {
+        int value = dlm.indexOf(selectedCategory);
+        return categories.get(value + 1);
+    }
 
     private void categoryListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoryListValueChanged
         if (reWrite == false) {
@@ -261,120 +289,59 @@ public class AddTileScreen extends javax.swing.JFrame {
 
     /*Takes the  information from the components and inserts them into the xml*/
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        String text = jTextField1.getText().toString();
-        if (imageName == null) {
-            JOptionPane.showMessageDialog(this, "you did not select an image");
+        Border border = BorderFactory.createLineBorder(Color.RED, 2);
+        String text = jTextField1.getText();
+        if (imageName == null && text.equals("")) {
+            JOptionPane.showMessageDialog(this, "At least one of text or image must have a value");
         } else {
-            if (text.equals("")) {
-                jTextField1.setBorder(createBorder(Color.RED));
+            if (text != null && selectedCategory == null) {
+                categoryList.setBorder(border);
             } else {
-                jTextField1.setBorder(null);
+                categoryList.setBorder(null);
                 if (reWrite == false) {
+                    if (imageName == null) {
+                        imageName = "";
+                    }
                     addToXml(text);
                 } else {
-                    reWriteXml(text);
+                    reWriteToXml();
                 }
             }
         }
     }//GEN-LAST:event_submitButtonActionPerformed
 
-    /* Dispose current frame */
+
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        /* Dispose current frame */
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    /**
-     * get only the tile tags that belong to this category
-     *
-     * @param element
-     * @return
-     */
-    private ArrayList<Node> getImmediateElementsByTagName(Element element, String tagName) {
-        /*TODO: na epistrefei ta stoixeia mono tou sigegrimenou category element*/
-        ArrayList<Node> list = new ArrayList<>();
-        Element parent;
-        NodeList tags = element.getElementsByTagName(tagName);
-        for (int i = 0; i < tags.getLength(); i++) {
-            parent = (Element) tags.item(i).getParentNode();
-            String attribute = parent.getAttribute("name");
-            String category_name = element.getAttribute("name");
-            if (attribute.equalsIgnoreCase(category_name)) {
-                list.add(tags.item(i));
-            }
-        }
-        return list;
-    }
+    private void reWriteToXml() {
 
-    private void reWriteXml(String txt) {
-        try {
-            configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xml));
-            configFile.normalize();
-        } catch (Exception ex) {
-            ex.printStackTrace(System.err);
-        }
-        NodeList categories = configFile.getElementsByTagName("category");
-        for (int i = 0; i < categories.getLength(); i++) {
-            Element el = (Element) categories.item(i);
-            if (el.getAttribute("name").equals(selectedCategory)) {
-                ArrayList<Node> childTiles = getImmediateElementsByTagName(el, "tile");
-                for (int j = 0; j < childTiles.size(); j++) {
-                    Element tile = (Element) childTiles.get(j);
-                    String folder = getImmediateElementsByTagName(el, "folder").get(0).getTextContent();
-                    String fullpath = folder + "/" + tile.getElementsByTagName("filename").item(0).getTextContent();
-                    /*if this is the Tile that i want to replace*/
-                    if (fullpath.equals(existingImage)) {
-                        tile.getElementsByTagName("filename").item(0).setTextContent(imageName);
-                        tile.getElementsByTagName("text").item(0).setTextContent(txt);
-                        try {
-                            Transformer tr = TransformerFactory.newInstance().newTransformer();
-                            tr.setOutputProperty(OutputKeys.INDENT, "yes");
-                            tr.transform(new DOMSource(configFile),
-                                    new StreamResult(new FileOutputStream(new File(xml))));
-                        } catch (TransformerException | FileNotFoundException e) {
-                            e.printStackTrace(System.err);
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /*Saves the information into the xml*/
     public void addToXml(String txt) {
-        try {
-            configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xml));
-            configFile.normalize();
-        } catch (Exception ex) {
-            ex.printStackTrace(System.err);
-        }
-        NodeList categories = configFile.getElementsByTagName("category");
-        //System.out.println(categories.getLength());
-        /* 
-         creating tags to store 
-         */
+
+        NodeList categoriesList = configFile.getElementsByTagName("category");
+        /*  creating tags to store */
         Element tile = configFile.createElement("tile");
         Element filename = configFile.createElement("filename");
         Element text = configFile.createElement("text");
-        filename.appendChild(configFile.createTextNode(imageName));
-        /* 
-         appending tags
-         */
+        filename.appendChild(configFile.createTextNode(imageName.trim()));
+        /* appending tags */
         text.appendChild(configFile.createTextNode(txt));
         tile.appendChild(filename);
         tile.appendChild(text);
-        /*
-         for all categories if this is the category that i chose append the tags
-         */
-        for (int i = 0; i < categories.getLength(); i++) {
-            Element el = (Element) categories.item(i);
-            if (el.getAttribute("name").equals(selectedCategory)) {
-                categories.item(i).appendChild(tile);
+        for (int i = 0; i < categoriesList.getLength(); i++) {
+            Element el = (Element) categoriesList.item(i);
+            if (el.getAttribute("name").equals(selectedCategory.trim())) {
+                categoriesList.item(i).appendChild(tile);
                 try {
                     Transformer tr = TransformerFactory.newInstance().newTransformer();
                     tr.setOutputProperty(OutputKeys.INDENT, "yes");
                     tr.transform(new DOMSource(configFile),
-                            new StreamResult(new FileOutputStream(new File(xml))));
-
+                            new StreamResult(new FileOutputStream(new File(parser.getXmlPath()))));
                 } catch (TransformerException | FileNotFoundException e) {
                     e.printStackTrace(System.err);
                 }
@@ -424,7 +391,9 @@ public class AddTileScreen extends javax.swing.JFrame {
     private javax.swing.JButton imageButton;
     private javax.swing.JLabel imageLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton soundButton;
     private javax.swing.JButton submitButton;
     private javax.swing.JScrollPane textField;
     private javax.swing.JLabel txtLabel;

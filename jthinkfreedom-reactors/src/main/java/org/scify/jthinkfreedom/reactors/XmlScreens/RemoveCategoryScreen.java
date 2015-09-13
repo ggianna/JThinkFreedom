@@ -8,17 +8,17 @@ package org.scify.jthinkfreedom.reactors.XmlScreens;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.Map;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.scify.jthinkfreedom.reactors.TileXmlParser;
+import org.scify.jthinkfreedom.reactors.Category;
+import org.scify.jthinkfreedom.reactors.Parser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -29,10 +29,14 @@ import org.w3c.dom.NodeList;
  * @author xrousakis
  */
 public class RemoveCategoryScreen extends javax.swing.JFrame {
-    private Document configFile;
+    
+    Parser parser;
     DefaultListModel dlm;
-    private String xml = System.getProperty("user.dir") + "/categories.xml";
-    private Map<String, String> peckingOrder;
+    
+    private Document configFile;
+    
+    //private String xml;// = System.getProperty("user.dir") + "/categories.xml";
+    private ArrayList<Category> categories;
     private String selectedCategory;
 
     /**
@@ -41,16 +45,26 @@ public class RemoveCategoryScreen extends javax.swing.JFrame {
     public RemoveCategoryScreen() {
         dlm = new DefaultListModel();
         initComponents();
-        TileXmlParser parser = new TileXmlParser();
-        peckingOrder = parser.getHierarchy();
+        init();
+    }
+   
+   private void init() {
+        parser = new Parser();
+        configFile = parser.getConfigFile();
+        categories = parser.getCategories();
+
         fillCategoriesDlm();
     }
    
-   
     public void fillCategoriesDlm() {
-        for (Map.Entry<String, String> entry : peckingOrder.entrySet()) {
-            dlm.addElement(entry.getKey());
+         dlm.clear();
+        ArrayList<String> categoryNames = parser.getCategoryNames();
+        for (String s : categoryNames) {
+            dlm.addElement(s);
         }
+        //categoryList.repaint();
+        //imageList.repaint();
+        
     }
 
     /**
@@ -147,14 +161,12 @@ public class RemoveCategoryScreen extends javax.swing.JFrame {
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-
+        deleteFromXml();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void categoryListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoryListValueChanged
         if (evt.getValueIsAdjusting()) {
             selectedCategory = (String) categoryList.getSelectedValue();
-            System.out.println(selectedCategory);
-            deleteFromXml();
         }
     }//GEN-LAST:event_categoryListValueChanged
 
@@ -166,16 +178,10 @@ public class RemoveCategoryScreen extends javax.swing.JFrame {
     
     private void deleteFromXml() {
         Node parent;
-        try {
-            configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xml));
-            configFile.normalize();
-        } catch (Exception ex) {
-            ex.printStackTrace(System.err);
-        }
         NodeList categories = configFile.getElementsByTagName("category");
         for (int i = 0; i < categories.getLength(); i++) {
             Element el = (Element) categories.item(i);
-            if (el.getAttribute("name").equals(selectedCategory)) {
+            if (el.getAttribute("name").equals(selectedCategory.trim())) {
                 parent = el.getParentNode();
                 parent.removeChild(el);
                 try {
@@ -183,11 +189,12 @@ public class RemoveCategoryScreen extends javax.swing.JFrame {
                     tr.setOutputProperty(OutputKeys.INDENT, "yes");
                     tr.transform(new DOMSource(configFile),
                             //new StreamResult(new FileOutputStream (new File(getClass().getResource("/conf.xml").toURI())) ));
-                            new StreamResult(new FileOutputStream(new File(xml))));
+                            new StreamResult(new FileOutputStream(new File(parser.getXmlPath()))));
                 } catch (TransformerException | FileNotFoundException e) {
                     e.printStackTrace(System.err);
                 }
                 JOptionPane.showMessageDialog(this, "Category Removed.");
+                init();
             }
         }
     }

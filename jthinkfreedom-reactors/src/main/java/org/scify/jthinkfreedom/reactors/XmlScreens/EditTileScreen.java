@@ -8,7 +8,7 @@ package org.scify.jthinkfreedom.reactors.XmlScreens;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+//import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -24,11 +24,11 @@ import org.w3c.dom.Document;
  */
 public class EditTileScreen extends javax.swing.JFrame {
 
-    private Map<String, String> peckingOrder;
-    private Map<String, ArrayList<Tile>> tiles;
-    private Map<String, List<String>> categoryItems;
+    //private Map<String, String> peckingOrder;
+    //private Map<String, ArrayList<Tile>> tiles;
+    //private Map<String, List<String>> categoryItems;
     private String selectedImage;
-    private String xml = System.getProperty("user.dir") + "/categories.xml";
+    //private String xml = System.getProperty("user.dir") + "/categories.xml";
     private DefaultListModel categoriesDlm;
     private DefaultListModel imagesDlm;
     private Document configFile;
@@ -43,25 +43,18 @@ public class EditTileScreen extends javax.swing.JFrame {
         initComponents();
         categoryList.setSelectionMode(SINGLE_SELECTION);
         TileXmlParser parser = new TileXmlParser();
-        categoryItems = parser.getCategoryItems();
-        peckingOrder = parser.getHierarchy();
-        tiles = parser.getTiles();
+        //categoryItems = parser.getCategoryItems();
+        //peckingOrder = parser.getHierarchy();
+        //tiles = parser.getTiles();
         fillCategoriesDlm();
     }
 
     public void fillCategoriesDlm() {
-        for (Map.Entry<String, String> entry : peckingOrder.entrySet()) {
-            categoriesDlm.addElement(entry.getKey());
-        }
+        
     }
 
     public void fillImagesDlm() {
-        ArrayList<String> items = (ArrayList<String>) categoryItems.get(selectedCategory);
-        imagesDlm.clear();
-        for (String s : items) {
-            imagesDlm.addElement(s);
-            //System.out.println(s);
-        }
+        
     }
 
     /**

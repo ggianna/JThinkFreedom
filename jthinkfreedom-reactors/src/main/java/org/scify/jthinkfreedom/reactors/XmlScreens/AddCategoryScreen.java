@@ -9,7 +9,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.Map;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -17,14 +17,14 @@ import javax.swing.JOptionPane;
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.scify.jthinkfreedom.reactors.TileXmlParser;
+import org.scify.jthinkfreedom.reactors.Category;
+import org.scify.jthinkfreedom.reactors.Parser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -42,9 +42,9 @@ public class AddCategoryScreen extends javax.swing.JFrame {
     private String folder;
     private String selectedCategory;
     private DefaultListModel categoriesDlm;
-    private Map<String, String> peckingOrder;
+    private Parser parser;
     private Document configFile;
-    private String xml = System.getProperty("user.dir") + "/categories.xml";
+    private ArrayList<Category> categories;
 
     /**
      * Creates new form XmlScreen
@@ -52,11 +52,17 @@ public class AddCategoryScreen extends javax.swing.JFrame {
     public AddCategoryScreen() {
         categoriesDlm = new DefaultListModel();
         initComponents();
-        TileXmlParser parser = new TileXmlParser();
-        peckingOrder = parser.getHierarchy();
-        fillCategoriesDlm();
         categoriesList.setSelectionMode(SINGLE_SELECTION);
+        init();
+        fillCategoriesDlm();
         reWrite = false;
+    }
+
+    private void init() {
+        parser = new Parser();
+        configFile = parser.getConfigFile();
+        categories = parser.getCategories();
+        fillCategoriesDlm();
     }
 
     public AddCategoryScreen(String foo) {
@@ -64,10 +70,12 @@ public class AddCategoryScreen extends javax.swing.JFrame {
     }
 
     private void fillCategoriesDlm() {
-        for (Map.Entry<String, String> entry : peckingOrder.entrySet()) {
-            categoriesDlm.addElement(entry.getKey());
+        categoriesDlm.clear();
+        ArrayList<String> categoryNames = parser.getCategoryNames();
+        for (String s : categoryNames) {
+            categoriesDlm.addElement(s);
         }
-        categoriesDlm.addElement("None");
+        categoriesDlm.addElement("none");
     }
 
     /**
@@ -280,38 +288,48 @@ public class AddCategoryScreen extends javax.swing.JFrame {
         return border;
     }
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        String text = categoryField.getText().toString();
-        String textOfImage = imageField.getText().toString();
-        if (imageName == null) {
-            JOptionPane.showMessageDialog(this, "you did not select an image");
-        } else {
-            if (text.equals("")) {
-                categoryField.setBorder(createBorder(Color.RED));
-            } else {
-                categoryField.setBorder(null);
-                rowsValue = (Integer) rowsSpinner.getValue();
-                columnsValue = (Integer) columnsSpinner.getValue();
-                storeToXml(text, textOfImage);
-                /*if (reWrite == false) {
-                 addToXml(text);
-                 } else {
-                 reWriteXml(text);
-                 }*/
-            }
+    private Category getCategory() {
+        if (selectedCategory == null) {
+            return categories.get(0);
         }
+        int value = categoriesDlm.indexOf(selectedCategory);
+        return categories.get(value + 1);
+    }
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        String text = categoryField.getText();
+        String textOfImage = imageField.getText();
+        Category workingCategory = getCategory();
+
+        if (!workingCategory.categoryExists(workingCategory, text.trim()) && !text.equals("")) {
+            /*if the cateegory name is not being used*/
+            if (folder != null)  {
+                if (imageName == null && textOfImage.equals("")) {
+                    JOptionPane.showMessageDialog(this, "Category must have an image or a least a representing text");
+                } else {
+                    /*if category has an image or at least a text*/
+                    if (imageName == null) {
+                        imageName = "";
+                    }
+                    rowsValue = (Integer) rowsSpinner.getValue();
+                    columnsValue = (Integer) columnsSpinner.getValue();
+                    System.out.println();
+                    storeToXml(text, textOfImage);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "You need to provide a category folder");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "You need to provide a category name");
+        }
+
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void storeToXml(String categoryName, String imageText) {
         System.out.println(selectedCategory);
-        try {
-            configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xml));
-            configFile.normalize();
-        } catch (Exception ex) {
-            ex.printStackTrace(System.err);
-        }
+
         //all the categories
-        NodeList categories = configFile.getElementsByTagName("category");
+        NodeList categoriesList = configFile.getElementsByTagName("category");
 
         // createing tags to store to the xml
         Element category = configFile.createElement("category");
@@ -322,7 +340,6 @@ public class AddCategoryScreen extends javax.swing.JFrame {
         Element text = configFile.createElement("text");
 
         /*append information to the tags*/
-        //filename.appendChild(configFile.createTextNode(imageName));
         category.setAttribute("name", categoryName);
         category.setAttribute("resource", "no");
 
@@ -343,18 +360,13 @@ public class AddCategoryScreen extends javax.swing.JFrame {
         Element el = null;
         /*if this category is independent from other categories*/
         if (selectedCategory == null || selectedCategory.equals("None")) {
-            //System.out.println("main menu");
-            el = (Element) categories.item(0);
-            /*append child under the main category*/
-        } //it belongs under the selected catgegory
-        else {
-            //Element el;
-            for (int i = 0; i < categories.getLength(); i++) {
-                Element tmp = (Element) categories.item(i);
-                if (tmp.getAttribute("name").equals(selectedCategory)) {
+            el = (Element) categoriesList.item(0);
+        } else {
+            for (int i = 0; i < categoriesList.getLength(); i++) {
+                Element tmp = (Element) categoriesList.item(i);
+                if (tmp.getAttribute("name").equals(selectedCategory.trim())) {
                     el = tmp;
                 }
-                //el.appendChild(category);
             }
         }
         /*write to the xml the info*/
@@ -363,8 +375,7 @@ public class AddCategoryScreen extends javax.swing.JFrame {
             Transformer tr = TransformerFactory.newInstance().newTransformer();
             tr.setOutputProperty(OutputKeys.INDENT, "yes");
             tr.transform(new DOMSource(configFile),
-                    new StreamResult(new FileOutputStream(new File(xml))));
-
+                    new StreamResult(new FileOutputStream(new File(parser.getXmlPath()))));
         } catch (TransformerException | FileNotFoundException e) {
             e.printStackTrace(System.err);
         }
@@ -381,12 +392,9 @@ public class AddCategoryScreen extends javax.swing.JFrame {
         chooser.setCurrentDirectory(new java.io.File(System.getProperty("user.dir")));
         chooser.setDialogTitle("Select category folder");
         chooser.setAcceptAllFileFilterUsed(false);
-        //chooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "png"));
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             folder = chooser.getSelectedFile().getAbsolutePath();
-            System.out.println(folder);
-            //imageName = chooser.getSelectedFile().getName();
         } else {
             /*in case of cancel*/
             System.out.println("nothing to accept");
@@ -403,8 +411,7 @@ public class AddCategoryScreen extends javax.swing.JFrame {
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 imageName = chooser.getSelectedFile().getName();
-                //System.out.println(imageName);
-                ///imageName = chooser.getSelectedFile().getName();
+
             } else {
                 /*in case of cancel*/
                 System.out.println("nothing to accept");

@@ -29,6 +29,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -111,12 +112,14 @@ public class MultipleImages extends javax.swing.JFrame {
 
         setImages(usedImages);
         setRedraw(false);
+
+        System.out.println("usedImges"+usedImages);
     }
 
     /*Create a new panel that contains the text BACK ,if selected by ther user show the contents of the previous category*/
     private void setBack() {
-        JPanel panel = new JPanel(new BorderLayout());
         usedImages++;
+        JPanel panel = new JPanel(new BorderLayout());
         paneList.add(panel);
         JLabel imgLabel = new JLabel("");
         JLabel txtLabel = new JLabel("BACK");
@@ -127,7 +130,7 @@ public class MultipleImages extends javax.swing.JFrame {
         panel.add(imgLabel, BorderLayout.SOUTH);
         txtLabel.setHorizontalAlignment(JLabel.CENTER);
         imagesPanel.add(panel);
-        contents.add(new Tile("", "", "none",""));
+        contents.add(new Tile("", "", "none", ""));
     }
 
     /*Creates new panel with image and text label and positions them with border layout then adds this panel to panel list which holds all the panels that contain image and text label*/
@@ -163,7 +166,7 @@ public class MultipleImages extends javax.swing.JFrame {
             exitSubCategory();
             return;
         }
-        
+
         int chosenCategory = tmpCurrentImage - directTiles.size();
         currentCategory = currentCategory.getSubCategories().get(chosenCategory);
         adjustStoredInfo(currentCategory);
@@ -249,16 +252,17 @@ public class MultipleImages extends javax.swing.JFrame {
     /*Stops music and begins thread that changes border*/
     public void beginThread() {
         stopMusic();
-        thread.resume();
         state = true;
+        thread.resume();
     }
 
     /*Stops the thread that chages the border of images and plays music*/
     public void stopThread() {
         if (!currentImageIsCategory()) {
+            state = false;
             thread.suspend();
             playMusic();
-            state = false;
+
         } else {
             changeCategory();
         }
@@ -275,14 +279,21 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     public void swithcPic() {
+        //System.out.println(currentImage);
         tmpCurrentImage = currentImage;
+        int previous;
         if (currentImage - 1 < 0) {
             paneList.get(usedImages - 1).setBorder(createBorder(Color.WHITE));
+            previous = usedImages - 1;
         } else {
             paneList.get(currentImage - 1).setBorder(createBorder(Color.WHITE));
+            previous = currentImage - 1;
         }
-        paneList.get(currentImage).setBorder(createBorder(Color.BLACK));
+        if (((LineBorder) paneList.get(previous).getBorder()).getLineColor().equals(Color.WHITE)) {
+            paneList.get(currentImage).setBorder(createBorder(Color.BLACK));
+        }
         currentImage++;
+        //System.out.println("Made change");
         if (currentImage + 1 > usedImages) {
             currentImage = 0;
         }

@@ -51,7 +51,7 @@ public class RemoveTileScreen extends javax.swing.JFrame {
 
         categoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         imageList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        foo();
+        init();
     }
 
     private void fillCategoriesDlm() {
@@ -59,11 +59,15 @@ public class RemoveTileScreen extends javax.swing.JFrame {
         ArrayList<String> categoryNames = parser.getCategoryNames();
         for (String s : categoryNames) {
             categoriesDlm.addElement(s);
-
+        }
+        //categoryList.repaint();
+        //imageList.repaint();
+        if (selectedCategory != null) {
+            fillImagesDlm();
         }
     }
 
-    private void foo() {
+    private void init() {
         parser = new Parser();
         configFile = parser.getConfigFile();
         categories = parser.getCategories();
@@ -74,7 +78,7 @@ public class RemoveTileScreen extends javax.swing.JFrame {
     private void fillImagesDlm() {
         imagesDlm.clear();
         int value = categoriesDlm.indexOf(selectedCategory);
-        Category category = categories.get(value);
+        Category category = categories.get(value + 1);
         ArrayList<Tile> categoryTiles = category.getTiles();
         for (Tile t : categoryTiles) {
             imagesDlm.addElement(t.getFileName());
@@ -212,8 +216,7 @@ public class RemoveTileScreen extends javax.swing.JFrame {
     private void categoryListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoryListValueChanged
         if (evt.getValueIsAdjusting()) {
             selectedCategory = (String) categoryList.getSelectedValue();
-            /*remove leading and trailing whitespaces*/
-            //selectedCategory = selectedCategory.trim();
+            System.out.println(selectedCategory);
             selectedImage = null;
             fillImagesDlm();
         }
@@ -237,56 +240,43 @@ public class RemoveTileScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_confirmButtonActionPerformed
 
-    /*
-     retireves the tile elements that belong to this category
-     */
-    private ArrayList<Node> getImmediateElementsByTagName(Element element) {
-        /*TODO: na epistrefei ta stoixeia mono tou sigegrimenou category element*/
-        ArrayList<Node> list = new ArrayList<>();
-        Element parent;
-        NodeList tags = element.getElementsByTagName("tile");
-        for (int i = 0; i < tags.getLength(); i++) {
-            parent = (Element) tags.item(i).getParentNode();
-            String attribute = parent.getAttribute("name");
-            String category_name = element.getAttribute("name");
-            if (attribute.equalsIgnoreCase(category_name)) {
-                list.add(tags.item(i));
-            }
-        }
-        return list;
-    }
 
     /* 
      Delete from xml file the chosen tile (image and text)
      */
     private void deleteFromXml() {
         System.out.println("Selected category " + selectedCategory);
-        System.out.println("Selected Image" + selectedImage);
+        System.out.println("Selected Image " + selectedImage);
         NodeList categories = configFile.getElementsByTagName("category");
-        System.out.println(categories.getLength());
+        //System.out.println(categories.getLength());
         for (int i = 0; i < categories.getLength(); i++) {
             Element el = (Element) categories.item(i);
             if (el.getAttribute("name").equals(selectedCategory.trim())) {
-                ArrayList<Node> childTiles = getImmediateElementsByTagName(el);
-                for (int j = 0; j < childTiles.size(); j++) {
-                    Element tile = (Element) childTiles.get(j);
-                    String fullname = tile.getElementsByTagName("filename").item(0).getTextContent();
-                    if (fullname.equals(selectedImage)) {
-                        //System.out.println("removed");
-                        el.removeChild(tile);
-                        try {
-                            Transformer tr = TransformerFactory.newInstance().newTransformer();
-                            tr.setOutputProperty(OutputKeys.INDENT, "yes");
-                            tr.transform(new DOMSource(configFile),
-                                    //new StreamResult(new FileOutputStream (new File(getClass().getResource("/conf.xml").toURI())) ));
-                                    new StreamResult(new FileOutputStream(new File(parser.getXmlPath()))));
-                        } catch (TransformerException | FileNotFoundException e) {
-                            e.printStackTrace(System.err);
+                NodeList children = el.getChildNodes();
+                
+                for (int j = 0; j < children.getLength(); j++) {
+                    if (children.item(j).getNodeType() == Node.ELEMENT_NODE) {
+                        Element tile = (Element) children.item(j);
+                        
+                        if (tile.getNodeName().equals("resource") || tile.getNodeName().equals("tile")) {
+                            String fullname = tile.getElementsByTagName("filename").item(0).getTextContent();
+                            
+                            if (fullname.equals(selectedImage)) {
+                                el.removeChild(tile);
+                                
+                                try {
+                                    Transformer tr = TransformerFactory.newInstance().newTransformer();
+                                    tr.setOutputProperty(OutputKeys.INDENT, "yes");
+                                    tr.transform(new DOMSource(configFile),
+                                            //new StreamResult(new FileOutputStream (new File(getClass().getResource("/conf.xml").toURI())) ));
+                                            new StreamResult(new FileOutputStream(new File(parser.getXmlPath()))));
+                                } catch (TransformerException | FileNotFoundException e) {
+                                    e.printStackTrace(System.err);
+                                }
+                                JOptionPane.showMessageDialog(this, "Image Removed.");
+                                init();
+                            }
                         }
-                        JOptionPane.showMessageDialog(this, "Image Removed.");
-                        foo();
-                        this.revalidate();
-                        this.repaint();
                     }
                 }
             }
