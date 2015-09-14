@@ -5,17 +5,54 @@
  */
 package org.scify.jthinkfreedom.reactors.XmlScreens;
 
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
+import org.scify.jthinkfreedom.reactors.Category;
+import org.scify.jthinkfreedom.reactors.Parser;
+
 /**
  *
  * @author xrousakis
  */
 public class EditCategoryScreen extends javax.swing.JFrame {
 
+    private Parser parser;
+    private String selectedCategory;
+    //private Category selectedCategory;
+    private ArrayList<Category> categories;
+    private DefaultListModel categoriesDlm;
+
     /**
      * Creates new form EditCategoryScreen
      */
     public EditCategoryScreen() {
+        categoriesDlm = new DefaultListModel();
         initComponents();
+        /*chooser only one category to edit*/
+        categoriesList.setSelectionMode(SINGLE_SELECTION);
+        init();
+    }
+
+    private void init() {
+        parser = new Parser();
+        categories = parser.getCategories();
+        fillCategoriesDlm();
+    }
+
+    private void fillCategoriesDlm() {
+        categoriesDlm.clear();
+        ArrayList<String> categoryNames = parser.getCategoryNames();
+        for (String s : categoryNames) {
+            categoriesDlm.addElement(s);
+        }
+    }
+
+    /*returns the selected category from the list*/
+    private Category chosenCategory() {
+        int value = categoriesDlm.indexOf(selectedCategory);
+        return categories.get(value + 1);
     }
 
     /**
@@ -27,21 +64,102 @@ public class EditCategoryScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        categoriesList = new javax.swing.JList();
+        editButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("DejaVu Sans", 1, 24)); // NOI18N
+        jLabel1.setText("Edit Category");
+
+        categoriesList.setModel(categoriesDlm);
+        categoriesList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                categoriesListValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(categoriesList);
+
+        editButton.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
+        editButton.setForeground(new java.awt.Color(7, 7, 7));
+        editButton.setText("Edit");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
+
+        cancelButton.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(81, 81, 81)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(83, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(editButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cancelButton)
+                .addGap(72, 72, 72))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelButton, editButton});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editButton)
+                    .addComponent(cancelButton))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        if (selectedCategory == null) {
+            JOptionPane.showMessageDialog(this, "You did not select a category");
+            return;
+        }else{
+            AddCategoryScreen frame = new AddCategoryScreen(selectedCategory , chosenCategory());
+            frame.setVisible(true);
+            /*Dispode the current frame and show the add with the selected categorys information filled*/
+            this.dispose();
+        }
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void categoriesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoriesListValueChanged
+        // TODO add your handling code here:
+        if (evt.getValueIsAdjusting()) {
+            selectedCategory = (String) categoriesList.getSelectedValue();
+        }
+    }//GEN-LAST:event_categoriesListValueChanged
 
     /**
      * @param args the command line arguments
@@ -79,5 +197,10 @@ public class EditCategoryScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JList categoriesList;
+    private javax.swing.JButton editButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

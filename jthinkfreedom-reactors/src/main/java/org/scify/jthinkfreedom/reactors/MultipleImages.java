@@ -152,12 +152,16 @@ public class MultipleImages extends javax.swing.JFrame {
         contents = new ArrayList();
         Parser parser = new Parser();
         categories = parser.getCategories();
-        currentCategory = categories.get(categories.size() - 1);
+        currentCategory = categories.get(0);
+        System.out.println(currentCategory.getName());
         directTiles = currentCategory.getTiles();
         subCategoriesTiles = currentCategory.getSubCategoriesTiles();
         usedImages = directTiles.size() + subCategoriesTiles.size();
         contents.addAll(directTiles);
         contents.addAll(subCategoriesTiles);
+        for(Tile t:contents){
+            System.out.println(t.getImagePath());
+        }
     }
 
     /*Change the content in orber to be relevant to this category*/

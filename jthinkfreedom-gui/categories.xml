@@ -5,22 +5,14 @@
 	<text>main menu</text>
 	<folder>main menu </folder>
 	<filename>main menu filename</filename>
-	<tile>
-		<filename>kati</filename>	
-		<text>akoma kati</text>
-	</tile>
 	<category name="Τουαλέτα" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
-		<folder>/home/rou/Desktop/images/toilet</folder>
+		<folder>/home/xrousakis/Desktop/images/toilet</folder>
 		<filename>1.png</filename>
 		<text>Τουαλέτα</text>
 		<tile>
 			<filename>1.png</filename>
-			<text>Τουαλέτα</text>
-		</tile>
-		<tile>
-			<filename>9.png</filename>
 			<text>Τουαλέτα</text>
 		</tile>
 		
@@ -43,25 +35,25 @@
 	<category name="Φαγητό" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
-		<folder>/home/rou/Desktop/food</folder>
-		<filename>RM-050_Food_sign.pngng</filename>
+		<folder>/home/xrousakis/Desktop/food</folder>
+		<filename>fast-food-icon.png</filename>
 		<text>Φαγητό</text>	
 		<tile>
-			<filename>red_apple_and_yellow_apples_1322301.pngng</filename>
-			<text>Apples</text>
+			<filename>pizza_PNG7134.png</filename>
+			<text>Pizza</text>
 		</tile>
 		<tile>
-			<filename>Vegetable_Basket_PNG_Picture.png</filename>
-			<text>Vegetable</text>
+			<filename>12.png</filename>
+			<text>Κανονικό φαγητό</text>
 		</tile>
 		<category name="Φαγητό2" resource="no">
-			<rows>4</rows>
-			<columns>4</columns>
-			<folder>/home/rou/Desktop/images/temprature</folder>
-			<filename>5.png</filename>
+			<rows>12</rows>
+			<columns>12</columns>
+			<folder>/home/xrousakis/Desktop/food</folder>
+			<filename>fast-food-icon.png</filename>
 			<text>Φαγητό2</text>
 			<tile>
-				<filename>4.png</filename>
+				<filename>12.png</filename>
 				<text>Κανονικό φαγητό</text>
 			</tile>
 		</category>	
@@ -70,15 +62,26 @@
 	<category name="Φάρμακα" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
-		<folder>/home/rou/Desktop/images/farmaka</folder>
-		<filename>3.png</filename>
+		<folder>/home/xrousakis/Desktop/medicine</folder>
+		<filename>medicine.png</filename>
 		<text>Φάρμακα</text>
-		
+		<tile>
+			<filename>15.png</filename>
+			<text>Παυσίπονο</text>
+		</tile>
+		<tile>
+			<filename>15.png</filename>
+			<text>1111111111</text>
+		</tile>
+		<tile>
+			<filename>medicine.png</filename>
+			<text>2222222222</text>
+		</tile>
 	</category>
 	<category name="Ψυχαγωγία" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
-		<folder>/home/rou/Desktop/images/entertainment</folder>
+		<folder>/home/xrousakis/Desktop/images/entertainment</folder>
 		<filename>8.png</filename>
 		<text>Ψυχαγωγία</text>
 		<tile>

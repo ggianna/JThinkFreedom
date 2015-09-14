@@ -30,6 +30,8 @@ public class KeyboardSensor extends SensorAdapter<Character> {
                 String s = hotkey.toString();
                 if (s.equalsIgnoreCase("HotKey{SPACE}")) {
                     pressedKey = ' ';
+                } else if (s.equalsIgnoreCase("HotKey{RIGHT}")) {
+                    pressedKey= 'x';
                 } else {
                     pressedKey = s.charAt(7);
                 }
@@ -46,12 +48,21 @@ public class KeyboardSensor extends SensorAdapter<Character> {
         provider.register(KeyStroke.getKeyStroke(" SPACE"), hl);
         provider.register(KeyStroke.getKeyStroke(" B"), hl);
         provider.register(KeyStroke.getKeyStroke(" C"), hl);
+        provider.register(KeyStroke.getKeyStroke(" LEFT"), hl);
+        provider.register(KeyStroke.getKeyStroke(" RIGHT"), hl);
+        provider.register(KeyStroke.getKeyStroke(" UP"), hl);
+        provider.register(KeyStroke.getKeyStroke(" DOWN"), hl);
+
     }
 
     @Override
     public void stop() {
         super.stop();
         provider.stop();
+    }
+
+    public HotKeyListener returnListener() {
+        return hl;
     }
 
     @Override

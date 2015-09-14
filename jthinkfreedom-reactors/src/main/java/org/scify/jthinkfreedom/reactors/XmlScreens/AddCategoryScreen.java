@@ -6,9 +6,6 @@
 package org.scify.jthinkfreedom.reactors.XmlScreens;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -17,12 +14,6 @@ import javax.swing.JOptionPane;
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.scify.jthinkfreedom.reactors.Category;
 import org.scify.jthinkfreedom.reactors.Parser;
 import org.w3c.dom.Document;
@@ -46,26 +37,39 @@ public class AddCategoryScreen extends javax.swing.JFrame {
     private Document configFile;
     private ArrayList<Category> categories;
 
+    /*usefull information about the edit part*/
+    private Category editingCategory;
+
     /**
      * Creates new form XmlScreen
      */
     public AddCategoryScreen() {
-        categoriesDlm = new DefaultListModel();
-        initComponents();
-        categoriesList.setSelectionMode(SINGLE_SELECTION);
-        init();
-        fillCategoriesDlm();
         reWrite = false;
+        init();
+
     }
 
     private void init() {
+        categoriesDlm = new DefaultListModel();
+        initComponents();
+        categoriesList.setSelectionMode(SINGLE_SELECTION);
         parser = new Parser();
         configFile = parser.getConfigFile();
         categories = parser.getCategories();
         fillCategoriesDlm();
     }
 
-    public AddCategoryScreen(String foo) {
+    public AddCategoryScreen(String categoryName, Category category) {
+        reWrite = true;
+        init();
+    }
+
+    private void fillInfo() {
+        rowsSpinner.setValue(editingCategory.getRows());
+        columnsSpinner.setValue(editingCategory.getColumns());
+        if (!editingCategory.getParentCategory().getName().equals("main menu")) {
+            selectedCategory = editingCategory.getParentCategory().getName();
+        }
 
     }
 
@@ -293,7 +297,8 @@ public class AddCategoryScreen extends javax.swing.JFrame {
             return categories.get(0);
         }
         int value = categoriesDlm.indexOf(selectedCategory);
-        return categories.get(value + 1);
+
+        return categories.get(value + 1); 
     }
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
@@ -303,7 +308,7 @@ public class AddCategoryScreen extends javax.swing.JFrame {
 
         if (!workingCategory.categoryExists(workingCategory, text.trim()) && !text.equals("")) {
             /*if the cateegory name is not being used*/
-            if (folder != null)  {
+            if (folder != null) {
                 if (imageName == null && textOfImage.equals("")) {
                     JOptionPane.showMessageDialog(this, "Category must have an image or a least a representing text");
                 } else {
@@ -371,14 +376,7 @@ public class AddCategoryScreen extends javax.swing.JFrame {
         }
         /*write to the xml the info*/
         el.appendChild(category);
-        try {
-            Transformer tr = TransformerFactory.newInstance().newTransformer();
-            tr.setOutputProperty(OutputKeys.INDENT, "yes");
-            tr.transform(new DOMSource(configFile),
-                    new StreamResult(new FileOutputStream(new File(parser.getXmlPath()))));
-        } catch (TransformerException | FileNotFoundException e) {
-            e.printStackTrace(System.err);
-        }
+        parser.finalizeXmlChanges();
         JOptionPane.showMessageDialog(this, "New category added successfully");
     }
 

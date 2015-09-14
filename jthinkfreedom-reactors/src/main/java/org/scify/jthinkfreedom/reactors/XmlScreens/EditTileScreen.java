@@ -5,18 +5,16 @@
  */
 package org.scify.jthinkfreedom.reactors.XmlScreens;
 
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.List;
-//import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 import javax.swing.border.Border;
+import org.scify.jthinkfreedom.reactors.Category;
+import org.scify.jthinkfreedom.reactors.Parser;
 import org.scify.jthinkfreedom.reactors.Tile;
-import org.scify.jthinkfreedom.reactors.TileXmlParser;
-import org.w3c.dom.Document;
 
 /**
  *
@@ -24,15 +22,13 @@ import org.w3c.dom.Document;
  */
 public class EditTileScreen extends javax.swing.JFrame {
 
-    //private Map<String, String> peckingOrder;
-    //private Map<String, ArrayList<Tile>> tiles;
-    //private Map<String, List<String>> categoryItems;
     private String selectedImage;
-    //private String xml = System.getProperty("user.dir") + "/categories.xml";
     private DefaultListModel categoriesDlm;
     private DefaultListModel imagesDlm;
-    private Document configFile;
+    //private Document configFile;
     private String selectedCategory;
+    private Parser parser;
+    private ArrayList<Category> categories;
 
     /**
      * Creates new form EditTileScreen
@@ -40,21 +36,37 @@ public class EditTileScreen extends javax.swing.JFrame {
     public EditTileScreen() {
         imagesDlm = new DefaultListModel();
         categoriesDlm = new DefaultListModel();
+
         initComponents();
         categoryList.setSelectionMode(SINGLE_SELECTION);
-        TileXmlParser parser = new TileXmlParser();
-        //categoryItems = parser.getCategoryItems();
-        //peckingOrder = parser.getHierarchy();
-        //tiles = parser.getTiles();
+        init();
+    }
+
+    private void fillCategoriesDlm() {
+        categoriesDlm.clear();
+        ArrayList<String> categoryNames = parser.getCategoryNames();
+        for (String s : categoryNames) {
+            categoriesDlm.addElement(s);
+        }
+
+    }
+
+    private void fillImagesDlm() {
+        imagesDlm.clear();
+        int value = categoriesDlm.indexOf(selectedCategory);
+        Category category = categories.get(value + 1);
+        ArrayList<Tile> categoryTiles = category.getTiles();
+        for (Tile t : categoryTiles) {
+            imagesDlm.addElement(t.getFileName());
+        }
+    }
+
+    private void init() {
+        parser = new Parser();
+        //configFile = parser.getConfigFile();
+        categories = parser.getCategories();
+
         fillCategoriesDlm();
-    }
-
-    public void fillCategoriesDlm() {
-        
-    }
-
-    public void fillImagesDlm() {
-        
     }
 
     /**
@@ -185,39 +197,34 @@ public class EditTileScreen extends javax.swing.JFrame {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         Border border = BorderFactory.createLineBorder(Color.RED, 2);
         if (selectedImage == null) {
-            JOptionPane.showMessageDialog(this, "You didnt select any image.");
+            JOptionPane.showMessageDialog(this, "You have to select and image.");
         } else {
-            retrieveImageInfo();
-            List<String> info = retrieveImageInfo();
-            AddTileScreen frame =new AddTileScreen(info.get(0),info.get(1),info.get(2));
+            /*pass the existing category and tile to the AddTileScreen*/
+            //System.out.println(chosenCategory().getName()+" "+chosenTile().getFileName());
+            AddTileScreen frame = new AddTileScreen(selectedCategory, chosenTile(),chosenCategory());
             frame.setVisible(true);
             this.dispose();
-            //this.dispose();
-            //String existingCategory, String existingText, String existingImage
-            //AddTileScreen frame = new AddTileScreen(selectedCategory,);
         }
     }//GEN-LAST:event_editButtonActionPerformed
-       
-    /*returns the info of the selected image in an arraylist with string*/
-    private List<String> retrieveImageInfo() {
-        ArrayList<String> info =  new ArrayList();
-        for (Map.Entry entry : tiles.entrySet()) {
-            ArrayList<Tile> lista = (ArrayList<Tile>) entry.getValue();
-            for (Tile t : lista) {
-                /*take the filename of the image and find if it matches the path of the tile arraylist then retrieve the correct Tile and continue*/
-                if (t.getImagePath().contains(selectedImage) && t.getCategory().equals(selectedCategory)) {
-                    //System.out.println(t.getImagePath());
-                    /*add tile category into the arraylist*/
-                    info.add(t.getCategory());
-                    /*add tile text*/
-                    info.add(t.getTxt());
-                    /*add full path of the image of the tile*/
-                    info.add(t.getImagePath());
-                }
+
+    /*returns the selected category*/
+    private Category chosenCategory() {
+        int value = categoriesDlm.indexOf(selectedCategory);
+        return categories.get(value + 1);
+    }
+
+    private Tile chosenTile() {
+        /*choose tile based on the category and the filename property of the tile*/
+        ArrayList<Tile> categoryTiles = chosenCategory().getTiles();
+        for (Tile t : categoryTiles) {
+            if (t.getFileName().equals(selectedImage)) {
+                //System.out.println(chosenCategory().getName()+" "+t.getFileName());
+                return t;
             }
         }
-        return info;
+        return null;
     }
+
 
     private void imageListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_imageListValueChanged
         if (evt.getValueIsAdjusting()) {

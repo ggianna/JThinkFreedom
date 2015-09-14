@@ -28,7 +28,6 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="imageLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="txtLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -39,10 +38,9 @@
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="imageButton" linkSize="1" alignment="0" max="32767" attributes="0"/>
                           <Component id="jTextField1" linkSize="1" alignment="0" pref="101" max="32767" attributes="0"/>
-                          <Component id="soundButton" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
@@ -83,12 +81,7 @@
                           <Component id="txtLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="soundButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace pref="37" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="submitButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -100,7 +93,7 @@
                       <Component id="categoryLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="textField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="79" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -179,15 +172,5 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="jLabel2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Select Sound:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="soundButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Select Sound"/>
-      </Properties>
-    </Component>
   </SubComponents>
 </Form>

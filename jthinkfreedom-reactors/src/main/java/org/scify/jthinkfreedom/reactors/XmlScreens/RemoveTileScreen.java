@@ -6,21 +6,12 @@
 package org.scify.jthinkfreedom.reactors.XmlScreens;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.scify.jthinkfreedom.reactors.Category;
 import org.scify.jthinkfreedom.reactors.Parser;
 import org.scify.jthinkfreedom.reactors.Tile;
@@ -234,7 +225,7 @@ public class RemoveTileScreen extends javax.swing.JFrame {
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         Border border = BorderFactory.createLineBorder(Color.RED, 2);
         if (selectedImage == null) {
-            JOptionPane.showMessageDialog(this, "You didnt select and image.");
+            JOptionPane.showMessageDialog(this, "You didnt select an image.");
         } else {
             deleteFromXml();
         }
@@ -247,32 +238,24 @@ public class RemoveTileScreen extends javax.swing.JFrame {
     private void deleteFromXml() {
         System.out.println("Selected category " + selectedCategory);
         System.out.println("Selected Image " + selectedImage);
-        NodeList categories = configFile.getElementsByTagName("category");
+        NodeList categoriesList = configFile.getElementsByTagName("category");
         //System.out.println(categories.getLength());
-        for (int i = 0; i < categories.getLength(); i++) {
-            Element el = (Element) categories.item(i);
+        for (int i = 0; i < categoriesList.getLength(); i++) {
+            Element el = (Element) categoriesList.item(i);
             if (el.getAttribute("name").equals(selectedCategory.trim())) {
                 NodeList children = el.getChildNodes();
-                
+
                 for (int j = 0; j < children.getLength(); j++) {
                     if (children.item(j).getNodeType() == Node.ELEMENT_NODE) {
                         Element tile = (Element) children.item(j);
-                        
+
                         if (tile.getNodeName().equals("resource") || tile.getNodeName().equals("tile")) {
                             String fullname = tile.getElementsByTagName("filename").item(0).getTextContent();
-                            
+
                             if (fullname.equals(selectedImage)) {
                                 el.removeChild(tile);
-                                
-                                try {
-                                    Transformer tr = TransformerFactory.newInstance().newTransformer();
-                                    tr.setOutputProperty(OutputKeys.INDENT, "yes");
-                                    tr.transform(new DOMSource(configFile),
-                                            //new StreamResult(new FileOutputStream (new File(getClass().getResource("/conf.xml").toURI())) ));
-                                            new StreamResult(new FileOutputStream(new File(parser.getXmlPath()))));
-                                } catch (TransformerException | FileNotFoundException e) {
-                                    e.printStackTrace(System.err);
-                                }
+                                System.out.println("here yes");
+                                parser.finalizeXmlChanges();
                                 JOptionPane.showMessageDialog(this, "Image Removed.");
                                 init();
                             }
@@ -299,19 +282,16 @@ public class RemoveTileScreen extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RemoveTileScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RemoveTileScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RemoveTileScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(RemoveTileScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
+        //</editor-fold>
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new RemoveTileScreen().setVisible(true);
             }

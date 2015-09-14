@@ -6,8 +6,16 @@
 package org.scify.jthinkfreedom.reactors;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,8 +50,8 @@ public class Parser {
         for (Category c : categories) {
             foo = c.getTiles();
             System.out.println(c.getName());
-            for(Tile t: foo){
-                System.out.println("\t"+t.getFileName());
+            for (Tile t : foo) {
+                System.out.println("\t" + t.getImagePath());
             }
             //System.out.println(c.getName());
             //System.out.println(c.deptfOfCategory());
@@ -138,7 +146,7 @@ public class Parser {
     private void storeTile(Node node, Category category, String categoryFolder) {
         String imagePath = null;
         String text = null;
-        String fileName =null;
+        String fileName = null;
         for (int i = 0; i < node.getChildNodes().getLength(); i++) {
             if (node.getChildNodes().item(i).getNodeName().equals("filename")) {
                 fileName = node.getChildNodes().item(i).getTextContent();
@@ -147,27 +155,27 @@ public class Parser {
                 text = node.getChildNodes().item(i).getTextContent();
             }
         }
-        Tile tile = new Tile(imagePath, text, "",fileName);
+        Tile tile = new Tile(imagePath, text, "", fileName);
         //if (type.equals("tile")) {
         category.storeTile(tile);
         //} else {
-            //category.storeToResources(tile);
+        //category.storeToResources(tile);
         //}
     }
 
-    private void storeResource(Node node, Category category,String folderName) {
+    private void storeResource(Node node, Category category, String folderName) {
         String imagePath = null;
         String text = null;
         String fileName = null;
         for (int i = 0; i < node.getChildNodes().getLength(); i++) {
             if (node.getChildNodes().item(i).getNodeName().equals("filename")) {
                 fileName = node.getChildNodes().item(i).getTextContent();
-                imagePath = folderName +fileName;
+                imagePath = folderName + fileName;
             } else if (node.getChildNodes().item(i).getNodeName().equals("text")) {
                 text = node.getChildNodes().item(i).getTextContent();
             }
         }
-        Tile tile = new Tile(imagePath, text, "",fileName);
+        Tile tile = new Tile(imagePath, text, "", fileName);
         category.storeTile(tile);
     }
 
@@ -200,9 +208,9 @@ public class Parser {
         //ArrayList<String> lista = parser.getCategoryNames();
         //System.out.println(lista.size());
         /*for(String s:lista){
-            System.out.println(s+"fail");
-        }*/
-        
+         System.out.println(s+"fail");
+         }*/
+
     }
 
     public ArrayList<String> getCategoryNames() {
@@ -230,7 +238,18 @@ public class Parser {
         return text;
     }
 
-    public String getXmlPath(){
+    public void finalizeXmlChanges() {
+        try {
+            Transformer tr = TransformerFactory.newInstance().newTransformer();
+            tr.setOutputProperty(OutputKeys.INDENT, "yes");
+            tr.transform(new DOMSource(configFile),
+                    new StreamResult(new FileOutputStream(new File(getXmlPath()))));
+        } catch (TransformerException | FileNotFoundException e) {
+            e.printStackTrace(System.err);
+        }
+    }
+
+    public String getXmlPath() {
         return xmlPath;
     }
 
