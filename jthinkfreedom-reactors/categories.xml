@@ -11,31 +11,27 @@
 	</tile>
 	<category name="Τουαλέτα" resource="no">
 		<rows>1</rows>
-		<columns>1</columns>
+		<columns>2</columns>
 		<folder>/home/xrousakis/Desktop/images/toilet</folder>
 		<filename>1.png</filename>
 		<text>Τουαλέτα</text>
-		<tile>
-			<filename>1.png</filename>
-			<text>Τουαλέτα</text>
-		</tile>
+		
 		
 		<!--<resource>
 			<filename></filename>
 			<text>Sample</text>
-		</resource>-->
-	</category>
-	<category name="sample" resource="yes">
-		<rows>1</rows>
-		<columns>1</columns>
+			</resource>-->
+ 	</category>
+	<category name="samples" resource="yes">
+		<rows>2</rows>
+		<columns>2</columns>
 		<folder>Images1</folder>
-		<filename>2.png</filename>
-		<text>sample</text>
+		<filename/>
+		<text>sampless</text>
 		<tile>
 			<filename>1.png</filename>
 			<text>foobars</text>
 		</tile>
-		
 	</category>
 	<category name="Φαγητό" resource="no">
 		<rows>1</rows>
@@ -52,8 +48,8 @@
 			<text>Κανονικό φαγητό</text>
 		</tile>
 		<category name="Φαγητό2" resource="no">
-			<rows>12</rows>
-			<columns>12</columns>
+			<rows>2</rows>
+			<columns>1</columns>
 			<folder>/home/xrousakis/Desktop/food</folder>
 			<filename>fast-food-icon.png</filename>
 			<text>Φαγητό2</text>

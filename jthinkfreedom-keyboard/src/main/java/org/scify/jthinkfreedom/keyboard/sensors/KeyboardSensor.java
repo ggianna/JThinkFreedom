@@ -16,7 +16,8 @@ import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
  * @author xrousakis
  */
 public class KeyboardSensor extends SensorAdapter<Character> {
-
+   //private Thread thread;
+    //private boolean stop;
     private Provider provider;
     private final Object lock = new Object();
     private Character pressedKey;
@@ -24,6 +25,8 @@ public class KeyboardSensor extends SensorAdapter<Character> {
 
     public KeyboardSensor() {
         super();
+        //stop =false;
+        
         hl = new HotKeyListener() {
             @Override
             public void onHotKey(HotKey hotkey) {
@@ -31,11 +34,10 @@ public class KeyboardSensor extends SensorAdapter<Character> {
                 if (s.equalsIgnoreCase("HotKey{SPACE}")) {
                     pressedKey = ' ';
                 } else if (s.equalsIgnoreCase("HotKey{RIGHT}")) {
-                    pressedKey= 'x';
+                    pressedKey = 'x';
                 } else {
                     pressedKey = s.charAt(7);
                 }
-                //System.out.println(s);
             }
         };
     }
@@ -43,6 +45,24 @@ public class KeyboardSensor extends SensorAdapter<Character> {
     @Override
     public void start() {
         super.start();
+        registerKeys();
+    }
+    
+    
+     /*this thread will check if a sequence came and it will */
+     /*public void run() {
+       thread = new Thread(new Runnable() {
+
+           @Override
+           public void run() {
+               //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+           }
+       }); 
+    }*/
+    
+    
+
+    private void registerKeys() {
         provider = Provider.getCurrentProvider(false);
         provider.register(KeyStroke.getKeyStroke(" A"), hl);
         provider.register(KeyStroke.getKeyStroke(" SPACE"), hl);
@@ -52,8 +72,15 @@ public class KeyboardSensor extends SensorAdapter<Character> {
         provider.register(KeyStroke.getKeyStroke(" RIGHT"), hl);
         provider.register(KeyStroke.getKeyStroke(" UP"), hl);
         provider.register(KeyStroke.getKeyStroke(" DOWN"), hl);
-
     }
+
+    /*stop the provider from receiving the key events*/
+    /*private void stopProvider() {
+       
+        provider.reset();
+        provider.stop();
+        
+    }*/
 
     @Override
     public void stop() {

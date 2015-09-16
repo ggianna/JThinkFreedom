@@ -1,13 +1,17 @@
 package org.scify.jthinkfreedom.gui.forms;
 
 import java.awt.GridBagConstraints;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.scify.jthinkfreedom.gui.model.Configuration;
 import org.scify.jthinkfreedom.gui.model.User;
 import org.scify.jthinkfreedom.gui.utils.ConfigurationHandler;
 import org.scify.jthinkfreedom.reactors.SlideShowReactor;
+import org.scify.jthinkfreedom.reactors.XmlScreens.XmlScreen;
 
 /**
  *
@@ -40,6 +44,7 @@ public class ProfileScreen extends javax.swing.JFrame {
         this.cf = cf;
         initComponents();
         initCustomComponents();
+
     }
 
     /**
@@ -67,6 +72,7 @@ public class ProfileScreen extends javax.swing.JFrame {
         configurationPanel = new javax.swing.JPanel();
         addProfileButton = new javax.swing.JButton();
         runButton = new javax.swing.JButton();
+        configureXmlButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Think Freedom");
@@ -148,6 +154,14 @@ public class ProfileScreen extends javax.swing.JFrame {
             }
         });
 
+        configureXmlButton.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
+        configureXmlButton.setText("Configure Images");
+        configureXmlButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                configureXmlButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
@@ -160,6 +174,8 @@ public class ProfileScreen extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                         .addComponent(profileCountLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(configureXmlButton)
+                        .addGap(30, 30, 30)
                         .addComponent(runButton)
                         .addGap(29, 29, 29)
                         .addComponent(addProfileButton)
@@ -196,16 +212,17 @@ public class ProfileScreen extends javax.swing.JFrame {
                     .addComponent(previousProfileButton)
                     .addComponent(nextProfileButton)
                     .addComponent(addProfileButton)
-                    .addComponent(runButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(runButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(configureXmlButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(profilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addComponent(profilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(configurationTitleLabel)
                     .addComponent(previousConfigurationButton)
                     .addComponent(nextConfigurationButton))
                 .addGap(18, 18, 18)
-                .addComponent(configurationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                .addComponent(configurationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addGap(49, 49, 49))
         );
 
@@ -274,12 +291,65 @@ public class ProfileScreen extends javax.swing.JFrame {
             }
             config.getSensor().start();
             runButton.setEnabled(false);
+            configureXmlButton.setEnabled(false);
         }
-        
+
         //setVisible(false);
-       
-        
+
     }//GEN-LAST:event_runButtonActionPerformed
+
+    private void configureXmlButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureXmlButtonActionPerformed
+        // TODO add your handling code here:
+        runButton.setEnabled(false);
+        configureXmlButton.setEnabled(false);
+        XmlScreen frame = new XmlScreen();
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.addWindowListener(new WindowListener(){
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                runButton.setEnabled(true);
+                configureXmlButton.setEnabled(true);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                runButton.setEnabled(true);
+                configureXmlButton.setEnabled(true);
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+            
+        });
+
+
+    }//GEN-LAST:event_configureXmlButtonActionPerformed
 
     private void initCustomComponents() {
         profilePaginationCounterStart = 0;
@@ -337,11 +407,10 @@ public class ProfileScreen extends javax.swing.JFrame {
                 profiles.remove(p);
                 break;
             }
-        } 
+        }
         repaintProfiles();
-        
-        //profiles.remove(cf);
 
+        //profiles.remove(cf);
     }
 
     public void repaintProfiles() {
@@ -384,6 +453,7 @@ public class ProfileScreen extends javax.swing.JFrame {
     private javax.swing.JButton addProfileButton;
     private javax.swing.JPanel configurationPanel;
     private javax.swing.JLabel configurationTitleLabel;
+    private javax.swing.JButton configureXmlButton;
     private javax.swing.JPanel contentPane;
     private javax.swing.JScrollPane descriptionScrollPane;
     private javax.swing.JTextPane descriptionTextPane;

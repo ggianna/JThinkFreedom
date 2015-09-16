@@ -66,6 +66,8 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="profileCountLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
+                          <Component id="configureXmlButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="runButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                           <Component id="addProfileButton" min="-2" max="-2" attributes="0"/>
@@ -110,9 +112,10 @@
                       <Component id="nextProfileButton" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="addProfileButton" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="runButton" alignment="2" min="-2" pref="31" max="-2" attributes="0"/>
+                      <Component id="configureXmlButton" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="profilePanel" pref="185" max="32767" attributes="0"/>
+                  <Component id="profilePanel" pref="184" max="32767" attributes="0"/>
                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="configurationTitleLabel" alignment="2" min="-2" max="-2" attributes="0"/>
@@ -120,7 +123,7 @@
                       <Component id="nextConfigurationButton" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="configurationPanel" pref="184" max="32767" attributes="0"/>
+                  <Component id="configurationPanel" pref="185" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -282,6 +285,17 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="runButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="configureXmlButton">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="DejaVu Sans" size="14" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Configure Images"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="configureXmlButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

@@ -45,14 +45,18 @@ public class Parser {
         parse();
     }
 
+    
     public void print() {
         ArrayList<Tile> foo;
         for (Category c : categories) {
-            foo = c.getTiles();
+            System.out.println(c.getName());
+            System.out.println("\t"+c.getRows());
+            System.out.println("\t"+c.getColumns());
+            /*foo = c.getTiles();
             System.out.println(c.getName());
             for (Tile t : foo) {
                 System.out.println("\t" + t.getImagePath());
-            }
+            }*/
             //System.out.println(c.getName());
             //System.out.println(c.deptfOfCategory());
         }
@@ -217,7 +221,7 @@ public class Parser {
         ArrayList<String> categoryNames = new ArrayList();
         for (Category c : categories) {
             if (!c.getName().equals("main menu")) {
-                categoryNames.add(attachTabs(c.deptfOfCategory(), c.getName()));
+                categoryNames.add(attachTabs(c.depthOfCategory(), c.getName()));
             }
         }
         return categoryNames;
@@ -227,7 +231,7 @@ public class Parser {
         return configFile;
     }
 
-    private String attachTabs(int x, String text) {
+    public String attachTabs(int x, String text) {
         String newText = "";
         while (x > 0) {
             newText = newText + " ";

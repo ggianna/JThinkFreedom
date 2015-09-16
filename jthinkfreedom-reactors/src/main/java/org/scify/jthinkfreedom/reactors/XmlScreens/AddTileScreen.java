@@ -38,7 +38,7 @@ public class AddTileScreen extends javax.swing.JFrame {
     private String selectedCategory;
     private ArrayList<Category> categories;
     private String existingCategory;
-    private Tile existingTile;
+    private Tile editingTile;
     private Category editingCategory;
 
     /**
@@ -53,7 +53,7 @@ public class AddTileScreen extends javax.swing.JFrame {
         init();
         //existingCategory = s;
         editingCategory = category;
-        existingTile = t;
+        editingTile = t;
         selectedCategory = s;//existingCategory.getName();
         imageName = t.getFileName();
         fillInfo();
@@ -84,10 +84,10 @@ public class AddTileScreen extends javax.swing.JFrame {
 
     }
 
-    private void fillInfo(){
-        
+    private void fillInfo() {
         categoryList.setSelectedValue(selectedCategory, true);
-        jTextField1.setText(existingTile.getTxt());
+        jTextField1.setText(editingTile.getTxt());
+
     }
 
     /**
@@ -238,12 +238,19 @@ public class AddTileScreen extends javax.swing.JFrame {
         chooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "png"));
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            imageName = chooser.getSelectedFile().getName();
-            if(!chooser.getSelectedFile().getAbsoluteFile().equals(editingCategory.getFolder())){
-                JOptionPane.showMessageDialog(this, "You cant choose a different folder from the one of the category");
+            if (reWrite == true) {
+                if (!chooser.getSelectedFile().getAbsoluteFile().equals(editingCategory.getFolder())) {
+                    JOptionPane.showMessageDialog(this, "You cant choose image from a different folder from the one of the category");
+                    imageName = editingTile.getFileName();
+                    //imageName = chooser.getSelectedFile().getName();
+                } else {
+                    imageName = chooser.getSelectedFile().getName();
+                }
+            } else {
+                imageName =chooser.getSelectedFile().getName(); ;
             }
-        } else {
-            imageName = null;
+        }else{
+            System.out.println("nothing to accept");
         }
         if (chosenCategory().tileExists(imageName)) {
             JOptionPane.showMessageDialog(this, "This image is already being used try again");
@@ -322,7 +329,7 @@ public class AddTileScreen extends javax.swing.JFrame {
                         Element tile = (Element) children.item(j);
                         Element newElement = null;
                         /*if it is resource and the filename has changed then were fucked cause its not a resource anymore so changed it to a tile*/
-                        if ((tile.getNodeName().equals("resource") && !existingTile.getFileName().equals(imageName)) || tile.getNodeName().equals("tile")) {
+                        if ((tile.getNodeName().equals("resource") && !editingTile.getFileName().equals(imageName)) || tile.getNodeName().equals("tile")) {
                             //el.removeChild(tile);
                             newElement = createTile(imageName, jTextField1.getText(), "tile");
                             el.removeChild(tile);

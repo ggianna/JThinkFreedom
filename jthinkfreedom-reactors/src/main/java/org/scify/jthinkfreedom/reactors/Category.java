@@ -148,11 +148,11 @@ public class Category {
         this.parentCategory = parentCategory;
     }
 
-    /*Returns the distance from the main*/
-    public int deptfOfCategory() {
+    /*Returns the distance from the main menu and for the main menu the distance*/
+    public int depthOfCategory() {
         int depth = 0;
         Category parent = this.getParentCategory();
-        while (parent.getName() != null) {
+        while (!parent.getName().equals("main menu") && !getName().equals("main menu")) {
             depth++;
             parent = parent.getParentCategory();
         }
@@ -160,7 +160,7 @@ public class Category {
     }
 
     /*this function checks if another category exists with the name categoryToAddName for the level of the category given*/
-    public boolean categoryExists(Category category, String categoryToAddName) {
+    public boolean categoryExists(Category category, String categoryToAddName,boolean foo) {
         for (Category c : category.getSubCategories()) {
             /*if there is a subcategory that matches the given name then return*/
             if (c.getName().equals(categoryToAddName)) {
@@ -168,7 +168,7 @@ public class Category {
             }
         }
         
-        if(category.getName().equals(categoryToAddName)){
+        if(category.getName().equals(categoryToAddName) && foo==false){
             return true;
         }
         

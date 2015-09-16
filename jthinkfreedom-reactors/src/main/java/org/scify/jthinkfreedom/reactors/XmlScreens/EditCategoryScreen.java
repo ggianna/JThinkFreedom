@@ -30,7 +30,7 @@ public class EditCategoryScreen extends javax.swing.JFrame {
     public EditCategoryScreen() {
         categoriesDlm = new DefaultListModel();
         initComponents();
-        /*chooser only one category to edit*/
+        /*choose only one category to edit*/
         categoriesList.setSelectionMode(SINGLE_SELECTION);
         init();
     }
@@ -41,6 +41,7 @@ public class EditCategoryScreen extends javax.swing.JFrame {
         fillCategoriesDlm();
     }
 
+    
     private void fillCategoriesDlm() {
         categoriesDlm.clear();
         ArrayList<String> categoryNames = parser.getCategoryNames();
@@ -142,8 +143,8 @@ public class EditCategoryScreen extends javax.swing.JFrame {
         if (selectedCategory == null) {
             JOptionPane.showMessageDialog(this, "You did not select a category");
             return;
-        }else{
-            AddCategoryScreen frame = new AddCategoryScreen(selectedCategory , chosenCategory());
+        } else {
+            AddCategoryScreen frame = new AddCategoryScreen(selectedCategory, chosenCategory());
             frame.setVisible(true);
             /*Dispode the current frame and show the add with the selected categorys information filled*/
             this.dispose();
@@ -155,7 +156,7 @@ public class EditCategoryScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void categoriesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoriesListValueChanged
-        // TODO add your handling code here:
+
         if (evt.getValueIsAdjusting()) {
             selectedCategory = (String) categoriesList.getSelectedValue();
         }
