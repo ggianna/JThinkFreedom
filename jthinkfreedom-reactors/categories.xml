@@ -15,13 +15,7 @@
 		<folder>/home/xrousakis/Desktop/images/toilet</folder>
 		<filename>1.png</filename>
 		<text>Τουαλέτα</text>
-		
-		
-		<!--<resource>
-			<filename></filename>
-			<text>Sample</text>
-			</resource>-->
- 	</category>
+	</category>
 	<category name="samples" resource="yes">
 		<rows>2</rows>
 		<columns>2</columns>

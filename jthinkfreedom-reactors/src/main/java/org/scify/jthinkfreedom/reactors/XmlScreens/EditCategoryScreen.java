@@ -20,7 +20,6 @@ public class EditCategoryScreen extends javax.swing.JFrame {
 
     private Parser parser;
     private String selectedCategory;
-    //private Category selectedCategory;
     private ArrayList<Category> categories;
     private DefaultListModel categoriesDlm;
 
@@ -30,7 +29,6 @@ public class EditCategoryScreen extends javax.swing.JFrame {
     public EditCategoryScreen() {
         categoriesDlm = new DefaultListModel();
         initComponents();
-        /*choose only one category to edit*/
         categoriesList.setSelectionMode(SINGLE_SELECTION);
         init();
     }
@@ -42,6 +40,7 @@ public class EditCategoryScreen extends javax.swing.JFrame {
     }
 
     
+    /*adds the categories to the defaultlistmodel*/
     private void fillCategoriesDlm() {
         categoriesDlm.clear();
         ArrayList<String> categoryNames = parser.getCategoryNames();

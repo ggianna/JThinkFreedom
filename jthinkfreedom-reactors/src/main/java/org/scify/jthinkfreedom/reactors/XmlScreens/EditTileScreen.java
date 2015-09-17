@@ -25,7 +25,6 @@ public class EditTileScreen extends javax.swing.JFrame {
     private String selectedImage;
     private DefaultListModel categoriesDlm;
     private DefaultListModel imagesDlm;
-    //private Document configFile;
     private String selectedCategory;
     private Parser parser;
     private ArrayList<Category> categories;
@@ -63,7 +62,6 @@ public class EditTileScreen extends javax.swing.JFrame {
 
     private void init() {
         parser = new Parser();
-        //configFile = parser.getConfigFile();
         categories = parser.getCategories();
 
         fillCategoriesDlm();
@@ -200,7 +198,6 @@ public class EditTileScreen extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "You have to select and image.");
         } else {
             /*pass the existing category and tile to the AddTileScreen*/
-            //System.out.println(chosenCategory().getName()+" "+chosenTile().getFileName());
             AddTileScreen frame = new AddTileScreen(selectedCategory, chosenTile(),chosenCategory());
             frame.setVisible(true);
             this.dispose();
@@ -218,7 +215,6 @@ public class EditTileScreen extends javax.swing.JFrame {
         ArrayList<Tile> categoryTiles = chosenCategory().getTiles();
         for (Tile t : categoryTiles) {
             if (t.getFileName().equals(selectedImage)) {
-                //System.out.println(chosenCategory().getName()+" "+t.getFileName());
                 return t;
             }
         }

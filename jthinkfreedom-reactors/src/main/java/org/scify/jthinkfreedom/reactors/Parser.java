@@ -209,12 +209,6 @@ public class Parser {
     public static void main(String[] args) {
         Parser parser = new Parser();
         parser.print();
-        //ArrayList<String> lista = parser.getCategoryNames();
-        //System.out.println(lista.size());
-        /*for(String s:lista){
-         System.out.println(s+"fail");
-         }*/
-
     }
 
     public ArrayList<String> getCategoryNames() {
@@ -251,6 +245,8 @@ public class Parser {
         } catch (TransformerException | FileNotFoundException e) {
             e.printStackTrace(System.err);
         }
+        //renew information
+        parse();
     }
 
     public String getXmlPath() {

@@ -6,15 +6,12 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
-import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -309,7 +306,7 @@ public class MultipleImages extends javax.swing.JFrame {
 
     /*Plays the  wav file*/
     public void playMusic() {
-        String path = System.getProperty("user.dir") + "/water-dripping-1.wav";
+        String path = System.getProperty("user.dir") + "/sound.wav";
         File audioFile = new File(path);
         try {
             audioStream = AudioSystem.getAudioInputStream(audioFile);
@@ -380,7 +377,6 @@ public class MultipleImages extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         epicSlider = new javax.swing.JSlider();
         jButton1 = new javax.swing.JButton();
-        configureButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -433,13 +429,6 @@ public class MultipleImages extends javax.swing.JFrame {
             }
         });
 
-        configureButton.setText("Configure");
-        configureButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                configureButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout optionPanelLayout = new javax.swing.GroupLayout(optionPanel);
         optionPanel.setLayout(optionPanelLayout);
         optionPanelLayout.setHorizontalGroup(
@@ -447,16 +436,11 @@ public class MultipleImages extends javax.swing.JFrame {
             .addGroup(optionPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1)
-                .addGap(36, 36, 36)
-                .addComponent(configureButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(23, 23, 23)
                 .addComponent(epicSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-
-        optionPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {configureButton, jButton1});
-
         optionPanelLayout.setVerticalGroup(
             optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(optionPanelLayout.createSequentialGroup()
@@ -466,17 +450,13 @@ public class MultipleImages extends javax.swing.JFrame {
                         .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, optionPanelLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(configureButton)))
+                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(optionPanelLayout.createSequentialGroup()
                                 .addGap(36, 36, 36)
                                 .addComponent(jLabel1)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-
-        optionPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {configureButton, jButton1});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -504,20 +484,8 @@ public class MultipleImages extends javax.swing.JFrame {
         this.redrawImages();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void configureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureButtonActionPerformed
-        /*cursor right key evenet keyboard simulation*/
-        /*try {
-            Robot robot = new Robot();
-            robot.keyPress(KeyEvent.VK_RIGHT);
-            robot.keyRelease(KeyEvent.VK_RIGHT);
-        } catch (AWTException ex) {
-            Logger.getLogger(MultipleImages.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-    }//GEN-LAST:event_configureButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton configureButton;
     private javax.swing.JSlider epicSlider;
     private javax.swing.JPanel imagesPanel;
     private javax.swing.JButton jButton1;

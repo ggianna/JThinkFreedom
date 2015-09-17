@@ -51,8 +51,7 @@ public class RemoveTileScreen extends javax.swing.JFrame {
         for (String s : categoryNames) {
             categoriesDlm.addElement(s);
         }
-        //categoryList.repaint();
-        //imageList.repaint();
+        
         if (selectedCategory != null) {
             fillImagesDlm();
         }
@@ -239,7 +238,6 @@ public class RemoveTileScreen extends javax.swing.JFrame {
         System.out.println("Selected category " + selectedCategory);
         System.out.println("Selected Image " + selectedImage);
         NodeList categoriesList = configFile.getElementsByTagName("category");
-        //System.out.println(categories.getLength());
         for (int i = 0; i < categoriesList.getLength(); i++) {
             Element el = (Element) categoriesList.item(i);
             if (el.getAttribute("name").equals(selectedCategory.trim())) {

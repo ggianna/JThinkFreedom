@@ -38,7 +38,6 @@ public class AddCategoryScreen extends javax.swing.JFrame {
     private Document configFile;
     private ArrayList<Category> categories;
 
-    /*usefull information about the edit part*/
     private Category editingCategory;
     private String editingCategoryName;
 
@@ -70,14 +69,15 @@ public class AddCategoryScreen extends javax.swing.JFrame {
         reWrite = true;
         init();
         fillInfo();
-        /*we dont want our brainless user to select a different category folder and fuck evrything up*/
+
+        /*dont let user change category fodler because all the images will be useless*/
         folderButton.setEnabled(false);
     }
 
     private void fillInfo() {
         rowsSpinner.setValue(editingCategory.getRows());
         columnsSpinner.setValue(editingCategory.getColumns());
-        /*if the parent of the editing cateogyr is not the main menu*/
+        /*if the parent of the editing category is not the main menu*/
         if (!editingCategory.getParentCategory().getName().equals("main menu")) {
             selectedCategory = editingCategory.getParentCategory().getName();
 
@@ -85,8 +85,12 @@ public class AddCategoryScreen extends javax.swing.JFrame {
         categoryField.setText(editingCategory.getName());
         imageField.setText(editingCategory.getText());
         if (!editingCategory.getParentCategory().getName().equals("main menu")) {
-            categoriesList.setSelectedValue(parser.attachTabs(editingCategory.depthOfCategory(), editingCategory.getParentCategory().getName()), true);
+            System.out.println(parser.attachTabs(editingCategory.depthOfCategory(), editingCategory.getParentCategory().getName()));
+            //categoriesList.setSelectedValue(parser.attachTabs(editingCategory.depthOfCategory(), editingCategory.getParentCategory().getName()), true);
+            categoriesList.setSelectedValue(editingCategoryName,true);
         }
+        /*the folder of the editing category*/
+        folder = editingCategory.getFolder();
     }
 
     private void fillCategoriesDlm() {
@@ -326,11 +330,11 @@ public class AddCategoryScreen extends javax.swing.JFrame {
         String textOfImage = imageField.getText();
         Category workingCategory = getCategory();
         System.out.println("");
-        if (!workingCategory.categoryExists(workingCategory, text.trim(),reWrite) &&
-                !text.equals("") || 
-                (reWrite==true && text.trim().equals(editingCategory.getName()))) {
+        if (!workingCategory.categoryExists(workingCategory, text.trim(), reWrite)
+                && !text.equals("")
+                || (reWrite == true && text.trim().equals(editingCategory.getName()))) {
             /*if the cateegory name is not being used*/
-            if (folder == null) {
+            if (folder != null) {
                 if (imageName == null && textOfImage.equals("")) {
                     JOptionPane.showMessageDialog(this, "Category must have an image or a least a representing text");
                 } else {
@@ -344,7 +348,6 @@ public class AddCategoryScreen extends javax.swing.JFrame {
                     if (reWrite == false) {
                         storeToXml(text, textOfImage);
                     } else {
-                        //System.out.println("yesssssssssss");
                         reWriteToXml(text, textOfImage);
                     }
                 }
@@ -358,31 +361,30 @@ public class AddCategoryScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void reWriteToXml(String categoryName, String imageText) {
-        System.out.println("category name is "+categoryName);
-       
+        System.out.println("category name is " + categoryName);
+
         Element element, el;
         NodeList categoriesLista = configFile.getElementsByTagName("category");
         for (int i = 0; i < categoriesLista.getLength(); i++) {
             element = (Element) categoriesLista.item(i);
-            System.out.println(element.getAttribute("name")+" "+editingCategory.getName());
+            System.out.println(element.getAttribute("name") + " " + editingCategory.getName());
             if (element.getAttribute("name").equals(editingCategory.getName())) {
                 element.setAttribute("name", categoryName);
                 NodeList children = element.getChildNodes();
-                //System.out.println(children.getLength());
                 for (int j = 0; j < children.getLength(); j++) {
                     if (children.item(j).getNodeType() == Node.ELEMENT_NODE) {
                         el = (Element) children.item(j);
                         switch (children.item(j).getNodeName()) {
                             case "rows":
-                                System.out.println("rows "+rowsValue);
+                                System.out.println("rows " + rowsValue);
                                 reWriteRows(el, rowsValue);
                                 break;
                             case "columns":
-                                System.out.println("columns "+columnsValue);
+                                System.out.println("columns " + columnsValue);
                                 reWriteColumns(el, columnsValue);
                                 break;
                             case "text":
-                                  System.out.println("text is"+imageText);
+                                System.out.println("text is" + imageText);
                                 reWriteText(el, imageText);
                                 break;
                             case "filename":
@@ -392,7 +394,7 @@ public class AddCategoryScreen extends javax.swing.JFrame {
                     }
                 }
             }
-           
+
         }
         parser.finalizeXmlChanges();
         JOptionPane.showMessageDialog(this, "Category has been modified Succesfully");
@@ -400,17 +402,14 @@ public class AddCategoryScreen extends javax.swing.JFrame {
 
     private void reWriteFileName(Element el, String fileName) {
         el.setTextContent(fileName);
-        //System.out.println();
     }
 
     private void reWriteText(Element el, String txt) {
         el.setTextContent(txt);
-        //System.out.println("txt is "+txt);
     }
 
     private void reWriteRows(Element el, int value) {
         el.setTextContent(String.valueOf(value));
-        //System.out.println("rows are "+value);
     }
 
     private void reWriteColumns(Element el, int value) {
@@ -474,10 +473,8 @@ public class AddCategoryScreen extends javax.swing.JFrame {
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             folder = chooser.getSelectedFile().getAbsolutePath();
-        } else {
-            /*in case of cancel*/
-            System.out.println("nothing to accept");
         }
+        System.out.println(folder);
     }//GEN-LAST:event_folderButtonActionPerformed
 
     private void imageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageButtonActionPerformed
@@ -486,29 +483,32 @@ public class AddCategoryScreen extends javax.swing.JFrame {
             chooser.setCurrentDirectory(new java.io.File(folder));
             chooser.setDialogTitle("Select image for the category");
             chooser.setAcceptAllFileFilterUsed(true);
-            chooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "png"));
+            chooser.setFileFilter(new FileNameExtensionFilter("Image Files", "png"));
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 if (reWrite == true) {
-                    if (!chooser.getSelectedFile().getAbsoluteFile().equals(editingCategory.getFolder())) {
+                    if (!chooser.getSelectedFile().getParentFile().getAbsolutePath().equals(folder)) {
                         JOptionPane.showMessageDialog(this, "You cant choose image from a different folder from the one of the category");
-                        imageName = editingCategory.getName();
                     } else {
                         imageName = chooser.getSelectedFile().getName();
                     }
-                } /*reWrite is false*/ else {
-                    imageName = chooser.getSelectedFile().getName();
                 }
-            } else {
-                System.out.println("nothing to accept");
+            }else{
+                /*else it is a new category*/
+                imageName = chooser.getSelectedFile().getName();
             }
-
-            if (editingCategory.tileExists(imageName)) {
+            /*if the image is already being used in this category*/
+            if (chosenCategory().tileExists(imageName)) {
                 JOptionPane.showMessageDialog(this, "This image is already being used try again");
                 imageName = null;
             }
         }
     }//GEN-LAST:event_imageButtonActionPerformed
+
+    private Category chosenCategory() {
+        int value = categoriesDlm.indexOf(selectedCategory);
+        return categories.get(value + 1);
+    }
 
     private void categoriesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoriesListValueChanged
         if (reWrite == false) {
@@ -520,7 +520,8 @@ public class AddCategoryScreen extends javax.swing.JFrame {
             if (editingCategory.getParentCategory().getName().equals("main menu")) {
                 categoriesList.setSelectedValue(null, false);
             } else {
-                categoriesList.setSelectedValue(parser.attachTabs(editingCategory.depthOfCategory(), editingCategory.getParentCategory().getName()), true);
+                categoriesList.setSelectedValue(editingCategoryName,true);
+                //categoriesList.setSelectedValue(parser.attachTabs(editingCategory.depthOfCategory(), editingCategory.getParentCategory().getName()), true);
             }
         }
     }//GEN-LAST:event_categoriesListValueChanged

@@ -54,7 +54,7 @@ public class AddTileScreen extends javax.swing.JFrame {
         //existingCategory = s;
         editingCategory = category;
         editingTile = t;
-        selectedCategory = s;//existingCategory.getName();
+        selectedCategory = s;
         imageName = t.getFileName();
         fillInfo();
     }
@@ -235,28 +235,22 @@ public class AddTileScreen extends javax.swing.JFrame {
         chooser.setCurrentDirectory(new java.io.File(chosenCategory().getFolder()));
         chooser.setDialogTitle("Select Picture");
         chooser.setAcceptAllFileFilterUsed(false);
-        chooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "png"));
+        chooser.setFileFilter(new FileNameExtensionFilter("Image Files", "png"));
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            if (reWrite == true) {
-                if (!chooser.getSelectedFile().getAbsoluteFile().equals(editingCategory.getFolder())) {
-                    JOptionPane.showMessageDialog(this, "You cant choose image from a different folder from the one of the category");
-                    imageName = editingTile.getFileName();
-                    //imageName = chooser.getSelectedFile().getName();
-                } else {
-                    imageName = chooser.getSelectedFile().getName();
-                }
+            //System.out.println(chooser.getSelectedFile().getParentFile().getAbsolutePath()+" "+chosenCategory().getFolder());
+            if (!chooser.getSelectedFile().getParentFile().getAbsolutePath().equals(chosenCategory().getFolder())) {
+                JOptionPane.showMessageDialog(this, "You cant choose image from a different folder from the one of the category");
             } else {
-                imageName =chooser.getSelectedFile().getName(); ;
+                imageName = chooser.getSelectedFile().getName();
             }
-        }else{
-            System.out.println("nothing to accept");
-        }
-        if (chosenCategory().tileExists(imageName)) {
-            JOptionPane.showMessageDialog(this, "This image is already being used try again");
-            imageName = null;
-        }
 
+            /*if the image is being used then inform the user and dont accept the file*/
+            if (chosenCategory().tileExists(imageName)) {
+                JOptionPane.showMessageDialog(this, "This image is already being used try again");
+                imageName = null;
+            }
+        }
     }//GEN-LAST:event_imageButtonActionPerformed
 
     private Category chosenCategory() {
@@ -265,7 +259,6 @@ public class AddTileScreen extends javax.swing.JFrame {
     }
 
     private void categoryListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoryListValueChanged
-        /*if we edit a tile we must keep the category final OK?*/
         if (reWrite == false) {
             selectedCategory = (String) categoryList.getSelectedValue();
             if (categoryList.getBorder() != null) {
@@ -274,8 +267,6 @@ public class AddTileScreen extends javax.swing.JFrame {
         } else {
             categoryList.setSelectedValue(selectedCategory, true);
         }
-
-        //System.out.println(selectedCategory);
     }//GEN-LAST:event_categoryListValueChanged
 
     private Border createBorder(Color color) {
@@ -313,9 +304,6 @@ public class AddTileScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void reWriteToXml() {
-        //System.out.println(imageName + " " + jTextField1.getText());
-        //System.out.println(existingTile.getFileName());
-        /*pass the tile changes to the xml*/
         NodeList categoriesList = configFile.getElementsByTagName("category");
         /*for all categories*/
         for (int i = 0; i < categoriesList.getLength(); i++) {
@@ -330,14 +318,12 @@ public class AddTileScreen extends javax.swing.JFrame {
                         Element newElement = null;
                         /*if it is resource and the filename has changed then were fucked cause its not a resource anymore so changed it to a tile*/
                         if ((tile.getNodeName().equals("resource") && !editingTile.getFileName().equals(imageName)) || tile.getNodeName().equals("tile")) {
-                            //el.removeChild(tile);
                             newElement = createTile(imageName, jTextField1.getText(), "tile");
                             el.removeChild(tile);
                             store(el, newElement);
                             return;
-                            /*else if we have a resource and the file hasn chagnes so its still refers to a resource*/
+                            /*else if we have a resource and the file has no chagnes so it still refers to a resource*/
                         } else if (tile.getNodeName().equals("resource")) {
-                            //el.removeChild(tile);
                             newElement = createTile(imageName, jTextField1.getText(), "resource");
                             el.removeChild(tile);
                             store(el, newElement);
