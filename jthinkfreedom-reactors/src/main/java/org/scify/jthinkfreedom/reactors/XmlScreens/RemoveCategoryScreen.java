@@ -5,18 +5,9 @@
  */
 package org.scify.jthinkfreedom.reactors.XmlScreens;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.scify.jthinkfreedom.reactors.Category;
 import org.scify.jthinkfreedom.reactors.Parser;
 import org.w3c.dom.Document;

@@ -14,6 +14,7 @@ public class Tile {
     private String imagePath;
     private String txt;
     private String category;
+    private String musicFilePath;
 
     public String getFileName() {
         return fileName;

@@ -30,7 +30,7 @@ public class CapturekeyStimulus extends StimulusAdapter {
             }
         }
     }
-    /* */
+    
 
     @Override
     public boolean shouldReact() {

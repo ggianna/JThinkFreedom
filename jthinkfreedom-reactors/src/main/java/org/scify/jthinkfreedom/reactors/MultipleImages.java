@@ -113,7 +113,6 @@ public class MultipleImages extends javax.swing.JFrame {
         setImages(usedImages);
         setRedraw(false);
 
-        System.out.println("usedImges" + usedImages);
     }
 
     /*Create a new panel that contains the text BACK ,if selected by ther user show the contents of the previous category*/
@@ -122,7 +121,7 @@ public class MultipleImages extends javax.swing.JFrame {
         JPanel panel = new JPanel(new BorderLayout());
         paneList.add(panel);
         JLabel imgLabel = new JLabel("");
-        JLabel txtLabel = new JLabel("BACK");
+        JLabel txtLabel = new JLabel(" ");
         txtLabel.setFont(new Font("Courier New", Font.PLAIN, 40));
         panel.setBorder(createBorder(Color.WHITE));
         panel.setBackground(Color.LIGHT_GRAY);
@@ -130,7 +129,7 @@ public class MultipleImages extends javax.swing.JFrame {
         panel.add(imgLabel, BorderLayout.SOUTH);
         txtLabel.setHorizontalAlignment(JLabel.CENTER);
         imagesPanel.add(panel);
-        contents.add(new Tile("", "", "none", ""));
+        contents.add(new Tile("", "Back", "none", ""));
     }
 
     /*Creates new panel with image and text label and positions them with border layout then adds this panel to panel list which holds all the panels that contain image and text label*/
@@ -153,15 +152,11 @@ public class MultipleImages extends javax.swing.JFrame {
         Parser parser = new Parser();
         categories = parser.getCategories();
         currentCategory = categories.get(0);
-        System.out.println(currentCategory.getName());
         directTiles = currentCategory.getTiles();
         subCategoriesTiles = currentCategory.getSubCategoriesTiles();
         usedImages = directTiles.size() + subCategoriesTiles.size();
         contents.addAll(directTiles);
         contents.addAll(subCategoriesTiles);
-        for (Tile t : contents) {
-            System.out.println(t.getImagePath());
-        }
     }
 
     /*Change the content in orber to be relevant to this category*/
@@ -217,7 +212,7 @@ public class MultipleImages extends javax.swing.JFrame {
     /*Sets */
     private void setImages(int activeImages) {
         for (int i = 0; i < activeImages; i++) {
-            addLabel(contents.get(i).getImagePath(), paneList.get(i), contents.get(i).getTxt());
+            addLabel(contents.get(i).getImagePath(), paneList.get(i), contents.get(i).getTxt(), contents.get(i).getFileName());
         }
     }
 
@@ -254,30 +249,37 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     /*Stops music and begins thread that changes border*/
-    public void beginThread() {
-        stopMusic();
+    public void beginThread(boolean f) {
+        if (f == true) {
+            stopMusic();
+        }
         state = true;
         thread.resume();
     }
 
     /*Stops the thread that chages the border of images and plays music*/
-    public void stopThread() {
-        if (!currentImageIsCategory()) {
+    public void stopThread(boolean f) {
+        if (f == false) {
             state = false;
             thread.suspend();
-            playMusic();
-
         } else {
-            changeCategory();
+            if (!currentImageIsCategory()) {
+                state = false;
+                thread.suspend();
+                playMusic();
+
+            } else {
+                changeCategory();
+            }
         }
     }
 
-    /*Retruns the stete of the thread that chages border*/
+    /*Retruns the state of the thread that changes the border*/
     public boolean isState() {
         return state;
     }
 
-    /*Sets stete of thread*/
+    /*Sets state of the run*/
     public void setState(boolean state) {
         this.state = state;
     }
@@ -343,29 +345,34 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     /*adds images with their representing text into the jlabels*/
-    private void addLabel(String file_path, JPanel panel, String txtName) {
+    private void addLabel(String file_path, JPanel panel, String txtName, String fileName) {
         JLabel label = (JLabel) panel.getComponents()[0];
         JLabel txtLabel = (JLabel) panel.getComponents()[1];
         txtLabel.setFont(new Font("Courier New", Font.PLAIN, 40));
         txtLabel.setText(txtName);
         ImageIcon icon;
-        if (!file_path.equalsIgnoreCase("")) {
-            icon = new ImageIcon(file_path);
-            Image img = icon.getImage();
-            Dimension d = getImageScale(label, img);
-            Double w = d.getWidth();
-            Double h = d.getHeight();
-            int width = w.intValue();
-            int height = h.intValue();
-            Image newimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            ImageIcon newIcon = new ImageIcon(newimg);
-            label.setIcon(newIcon);
+        if (!fileName.equals("")) {
+            if (!file_path.equalsIgnoreCase("")) {
+                icon = new ImageIcon(file_path);
+                Image img = icon.getImage();
+                Dimension d = getImageScale(label, img);
+                Double w = d.getWidth();
+                Double h = d.getHeight();
+                int width = w.intValue();
+                int height = h.intValue();
+                Image newimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                ImageIcon newIcon = new ImageIcon(newimg);
+                label.setIcon(newIcon);
+            }
+            label.setHorizontalTextPosition(JLabel.CENTER);
+            label.setVerticalTextPosition(JLabel.BOTTOM);
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setVerticalAlignment(JLabel.CENTER);
+        } else {
+            panel.removeAll();
+            panel.add(txtLabel, BorderLayout.CENTER);
         }
 
-        label.setHorizontalTextPosition(JLabel.CENTER);
-        label.setVerticalTextPosition(JLabel.BOTTOM);
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setVerticalAlignment(JLabel.CENTER);
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -436,10 +443,11 @@ public class MultipleImages extends javax.swing.JFrame {
             .addGroup(optionPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE)
+                .addGap(63, 63, 63)
                 .addComponent(jLabel1)
-                .addGap(23, 23, 23)
-                .addComponent(epicSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(epicSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(203, Short.MAX_VALUE))
         );
         optionPanelLayout.setVerticalGroup(
             optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -447,13 +455,10 @@ public class MultipleImages extends javax.swing.JFrame {
                 .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(epicSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
                     .addGroup(optionPanelLayout.createSequentialGroup()
-                        .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, optionPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(optionPanelLayout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(jLabel1)))
+                        .addContainerGap()
+                        .addGroup(optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -463,7 +468,7 @@ public class MultipleImages extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(optionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(imagesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(imagesPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

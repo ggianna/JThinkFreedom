@@ -8,8 +8,10 @@ package org.scify.jthinkfreedom.reactors;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -20,6 +22,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -27,6 +32,7 @@ import org.w3c.dom.NodeList;
  */
 public class Parser {
 
+    private static final Logger logger = LogManager.getLogger(Parser.class);
     private ArrayList<Category> categories;
     private String xmlPath;
     private Document configFile;
@@ -39,7 +45,7 @@ public class Parser {
             xmlPath = System.getProperty("user.dir") + "/categories.xml";
             configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xmlPath));
             configFile.normalize();
-        } catch (Exception ex) {
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
             ex.printStackTrace(System.err);
         }
         parse();
@@ -50,15 +56,10 @@ public class Parser {
         ArrayList<Tile> foo;
         for (Category c : categories) {
             System.out.println(c.getName());
-            System.out.println("\t"+c.getRows());
-            System.out.println("\t"+c.getColumns());
-            /*foo = c.getTiles();
-            System.out.println(c.getName());
-            for (Tile t : foo) {
-                System.out.println("\t" + t.getImagePath());
-            }*/
-            //System.out.println(c.getName());
-            //System.out.println(c.deptfOfCategory());
+            foo = c.getTiles();
+            for(int i=0; i< foo.size();i++){
+                System.out.println("\t"+foo.get(i).getFileName());
+            }
         }
 
     }
@@ -104,6 +105,8 @@ public class Parser {
                         String newFolder = createFolder(category.getFolder());
                         category.setFolder(newFolder);
                         storeTile(children.item(i), category, category.getResourcePath());
+                        break;
+                    case "music":
                         break;
                 }
             }
@@ -160,11 +163,7 @@ public class Parser {
             }
         }
         Tile tile = new Tile(imagePath, text, "", fileName);
-        //if (type.equals("tile")) {
         category.storeTile(tile);
-        //} else {
-        //category.storeToResources(tile);
-        //}
     }
 
     private void storeResource(Node node, Category category, String folderName) {
@@ -232,7 +231,6 @@ public class Parser {
             x--;
         }
         text = newText + text;
-        //System.out.println(text);
         return text;
     }
 

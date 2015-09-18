@@ -77,6 +77,13 @@
 			<filename>medicine.png</filename>
 			<text>2222222222</text>
 		</tile>
+		<category name="FARMAKA" resource="no">
+			<rows>3</rows>
+			<columns>3</columns>
+			<folder>/home/xrousakis/Desktop/food/burger</folder>
+			<filename/>
+			<text>ASDASD</text>
+		</category>
 	</category>
 	<category name="Ψυχαγωγία" resource="no">
 		<rows>1</rows>
@@ -88,6 +95,21 @@
 			<filename>14.png</filename>
 			<text>Ειδήσεις</text>
 		</tile>
-		
+		<tile>
+			<filename>13.png</filename>
+			<text>ASASD</text>
+		</tile>
 	</category>
+	<category name="sample" resource="no">
+		<rows>1</rows>
+		<columns>1</columns>
+		<folder>Images1</folder>
+		<filename/>
+		<text>sample</text>
+		<resource>
+			<filename/>
+			<text>Resource</text>
+		</resource>
+	</category>
+	
 </category>

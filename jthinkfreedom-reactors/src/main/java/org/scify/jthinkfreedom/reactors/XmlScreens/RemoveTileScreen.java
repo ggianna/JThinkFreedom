@@ -206,7 +206,6 @@ public class RemoveTileScreen extends javax.swing.JFrame {
     private void categoryListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoryListValueChanged
         if (evt.getValueIsAdjusting()) {
             selectedCategory = (String) categoryList.getSelectedValue();
-            System.out.println(selectedCategory);
             selectedImage = null;
             fillImagesDlm();
         }
@@ -216,7 +215,6 @@ public class RemoveTileScreen extends javax.swing.JFrame {
     private void imageListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_imageListValueChanged
         if (evt.getValueIsAdjusting()) {
             selectedImage = (String) imageList.getSelectedValue();
-            System.out.println(selectedImage);
         }
 
     }//GEN-LAST:event_imageListValueChanged
@@ -235,8 +233,6 @@ public class RemoveTileScreen extends javax.swing.JFrame {
      Delete from xml file the chosen tile (image and text)
      */
     private void deleteFromXml() {
-        System.out.println("Selected category " + selectedCategory);
-        System.out.println("Selected Image " + selectedImage);
         NodeList categoriesList = configFile.getElementsByTagName("category");
         for (int i = 0; i < categoriesList.getLength(); i++) {
             Element el = (Element) categoriesList.item(i);
@@ -252,7 +248,6 @@ public class RemoveTileScreen extends javax.swing.JFrame {
 
                             if (fullname.equals(selectedImage)) {
                                 el.removeChild(tile);
-                                System.out.println("here yes");
                                 parser.finalizeXmlChanges();
                                 JOptionPane.showMessageDialog(this, "Image Removed.");
                                 init();
