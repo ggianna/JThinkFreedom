@@ -13,23 +13,19 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -37,6 +33,8 @@ import javax.swing.border.LineBorder;
  */
 public class MultipleImages extends javax.swing.JFrame {
 
+    private Parser parser;
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(MultipleImages.class);
     /*these 2 variables can be used if you want to read images directly from the file and avoid the xml*/
     protected final String imagesPath;
     protected ArrayList<String> contentsNames;
@@ -71,6 +69,7 @@ public class MultipleImages extends javax.swing.JFrame {
      * @param imagesPath
      */
     public MultipleImages(String imagesPath) {
+        logger.info("Application Starts");
         initComponents();
         this.imagesPath = imagesPath;
         lock = new Object();
@@ -149,7 +148,7 @@ public class MultipleImages extends javax.swing.JFrame {
 
     private void parse() {
         contents = new ArrayList();
-        Parser parser = new Parser();
+        parser = new Parser();
         categories = parser.getCategories();
         currentCategory = categories.get(0);
         directTiles = currentCategory.getTiles();
@@ -235,8 +234,8 @@ public class MultipleImages extends javax.swing.JFrame {
                 while (true) {
                     try {
                         Thread.sleep(getElapsedTime() * 1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(SlideShowReactor.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        logger.error(parser.returnStackTrace(ex));
                     }
                     if (getRedraw() == false) {
                         swithcPic();
@@ -317,8 +316,8 @@ public class MultipleImages extends javax.swing.JFrame {
             audioClip = (Clip) AudioSystem.getLine(info);
             audioClip.open(audioStream);
             audioClip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-            Logger.getLogger(MultipleImages.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            logger.error(parser.returnStackTrace(ex));
         }
     }
 
@@ -327,8 +326,8 @@ public class MultipleImages extends javax.swing.JFrame {
         audioClip.close();
         try {
             audioStream.close();
-        } catch (IOException ex) {
-            Logger.getLogger(MultipleImages.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            logger.error(parser.returnStackTrace(ex));
         }
     }
 

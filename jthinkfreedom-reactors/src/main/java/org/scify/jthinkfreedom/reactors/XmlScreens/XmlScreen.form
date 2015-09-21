@@ -42,14 +42,10 @@
                   <Group type="102" alignment="2" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="2" groupAlignment="2" attributes="0">
-                              <Component id="deleteImageButton" linkSize="1" alignment="2" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel2" alignment="2" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="103" alignment="2" groupAlignment="2" attributes="0">
-                              <Component id="deleteCategoryButton" linkSize="1" alignment="2" min="-2" max="-2" attributes="0"/>
-                              <Component id="closeButton" linkSize="1" alignment="2" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="deleteImageButton" linkSize="1" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="deleteCategoryButton" linkSize="1" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="closeButton" linkSize="1" alignment="2" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>

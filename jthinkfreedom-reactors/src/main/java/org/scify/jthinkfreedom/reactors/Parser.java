@@ -8,10 +8,10 @@ package org.scify.jthinkfreedom.reactors;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -24,7 +24,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -42,23 +41,31 @@ public class Parser {
     public Parser() {
         categories = new ArrayList();
         try {
+            //IOException ex = new IOException();
             xmlPath = System.getProperty("user.dir") + "/categories.xml";
             configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xmlPath));
             configFile.normalize();
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            ex.printStackTrace(System.err);
+            //throw ex;
+        } catch (Exception ex) {
+            logger.error(returnStackTrace(ex));
         }
         parse();
     }
 
-    
+    public String returnStackTrace(Exception ex) {
+        StringWriter sWriter = new StringWriter();
+        PrintWriter pWriter = new PrintWriter(sWriter);
+        ex.printStackTrace(pWriter);
+        return sWriter.toString();
+    }
+
     public void print() {
         ArrayList<Tile> foo;
         for (Category c : categories) {
             System.out.println(c.getName());
             foo = c.getTiles();
-            for(int i=0; i< foo.size();i++){
-                System.out.println("\t"+foo.get(i).getFileName());
+            for (int i = 0; i < foo.size(); i++) {
+                System.out.println("\t" + foo.get(i).getFileName());
             }
         }
 
@@ -240,8 +247,8 @@ public class Parser {
             tr.setOutputProperty(OutputKeys.INDENT, "yes");
             tr.transform(new DOMSource(configFile),
                     new StreamResult(new FileOutputStream(new File(getXmlPath()))));
-        } catch (TransformerException | FileNotFoundException e) {
-            e.printStackTrace(System.err);
+        } catch (Exception ex) {
+            logger.error(returnStackTrace(ex));
         }
         //renew information
         parse();

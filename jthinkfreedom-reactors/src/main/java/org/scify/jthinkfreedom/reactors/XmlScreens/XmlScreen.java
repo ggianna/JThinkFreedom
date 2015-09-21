@@ -5,13 +5,19 @@
  */
 package org.scify.jthinkfreedom.reactors.XmlScreens;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javax.swing.JFrame;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author xrousakis
  */
 public class XmlScreen extends javax.swing.JFrame {
+
+    private static final Logger logger = LogManager.getLogger(XmlScreen.class);
 
     /**
      * Creates new form XmlScreen
@@ -158,50 +164,88 @@ public class XmlScreen extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
+    private String returnStackTrace(Exception ex) {
+        StringWriter sWriter = new StringWriter();
+        PrintWriter pWriter = new PrintWriter(sWriter);
+        ex.printStackTrace(pWriter);
+        return sWriter.toString();
+    }
+
     private void addImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addImageButtonActionPerformed
         // TODO add your handling code here:
-        AddTileScreen frame = new AddTileScreen();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            AddTileScreen frame = new AddTileScreen();
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        } catch (Exception ex) {
+            logger.error(returnStackTrace(ex));
+        }
     }//GEN-LAST:event_addImageButtonActionPerformed
 
     private void deleteImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteImageButtonActionPerformed
         // TODO add your handling code here:
-        RemoveTileScreen frame = new RemoveTileScreen();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            RemoveTileScreen frame = new RemoveTileScreen();
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        } catch (Exception ex) {
+            logger.error(returnStackTrace(ex));
+        }
 
     }//GEN-LAST:event_deleteImageButtonActionPerformed
 
     private void editImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editImageButtonActionPerformed
         // TODO add your handling code here:
-        EditTileScreen frame = new EditTileScreen();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            EditTileScreen frame = new EditTileScreen();
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        } catch (Exception ex) {
+            logger.error(returnStackTrace(ex));
+        }
+
 
     }//GEN-LAST:event_editImageButtonActionPerformed
 
     private void addCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCategoryButtonActionPerformed
         // TODO add your handling code here:
-        AddCategoryScreen frame = new AddCategoryScreen();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            AddCategoryScreen frame = new AddCategoryScreen();
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        } catch (Exception ex) {
+            logger.error(returnStackTrace(ex));
+        }
 
     }//GEN-LAST:event_addCategoryButtonActionPerformed
 
     private void deleteCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCategoryButtonActionPerformed
         // TODO add your handling code here:
-        RemoveCategoryScreen frame = new RemoveCategoryScreen();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            RemoveCategoryScreen frame = new RemoveCategoryScreen();
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        } catch (Exception ex) {
+            logger.error(returnStackTrace(ex));
+        }
 
     }//GEN-LAST:event_deleteCategoryButtonActionPerformed
 
     private void editCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCategoryButtonActionPerformed
         // TODO add your handling code here:
-        EditCategoryScreen frame = new EditCategoryScreen();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            EditCategoryScreen frame = new EditCategoryScreen();
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        } catch (Exception ex) {
+            logger.error(returnStackTrace(ex));
+        }
 
     }//GEN-LAST:event_editCategoryButtonActionPerformed
 

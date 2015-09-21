@@ -1,0 +1,4 @@
+21 19 2015 11:19:10 Line:53 [main] ERROR org.scify.jthinkfreedom.reactors.Parser - java.io.IOException
+	at org.scify.jthinkfreedom.reactors.Parser.<init>(Parser.java:47)
+	at org.scify.jthinkfreedom.reactors.Parser.main(Parser.java:219)
+
