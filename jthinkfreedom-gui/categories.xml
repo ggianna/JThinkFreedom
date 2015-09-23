@@ -14,6 +14,7 @@
 		<tile>
 			<filename>1.png</filename>
 			<text>Τουαλέτα</text>
+			<sound>toualeta</sound>
 		</tile>
 		
 		<!--<resource>
@@ -30,6 +31,7 @@
 		<resource>
 			<filename>10.png</filename>
 			<text>Resource</text>
+			<sound>sample resource</sound>
 		</resource>
 	</category>
 	<category name="Φαγητό" resource="no">
@@ -41,10 +43,12 @@
 		<tile>
 			<filename>pizza_PNG7134.png</filename>
 			<text>Pizza</text>
+			<sound>pizza</sound>
 		</tile>
 		<tile>
 			<filename>12.png</filename>
 			<text>Κανονικό φαγητό</text>
+			<sound>Κανονικό</sound>
 		</tile>
 		<category name="Φαγητό2" resource="no">
 			<rows>12</rows>
@@ -55,6 +59,7 @@
 			<tile>
 				<filename>12.png</filename>
 				<text>Κανονικό φαγητό</text>
+				<sound></sound>
 			</tile>
 		</category>	
 
@@ -68,14 +73,17 @@
 		<tile>
 			<filename>15.png</filename>
 			<text>Παυσίπονο</text>
+			<sound>Παυσίπονο</sound>
 		</tile>
 		<tile>
 			<filename>15.png</filename>
 			<text>1111111111</text>
+			<sound>1111111111</sound>
 		</tile>
 		<tile>
 			<filename>medicine.png</filename>
 			<text>2222222222</text>
+			<sound>2222222222</sound>
 		</tile>
 		<category name="FARMAKA" resource="no">
 			<rows>3</rows>
@@ -94,13 +102,15 @@
 		<tile>
 			<filename>14.png</filename>
 			<text>Ειδήσεις</text>
+			<sound>Ειδήσεις</sound>
 		</tile>
 		<tile>
 			<filename>13.png</filename>
 			<text>ASASD</text>
+			<sound>ASASD</sound>
 		</tile>
 	</category>
-	<category name="sample" resource="no">
+	<category name="sample" resource="yes">
 		<rows>1</rows>
 		<columns>1</columns>
 		<folder>Images1</folder>
@@ -109,6 +119,7 @@
 		<resource>
 			<filename/>
 			<text>Resource</text>
+			<sound>Resource</sound>
 		</resource>
 	</category>
 	

@@ -6,7 +6,6 @@
 package org.scify.jthinkfreedom.reactors;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -29,7 +27,7 @@ import org.apache.logging.log4j.LogManager;
  *
  * @author rou
  */
-public class Parser {
+public final class Parser {
 
     private static final Logger logger = LogManager.getLogger(Parser.class);
     private ArrayList<Category> categories;
@@ -41,7 +39,6 @@ public class Parser {
     public Parser() {
         categories = new ArrayList();
         try {
-            //IOException ex = new IOException();
             xmlPath = System.getProperty("user.dir") + "/categories.xml";
             configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xmlPath));
             configFile.normalize();
@@ -113,8 +110,6 @@ public class Parser {
                         category.setFolder(newFolder);
                         storeTile(children.item(i), category, category.getResourcePath());
                         break;
-                    case "music":
-                        break;
                 }
             }
         }
@@ -161,15 +156,18 @@ public class Parser {
         String imagePath = null;
         String text = null;
         String fileName = null;
+        String sound = null;
         for (int i = 0; i < node.getChildNodes().getLength(); i++) {
             if (node.getChildNodes().item(i).getNodeName().equals("filename")) {
                 fileName = node.getChildNodes().item(i).getTextContent();
                 imagePath = categoryFolder + "/" + fileName;
             } else if (node.getChildNodes().item(i).getNodeName().equals("text")) {
                 text = node.getChildNodes().item(i).getTextContent();
+            } else if (node.getChildNodes().item(i).getNodeName().equals("sound")) {
+                sound = node.getChildNodes().item(i).getTextContent();
             }
         }
-        Tile tile = new Tile(imagePath, text, "", fileName);
+        Tile tile = new Tile(imagePath, text, "", fileName, sound);
         category.storeTile(tile);
     }
 

@@ -34,7 +34,7 @@ public class SlideShowReactor extends ReactorAdapter {
     public void react() {
 
         if (open == false) {
-
+            
             gui = new MultipleImages(imagesPath);
             gui.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {

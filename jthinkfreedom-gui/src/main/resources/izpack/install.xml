@@ -1,5 +1,0 @@
-<installation version="5.0">
-  <variables>
-    <variable name="RESOURCEROOT" value="src/main/izpack"/>
-  </variables>
- </installation>

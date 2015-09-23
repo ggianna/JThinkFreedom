@@ -128,7 +128,7 @@ public class MultipleImages extends javax.swing.JFrame {
         panel.add(imgLabel, BorderLayout.SOUTH);
         txtLabel.setHorizontalAlignment(JLabel.CENTER);
         imagesPanel.add(panel);
-        contents.add(new Tile("", "Back", "none", ""));
+        contents.add(new Tile("", "Back", "none", "",""));
     }
 
     /*Creates new panel with image and text label and positions them with border layout then adds this panel to panel list which holds all the panels that contain image and text label*/
@@ -305,9 +305,15 @@ public class MultipleImages extends javax.swing.JFrame {
 
     }
 
-    /*Plays the  wav file*/
     public void playMusic() {
-        String path = System.getProperty("user.dir") + "/sound.wav";
+        String path;
+        //if the tile has custom selected sound play it else play the default which is the sound.wav
+        if (contents.get(tmpCurrentImage).getMusicFile().equals("")) {
+            path = System.getProperty("user.dir") + "/sound.wav";
+        } else {
+            path = contents.get(tmpCurrentImage).getMusicFile();
+        }
+        
         File audioFile = new File(path);
         try {
             audioStream = AudioSystem.getAudioInputStream(audioFile);
@@ -317,17 +323,18 @@ public class MultipleImages extends javax.swing.JFrame {
             audioClip.open(audioStream);
             audioClip.start();
         } catch (Exception ex) {
-            logger.error(parser.returnStackTrace(ex));
+            logger.fatal(parser.returnStackTrace(ex));
         }
     }
 
-    //stop wav file from playing
     public void stopMusic() {
-        audioClip.close();
-        try {
-            audioStream.close();
-        } catch (Exception ex) {
-            logger.error(parser.returnStackTrace(ex));
+        if (audioClip.isOpen()) {
+            audioClip.close();
+            try {
+                audioStream.close();
+            } catch (Exception ex) {
+                logger.error(parser.returnStackTrace(ex));
+            }
         }
     }
 
@@ -442,11 +449,11 @@ public class MultipleImages extends javax.swing.JFrame {
             .addGroup(optionPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1)
-                .addGap(63, 63, 63)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(33, 33, 33)
                 .addComponent(epicSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addGap(103, 103, 103))
         );
         optionPanelLayout.setVerticalGroup(
             optionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

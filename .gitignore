@@ -1,3 +1,5 @@
 jthinkfreedom-*/target/
 nb-configuration.xml
 nbactions.xml
+/Installation/target/
+/installer/target/

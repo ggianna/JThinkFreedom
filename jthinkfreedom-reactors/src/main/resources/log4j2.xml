@@ -2,7 +2,7 @@
 <Configuration status="WARN">
     <Appenders>
         <File name="MyFile" fileName="logs/app.log">
-            <PatternLayout pattern="%d{dd mm yyyy HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+            <PatternLayout pattern="%d{dd-MM-yyyy HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
     </Appenders>
     <Loggers>

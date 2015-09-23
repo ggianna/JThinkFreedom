@@ -10,27 +10,28 @@ package org.scify.jthinkfreedom.reactors;
  * @author xrousakis
  */
 public class Tile {
+
     private String fileName;
     private String imagePath;
     private String txt;
     private String category;
-    private String musicFilePath;
+    private String soundFile;
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-    
     public Tile(String imagePath, String txt, String category) {
         this.imagePath = imagePath;
         this.txt = txt;
         this.category = category;
     }
-    
-    public Tile(String imagePath, String txt, String category,String fileName) {
+
+    public Tile(String imagePath, String txt, String category, String fileName, String soundFile) {
+        this.imagePath = imagePath;
+        this.txt = txt;
+        this.category = category;
+        this.fileName = fileName;
+        this.soundFile = soundFile;
+    }
+
+    public Tile(String imagePath, String txt, String category, String fileName) {
         this.imagePath = imagePath;
         this.txt = txt;
         this.category = category;
@@ -44,6 +45,14 @@ public class Tile {
 
     public Tile() {
 
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getCategory() {
@@ -68,6 +77,14 @@ public class Tile {
 
     public void setTxt(String txt) {
         this.txt = txt;
+    }
+
+    public String getMusicFile() {
+        return soundFile;
+    }
+
+    public void setMusicFile(String musicFile) {
+        this.soundFile = musicFile;
     }
 
 }

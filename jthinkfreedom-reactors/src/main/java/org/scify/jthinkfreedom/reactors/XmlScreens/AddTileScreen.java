@@ -33,17 +33,17 @@ public class AddTileScreen extends javax.swing.JFrame {
     private boolean reWrite;
     private Document configFile;
     private Parser parser;
-    private String existingImage;
+    private ArrayList<Category> categories;
     private String imageName;
     private String selectedCategory;
-    private ArrayList<Category> categories;
-    private String existingCategory;
-    private Tile editingTile;
-    private Category editingCategory;
 
-    /**
-     * Creates new form TileScreen
-     */
+    private String existingCategory;
+    private String existingImage;
+    private Category editingCategory;
+    private Tile editingTile;
+
+    private String soundFile;
+
     public AddTileScreen(String s, Tile t, Category category) {
         reWrite = true;
         dlm = new DefaultListModel();
@@ -56,6 +56,7 @@ public class AddTileScreen extends javax.swing.JFrame {
         editingTile = t;
         selectedCategory = s;
         imageName = t.getFileName();
+        soundFile = t.getMusicFile();
         fillInfo();
     }
 
@@ -99,6 +100,7 @@ public class AddTileScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         imageLabel = new javax.swing.JLabel();
         imageButton = new javax.swing.JButton();
@@ -109,6 +111,10 @@ public class AddTileScreen extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         textField = new javax.swing.JScrollPane();
         categoryList = new javax.swing.JList();
+        jLabel3 = new javax.swing.JLabel();
+        soundButton = new javax.swing.JButton();
+
+        jLabel2.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -152,6 +158,15 @@ public class AddTileScreen extends javax.swing.JFrame {
         });
         textField.setViewportView(categoryList);
 
+        jLabel3.setText("Selecet audio file:");
+
+        soundButton.setText("Select sound");
+        soundButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                soundButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -159,9 +174,10 @@ public class AddTileScreen extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(imageLabel)
-                    .addComponent(txtLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txtLabel)
+                    .addComponent(jLabel3)
+                    .addComponent(imageLabel))
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,12 +187,14 @@ public class AddTileScreen extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(imageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                            .addComponent(soundButton))
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                                 .addComponent(categoryLabel)
-                                .addContainerGap(53, Short.MAX_VALUE))
+                                .addContainerGap(17, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(35, 35, 35)
                                 .addComponent(textField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -187,7 +205,7 @@ public class AddTileScreen extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {imageButton, jTextField1});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {imageButton, jTextField1, soundButton});
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelButton, submitButton});
 
@@ -198,14 +216,18 @@ public class AddTileScreen extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(imageLabel)
                             .addComponent(imageButton))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtLabel)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(soundButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(submitButton)
@@ -218,6 +240,8 @@ public class AddTileScreen extends javax.swing.JFrame {
                         .addComponent(textField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(79, Short.MAX_VALUE))))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {imageButton, jTextField1, soundButton});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -238,13 +262,11 @@ public class AddTileScreen extends javax.swing.JFrame {
         chooser.setFileFilter(new FileNameExtensionFilter("Image Files", "png"));
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            //System.out.println(chooser.getSelectedFile().getParentFile().getAbsolutePath()+" "+chosenCategory().getFolder());
             if (!chooser.getSelectedFile().getParentFile().getAbsolutePath().equals(chosenCategory().getFolder())) {
                 JOptionPane.showMessageDialog(this, "You cant choose image from a different folder from the one of the category");
             } else {
                 imageName = chooser.getSelectedFile().getName();
             }
-
             /*if the image is being used then inform the user and dont accept the file*/
             if (chosenCategory().tileExists(imageName)) {
                 JOptionPane.showMessageDialog(this, "This image is already being used try again");
@@ -299,9 +321,27 @@ public class AddTileScreen extends javax.swing.JFrame {
 
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        /* Dispose current frame */
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void soundButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soundButtonActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
+        chooser.setDialogTitle("Select Picture");
+        chooser.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Sounds", "wav", "mp3");
+        chooser.setFileFilter(filter);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int returnVal=chooser.showOpenDialog(null);
+        System.out.println(JFileChooser.APPROVE_OPTION);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            soundFile = chooser.getSelectedFile().getName();
+            System.out.println("yes");
+        }else{
+            System.out.println("no");
+        }
+
+    }//GEN-LAST:event_soundButtonActionPerformed
 
     private void reWriteToXml() {
         NodeList categoriesList = configFile.getElementsByTagName("category");
@@ -346,12 +386,14 @@ public class AddTileScreen extends javax.swing.JFrame {
         Element tile = configFile.createElement(type);
         Element filename = configFile.createElement("filename");
         Element text = configFile.createElement("text");
+        Element sound = configFile.createElement("sound");
         filename.appendChild(configFile.createTextNode(nameOfImage));
         /* appending tags */
-
+        sound.appendChild(configFile.createTextNode(soundFile));
         text.appendChild(configFile.createTextNode(txt));
         tile.appendChild(filename);
         tile.appendChild(text);
+        tile.appendChild(sound);
 
         return tile;
 
@@ -411,7 +453,10 @@ public class AddTileScreen extends javax.swing.JFrame {
     private javax.swing.JButton imageButton;
     private javax.swing.JLabel imageLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton soundButton;
     private javax.swing.JButton submitButton;
     private javax.swing.JScrollPane textField;
     private javax.swing.JLabel txtLabel;
