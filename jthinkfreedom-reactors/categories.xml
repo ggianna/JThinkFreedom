@@ -58,10 +58,9 @@
 			<tile>
 				<filename>12.png</filename>
 				<text>Κανονικό φαγητό</text>
-				<sound>Κανονικό</sound>
+				<sound></sound>
 			</tile>
 		</category>	
-
 	</category>
 	<category name="Φάρμακα" resource="no">
 		<rows>1</rows>
@@ -89,8 +88,9 @@
 			<columns>3</columns>
 			<folder>/home/xrousakis/Desktop/food/burger</folder>
 			<filename/>
-			<text>ASDASD</text></category>
+			<text>ASDASD</text>
 		</category>
+	</category>
 	<category name="Ψυχαγωγία" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>

@@ -332,12 +332,12 @@ public class AddTileScreen extends javax.swing.JFrame {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Sounds", "wav", "mp3");
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        int returnVal=chooser.showOpenDialog(null);
+        int returnVal = chooser.showOpenDialog(null);
         System.out.println(JFileChooser.APPROVE_OPTION);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             soundFile = chooser.getSelectedFile().getName();
             System.out.println("yes");
-        }else{
+        } else {
             System.out.println("no");
         }
 
@@ -389,6 +389,9 @@ public class AddTileScreen extends javax.swing.JFrame {
         Element sound = configFile.createElement("sound");
         filename.appendChild(configFile.createTextNode(nameOfImage));
         /* appending tags */
+        if(soundFile==null)
+            soundFile ="";
+        System.out.println(soundFile);
         sound.appendChild(configFile.createTextNode(soundFile));
         text.appendChild(configFile.createTextNode(txt));
         tile.appendChild(filename);
@@ -401,6 +404,7 @@ public class AddTileScreen extends javax.swing.JFrame {
 
     /*Saves the information into the xml*/
     private void addToXml(String txt) {
+
         NodeList categoriesList = configFile.getElementsByTagName("category");
         for (int i = 0; i < categoriesList.getLength(); i++) {
             Element el = (Element) categoriesList.item(i);
@@ -410,7 +414,8 @@ public class AddTileScreen extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "New image added successfully");
             }
         }
-        configFile.normalize();
+
+        //configFile.normalize();
     }
 
     /**

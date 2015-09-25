@@ -5,6 +5,8 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author xrousakis
@@ -16,6 +18,27 @@ public class Tile {
     private String txt;
     private String category;
     private String soundFile;
+    private String imageIcon;
+
+    public Tile() {
+
+    }
+
+    public String getSoundFile() {
+        return soundFile;
+    }
+
+    public void setSoundFile(String soundFile) {
+        this.soundFile = soundFile;
+    }
+
+    public String getImageIcon() {
+        return imageIcon;
+    }
+
+    public void setImageIcon(String imageIcon) {
+        this.imageIcon = imageIcon;
+    }
 
     public Tile(String imagePath, String txt, String category) {
         this.imagePath = imagePath;
@@ -31,6 +54,15 @@ public class Tile {
         this.soundFile = soundFile;
     }
 
+    public Tile(String imagePath, String txt, String category, String fileName, String soundFile, String imageIcon) {
+        this.imagePath = imagePath;
+        this.txt = txt;
+        this.category = category;
+        this.fileName = fileName;
+        this.soundFile = soundFile;
+        this.imageIcon = imageIcon;
+    }
+
     public Tile(String imagePath, String txt, String category, String fileName) {
         this.imagePath = imagePath;
         this.txt = txt;
@@ -41,10 +73,6 @@ public class Tile {
     public Tile(String imagePath, String txt) {
         this.imagePath = imagePath;
         this.txt = txt;
-    }
-
-    public Tile() {
-
     }
 
     public String getFileName() {

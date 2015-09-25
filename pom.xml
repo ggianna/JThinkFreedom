@@ -18,5 +18,6 @@
         <module>jthinkfreedom-reactors</module>
         <module>jthinkfreedom-gui</module>
         <module>jthinkfreedom-keyboard</module>
+        <module>installer</module>
     </modules>
 </project>

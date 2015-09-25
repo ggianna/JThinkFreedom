@@ -16,7 +16,6 @@
 			<text>Τουαλέτα</text>
 			<sound>toualeta</sound>
 		</tile>
-		
 		<!--<resource>
 			<filename></filename>
 			<text>Sample</text>
@@ -114,7 +113,7 @@
 		<rows>1</rows>
 		<columns>1</columns>
 		<folder>Images1</folder>
-		<filename/>
+		<filename>2.png</filename>
 		<text>sample</text>
 		<resource>
 			<filename/>
@@ -122,5 +121,4 @@
 			<sound>Resource</sound>
 		</resource>
 	</category>
-	
 </category>

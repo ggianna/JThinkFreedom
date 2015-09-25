@@ -61,8 +61,13 @@ public final class Parser {
         for (Category c : categories) {
             System.out.println(c.getName());
             foo = c.getTiles();
-            for (int i = 0; i < foo.size(); i++) {
-                System.out.println("\t" + foo.get(i).getFileName());
+            /*for (int i = 0; i < foo.size(); i++) {
+               
+             }*/
+            if (c.getResourcePath() != null) {
+                System.out.println("\t" +c.getResourcePath());
+            } else {
+                 System.out.println("\t"+" crap");
             }
         }
 
@@ -92,12 +97,13 @@ public final class Parser {
                         break;
                     case "folder":
                         storeFolder(el, category);
+                        setPathForResources(el, category, element);
                         break;
                     case "filename":
-                        storeFilename(el, category);
+                        storeFilename(el, category, element);
                         break;
                     case "tile":
-                        storeTile(children.item(i), category, category.getFolder());
+                        storeTile(children.item(i), category, category.getFolder(), false);
                         break;
                     case "category":
                         Category newCategory = storeInfo(el);
@@ -105,10 +111,10 @@ public final class Parser {
                         category.storeSubCategory(newCategory);
                         break;
                     case "resource":
-                        setPathForResources(category.getFolder(), category);
                         String newFolder = createFolder(category.getFolder());
                         category.setFolder(newFolder);
-                        storeTile(children.item(i), category, category.getResourcePath());
+                        storeTile(children.item(i), category, category.getResourcePath(), true);
+                        //copyResources(category.getFolder());
                         break;
                 }
             }
@@ -124,12 +130,23 @@ public final class Parser {
         return false;
     }
 
-    public void setPathForResources(String resourceFolder, Category category) {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(resourceFolder).getFile());
-        category.setResourcePath(file.getAbsolutePath());
+    public void setPathForResources(Element el, Category category, Element parent) {
+        if (parent.getAttribute("resource").equals("yes")) {
+            category.setResourcePath(el.getTextContent());
+        }
+
     }
 
+    /*private void copyResources(String resourceFolder, String DestinationFolder) {
+     System.out.println("");
+     try {
+     InputStream is = Parser.class.getResourceAsStream(getClass().getClassLoader().getResource(resourceFolder).toString());
+     OutputStream os = new FileOutputStream(DestinationFolder);
+     org.apache.commons.io.IOUtils.copy(is, os);
+     } catch (Exception ex) {
+     logger.error(returnStackTrace(ex));
+     }
+     }*/
     private void storeRows(Element el, Category category) {
         category.setRows(Integer.parseInt(el.getTextContent()));
     }
@@ -148,11 +165,16 @@ public final class Parser {
         category.setFolder(el.getTextContent());
     }
 
-    private void storeFilename(Element el, Category category) {
+    private void storeFilename(Element el, Category category, Element parent) {
+        //if(parent.getAttribute("resource").equals("yes")){
+
+        //}else{
+        //}
         category.setFilename(el.getTextContent());
     }
 
-    private void storeTile(Node node, Category category, String categoryFolder) {
+    private void storeTile(Node node, Category category, String categoryFolder, boolean var) {
+        Tile tile = null;
         String imagePath = null;
         String text = null;
         String fileName = null;
@@ -167,7 +189,13 @@ public final class Parser {
                 sound = node.getChildNodes().item(i).getTextContent();
             }
         }
-        Tile tile = new Tile(imagePath, text, "", fileName, sound);
+
+        if (var) {
+            tile = new Tile(null, text, "", fileName, sound, categoryFolder + "/" + fileName);
+        } else {
+            tile = new Tile(imagePath, text, "", fileName, sound, null);
+        }
+
         category.storeTile(tile);
     }
 
@@ -195,6 +223,7 @@ public final class Parser {
             return path;
         } else {
             f.mkdirs();
+            //copyResources(folderName, path);
         }
         return path;
     }

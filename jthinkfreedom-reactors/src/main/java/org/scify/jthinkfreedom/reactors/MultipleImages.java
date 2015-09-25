@@ -14,6 +14,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -106,7 +107,7 @@ public class MultipleImages extends javax.swing.JFrame {
 
         currentImage = 0;
 
-        this.revalidate();
+        this.revalidate(); 
         this.repaint();
 
         setImages(usedImages);
@@ -128,7 +129,7 @@ public class MultipleImages extends javax.swing.JFrame {
         panel.add(imgLabel, BorderLayout.SOUTH);
         txtLabel.setHorizontalAlignment(JLabel.CENTER);
         imagesPanel.add(panel);
-        contents.add(new Tile("", "Back", "none", "",""));
+        contents.add(new Tile("", "Back", "none", "", "", null));
     }
 
     /*Creates new panel with image and text label and positions them with border layout then adds this panel to panel list which holds all the panels that contain image and text label*/
@@ -211,7 +212,7 @@ public class MultipleImages extends javax.swing.JFrame {
     /*Sets */
     private void setImages(int activeImages) {
         for (int i = 0; i < activeImages; i++) {
-            addLabel(contents.get(i).getImagePath(), paneList.get(i), contents.get(i).getTxt(), contents.get(i).getFileName());
+            addLabel(contents.get(i).getImagePath(), paneList.get(i), contents.get(i).getTxt(), contents.get(i).getFileName(), contents.get(i).getImageIcon());
         }
     }
 
@@ -313,7 +314,7 @@ public class MultipleImages extends javax.swing.JFrame {
         } else {
             path = contents.get(tmpCurrentImage).getMusicFile();
         }
-        
+
         File audioFile = new File(path);
         try {
             audioStream = AudioSystem.getAudioInputStream(audioFile);
@@ -328,12 +329,14 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     public void stopMusic() {
-        if (audioClip.isOpen()) {
-            audioClip.close();
-            try {
-                audioStream.close();
-            } catch (Exception ex) {
-                logger.error(parser.returnStackTrace(ex));
+        if (audioClip != null) {
+            if (audioClip.isOpen()) {
+                audioClip.close();
+                try {
+                    audioStream.close();
+                } catch (Exception ex) {
+                    logger.error(parser.returnStackTrace(ex));
+                }
             }
         }
     }
@@ -351,30 +354,42 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     /*adds images with their representing text into the jlabels*/
-    private void addLabel(String file_path, JPanel panel, String txtName, String fileName) {
+    private void addLabel(String file_path, JPanel panel, String txtName, String fileName, String imageIcon) {
         JLabel label = (JLabel) panel.getComponents()[0];
         JLabel txtLabel = (JLabel) panel.getComponents()[1];
         txtLabel.setFont(new Font("Courier New", Font.PLAIN, 40));
         txtLabel.setText(txtName);
-        ImageIcon icon;
+        ImageIcon icon = new ImageIcon();
+        /*if there is an image*/
         if (!fileName.equals("")) {
-            if (!file_path.equalsIgnoreCase("")) {
-                icon = new ImageIcon(file_path);
-                Image img = icon.getImage();
-                Dimension d = getImageScale(label, img);
-                Double w = d.getWidth();
-                Double h = d.getHeight();
-                int width = w.intValue();
-                int height = h.intValue();
-                Image newimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-                ImageIcon newIcon = new ImageIcon(newimg);
-                label.setIcon(newIcon);
+            if (file_path != null) {
+                if (!file_path.equalsIgnoreCase("")) {
+                    icon = new ImageIcon(file_path);
+                }
+            } else {
+                //System.out.println(imageIcon);
+                try {
+                    icon = new ImageIcon(ImageIO.read(ClassLoader.getSystemResource(imageIcon)));
+                } catch (Exception ex) {
+                    logger.error(ex);
+                }
             }
+
+            Image img = icon.getImage();
+            Dimension d = getImageScale(label, img);
+            Double w = d.getWidth();
+            Double h = d.getHeight();
+            int width = w.intValue();
+            int height = h.intValue();
+            Image newimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            ImageIcon newIcon = new ImageIcon(newimg);
+            label.setIcon(newIcon);
             label.setHorizontalTextPosition(JLabel.CENTER);
             label.setVerticalTextPosition(JLabel.BOTTOM);
             label.setHorizontalAlignment(JLabel.CENTER);
             label.setVerticalAlignment(JLabel.CENTER);
         } else {
+            /*if there is only text*/
             panel.removeAll();
             panel.add(txtLabel, BorderLayout.CENTER);
         }
