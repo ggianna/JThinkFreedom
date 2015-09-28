@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package org.scify.jthinkfreedom.reactors;
+import OS.Os;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -13,7 +14,7 @@ import javax.swing.ImageIcon;
  * @author xrousakis
  */
 public class SlideShow extends javax.swing.JFrame {
-
+    private Os os = new Os();
     private String currentIcon;
     private final String ImagesPath;
     private final ArrayList<String> contentsNames;
@@ -40,7 +41,7 @@ public class SlideShow extends javax.swing.JFrame {
         //setLayout(null);
         
         ImageIcon icon = null;
-        icon = new ImageIcon(imagesPath + "/" + contentsNames.get(currentImage));
+        icon = new ImageIcon(imagesPath + os.returnChatracter() + contentsNames.get(currentImage));
         ImageLabel.setIcon(icon);
         currentImage++;
 
@@ -60,7 +61,7 @@ public class SlideShow extends javax.swing.JFrame {
         if (numberOfImages - 1 < currentImage) {
             currentImage = 0;
         }
-        icon = new ImageIcon(ImagesPath + "/" + contentsNames.get(currentImage));
+        icon = new ImageIcon(ImagesPath + os.returnChatracter() + contentsNames.get(currentImage));
         ImageLabel.setIcon(icon);
         currentImage++;
     }

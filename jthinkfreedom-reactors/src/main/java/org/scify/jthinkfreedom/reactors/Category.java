@@ -5,6 +5,7 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
+import OS.Os;
 import java.util.ArrayList;
 
 /**
@@ -13,6 +14,7 @@ import java.util.ArrayList;
  */
 public class Category {
 
+    private Os os = new Os();
     private int rows, columns;
     private String name;
     private String folder;
@@ -130,12 +132,9 @@ public class Category {
         Tile tile;
         for (Category c : subCategories) {
             if (c.getResourcePath() != null) {
-                System.out.println(c.getResourcePath() + "/" + c.getFilename());
-                tile = new Tile(null, c.getText(), "", c.getFilename(),"", c.getResourcePath() + "/" + c.getFilename());
-                //tile = new Tile(c.getFolder() + "/" + c.getFilename(), c.getText(), "", c.getFilename());
-                 //tile = new Tile(null, text, "", fileName, sound, categoryFolder + "/" + fileName);
+                tile = new Tile(null, c.getText(), "", c.getFilename(), "", c.getResourcePath() + "/" + c.getFilename());
             } else {
-                tile = new Tile(c.getFolder() + "/" + c.getFilename(), c.getText(), "", c.getFilename());
+                tile = new Tile(c.getFolder() + os.returnChatracter() + c.getFilename(), c.getText(), "", c.getFilename());
             }
 
             tiles.add(tile);
@@ -189,11 +188,9 @@ public class Category {
                 return true;
             }
         }
-
         if (this.filename.equals(fileName)) {
             return true;
         }
-
         return false;
     }
 

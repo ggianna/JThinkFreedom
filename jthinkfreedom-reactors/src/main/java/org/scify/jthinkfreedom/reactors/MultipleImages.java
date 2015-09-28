@@ -107,7 +107,7 @@ public class MultipleImages extends javax.swing.JFrame {
 
         currentImage = 0;
 
-        this.revalidate(); 
+        this.revalidate();
         this.repaint();
 
         setImages(usedImages);
@@ -285,7 +285,6 @@ public class MultipleImages extends javax.swing.JFrame {
     }
 
     public void swithcPic() {
-        //System.out.println(currentImage);
         tmpCurrentImage = currentImage;
         int previous;
         if (currentImage - 1 < 0) {
@@ -299,7 +298,6 @@ public class MultipleImages extends javax.swing.JFrame {
             paneList.get(currentImage).setBorder(createBorder(Color.BLACK));
         }
         currentImage++;
-        //System.out.println("Made change");
         if (currentImage + 1 > usedImages) {
             currentImage = 0;
         }
@@ -367,7 +365,6 @@ public class MultipleImages extends javax.swing.JFrame {
                     icon = new ImageIcon(file_path);
                 }
             } else {
-                //System.out.println(imageIcon);
                 try {
                     icon = new ImageIcon(ImageIO.read(ClassLoader.getSystemResource(imageIcon)));
                 } catch (Exception ex) {

@@ -9,59 +9,46 @@
 		<rows>1</rows>
 		<columns>1</columns>
 		<folder>/home/xrousakis/Desktop/images/toilet</folder>
-		<filename>1.png</filename>
+		<filename>toilet.png</filename>
 		<text>Τουαλέτα</text>
 		<tile>
-			<filename>1.png</filename>
-			<text>Τουαλέτα</text>
-			<sound>toualeta</sound>
+			<filename>water.png</filename>
+			<text>Νερό</text>
+			<sound></sound>
 		</tile>
 		<!--<resource>
 			<filename></filename>
 			<text>Sample</text>
 		</resource>-->
 	</category>
-	<category name="sample" resource="yes">
-		<rows>1</rows>
-		<columns>1</columns>
-		<folder>Images1</folder>
-		<filename>2.png</filename>
-		<text>sample</text>
-		<resource>
-			<filename>10.png</filename>
-			<text>Resource</text>
-			<sound>sample resource</sound>
-		</resource>
-	</category>
 	<category name="Φαγητό" resource="no">
 		<rows>1</rows>
 		<columns>1</columns>
 		<folder>/home/xrousakis/Desktop/food</folder>
-		<filename>fast-food-icon.png</filename>
+		<filename>Food.png</filename>
 		<text>Φαγητό</text>	
 		<tile>
 			<filename>pizza_PNG7134.png</filename>
 			<text>Pizza</text>
-			<sound>pizza</sound>
+			<sound></sound>
 		</tile>
 		<tile>
-			<filename>12.png</filename>
-			<text>Κανονικό φαγητό</text>
-			<sound>Κανονικό</sound>
+			<filename>Healthy.png</filename>
+			<text>Υγιεινή Διατροφή</text>
+			<sound></sound>
 		</tile>
 		<category name="Φαγητό2" resource="no">
-			<rows>12</rows>
-			<columns>12</columns>
+			<rows>2</rows>
+			<columns>1</columns>
 			<folder>/home/xrousakis/Desktop/food</folder>
-			<filename>fast-food-icon.png</filename>
+			<filename>fastFood.png</filename>
 			<text>Φαγητό2</text>
 			<tile>
-				<filename>12.png</filename>
-				<text>Κανονικό φαγητό</text>
+				<filename>cookie.png</filename>
+				<text>Cookie</text>
 				<sound></sound>
 			</tile>
 		</category>	
-
 	</category>
 	<category name="Φάρμακα" resource="no">
 		<rows>1</rows>
@@ -72,22 +59,17 @@
 		<tile>
 			<filename>15.png</filename>
 			<text>Παυσίπονο</text>
-			<sound>Παυσίπονο</sound>
+			<sound></sound>
 		</tile>
 		<tile>
-			<filename>15.png</filename>
-			<text>1111111111</text>
-			<sound>1111111111</sound>
-		</tile>
-		<tile>
-			<filename>medicine.png</filename>
-			<text>2222222222</text>
-			<sound>2222222222</sound>
+			<filename>10.png</filename>
+			<text>;_;</text>
+			<sound></sound>
 		</tile>
 		<category name="FARMAKA" resource="no">
 			<rows>3</rows>
 			<columns>3</columns>
-			<folder>/home/xrousakis/Desktop/food/burger</folder>
+			<folder>/home/xrousakis/Desktop/medicine</folder>
 			<filename/>
 			<text>ASDASD</text>
 		</category>
@@ -96,29 +78,17 @@
 		<rows>1</rows>
 		<columns>1</columns>
 		<folder>/home/xrousakis/Desktop/images/entertainment</folder>
-		<filename>8.png</filename>
+		<filename>Movies.png</filename>
 		<text>Ψυχαγωγία</text>
 		<tile>
-			<filename>14.png</filename>
+			<filename>News.png</filename>
 			<text>Ειδήσεις</text>
-			<sound>Ειδήσεις</sound>
+			<sound></sound>
 		</tile>
 		<tile>
-			<filename>13.png</filename>
-			<text>ASASD</text>
-			<sound>ASASD</sound>
+			<filename>Music.png</filename>
+			<text>Μουσική</text>
+			<sound></sound>
 		</tile>
-	</category>
-	<category name="sample" resource="yes">
-		<rows>1</rows>
-		<columns>1</columns>
-		<folder>Images1</folder>
-		<filename>2.png</filename>
-		<text>sample</text>
-		<resource>
-			<filename/>
-			<text>Resource</text>
-			<sound>Resource</sound>
-		</resource>
 	</category>
 </category>

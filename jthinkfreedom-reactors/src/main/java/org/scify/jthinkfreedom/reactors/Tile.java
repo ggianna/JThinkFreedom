@@ -5,8 +5,6 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
-import javax.swing.ImageIcon;
-
 /**
  *
  * @author xrousakis

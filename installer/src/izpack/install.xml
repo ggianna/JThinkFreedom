@@ -2,10 +2,10 @@
                      xmlns:izpack="http://izpack.org/schema/installation"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
- 
+    
     <info>
-        <appname>Test</appname>
-        <appversion>0.0</appversion>
+        <appname>ThinkFreedom</appname>
+        <appversion>1.0</appversion>
         <appsubpath>myapp</appsubpath>
         <javaversion>1.6</javaversion>
     </info>
@@ -14,9 +14,20 @@
         <langpack iso3="eng"/>
     </locale>
  
+    
+    <!--<installerrequirements>
+        <installerrequirement conditon="installonwindows" message="This installer could only be run on Windows operating systems."/>
+    </installerrequirements>-->
+ 
     <guiprefs width="800" height="600" resizable="no">
-        <!--<splash>images/peas_load.gif</splash>-->
-        <laf name="substance">
+        <modifier key="useFlags" value="no"/>
+        <modifier key="langDisplayType" value="native"/>
+        <modifier key="allYGap" value="8"/>
+        <modifier key="allXGap" value="4"/>
+        <modifier key="textToControlXGap" value="4"/>
+        <modifier key="layoutAnchor" value="NORTHWEST"/>
+        
+        <!--<laf name="substance">
             <os family="windows" />
             <os family="unix" />
             <param name="variant" value="mist-silver" />
@@ -25,22 +36,35 @@
             <os family="mac" />
             <param name="variant" value="mist-aqua" />
         </laf>
-        <modifier key="useHeadingPanel" value="yes" />
+        <modifier key="useHeadingPanel" value="yes" />-->
     </guiprefs>
+    
+    <resources>
+        <res id="LicencePanel.licence" src="@{izpack.staging}/licence.txt"/>
+        <!-- Place image logo.pngs on the left of the of the installer-->
+        <res id="Installer.image" src="@{izpack.staging}/logo.png" />
+    </resources>
  
     <panels>
+        <panel classname="HelloPanel"/>
+        <!--<panel classname="CheckedHelloPanel"/>-->
+        <panel classname="LicencePanel"/>
         <panel classname="TargetPanel"/>
         <panel classname="PacksPanel"/>
         <panel classname="InstallPanel"/>
-        <panel classname="FinishPanel"/>
+        <panel classname="ShortcutPanel"/>
+        <panel classname="SimpleFinishPanel"/>
     </panels>
+    
+    <!--<resources>
+        <res  id="installer.jar" src="@{izpack.staging}/lib/jthinkfreedom.gui-jar-with-dependencies.jar"/>
+    </resources>-->
  
     <packs>
-        <pack name="Test Core" required="yes">
-            <description>The core files needed for the application</description>
-            <!--<fileset dir="plain" targetdir="${INSTALL_PATH}" override="true"/>-->
-            <parsable targetfile="${INSTALL_PATH}/test.properties"/>
+        <pack name="Core" required="yes" >
+            <description>blah;bHBBH:BB:B;h:H:B:BH </description>
+            <jar src="@{izpack.staging}/lib/jthinkfreedom.gui-jar-with-dependencies.jar" targetdir="$INSTALL_PATH"/>
+            <file targetdir="$INSTALL_PATH"  src="@{izpack.staging}/lib/jthinkfreedom.gui-jar-with-dependencies.jar"/>
         </pack>
     </packs>
- 
 </izpack:installation>

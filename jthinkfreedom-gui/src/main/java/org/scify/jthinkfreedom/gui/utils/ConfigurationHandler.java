@@ -1,5 +1,6 @@
 package org.scify.jthinkfreedom.gui.utils;
 
+import OS.Os;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,7 +33,7 @@ import org.w3c.dom.NodeList;
  * @author peustr
  */
 public class ConfigurationHandler {
-
+    Os os = new Os();
     private Document configFile;
     private List<User> profiles;
     private File file;
@@ -40,9 +41,7 @@ public class ConfigurationHandler {
 
     public ConfigurationHandler() {
         try {
-
-            //String project_path = System.getProperty("user.dir") + "/classes" + "/conf.xml";
-            project_path = System.getProperty("user.dir") + "/conf.xml";
+            project_path = System.getProperty("user.dir") +os.returnChatracter()+"conf.xml"; ///"/conf.xml";
 
             File f = new File(project_path);
             if (!f.exists() || f.isDirectory()) {
@@ -51,10 +50,6 @@ public class ConfigurationHandler {
                         + "<profiles></profiles>");
                 writer.close();
             }
-            /*configFile = DocumentBuilderFactory
-             .newInstance()
-             .newDocumentBuilder()
-             .parse(new File(getClass().getResource("/conf.xml").toURI()));*/
             configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(project_path));
             configFile.normalize();
             profiles = parseXML();
@@ -63,8 +58,7 @@ public class ConfigurationHandler {
         }
 
     }
-    
-  
+
     public List<User> getProfiles() {
         return profiles;
     }
@@ -124,7 +118,7 @@ public class ConfigurationHandler {
                     tr.setOutputProperty(OutputKeys.INDENT, "yes");
                     tr.transform(new DOMSource(configFile),
                             //new StreamResult(new FileOutputStream (new File(getClass().getResource("/conf.xml").toURI())) ));
-                            new StreamResult(new FileOutputStream (new File(project_path)) ));
+                            new StreamResult(new FileOutputStream(new File(project_path))));
                 } catch (TransformerException | FileNotFoundException e) {
                     e.printStackTrace(System.err);
                 }
@@ -169,43 +163,42 @@ public class ConfigurationHandler {
             e.printStackTrace(System.err);
         }
     }
-    
+
     /*Saves configuration to xml but also saves the path to the file thas has the images*/
     /*public void saveConfiguration(Configuration conf, User user, String folder) {
-        NodeList profiles = configFile.getElementsByTagName("profile");
-        for (int i = 0; i < profiles.getLength(); i++) {
-            Element profile = (Element) profiles.item(i);
-            String name = profile.getElementsByTagName("name").item(0).getTextContent();
-            if (name.equals(user.getName())) {
-                Element configurations = (Element) profile.getElementsByTagName("configurations").item(0);
-                Element sensorClass = configFile.createElement("sensor");
-                sensorClass.appendChild(configFile.createTextNode(conf.getSensor().getClass().getCanonicalName()));
-                Element stimulusClass = configFile.createElement("stimulus");
-                stimulusClass.appendChild(configFile.createTextNode(conf.getStimulus().getClass().getCanonicalName()));
-                Element reactorClass = configFile.createElement("reactor");
-                reactorClass.appendChild(configFile.createTextNode(conf.getReactor().getClass().getCanonicalName()));
-                Element configuration = configFile.createElement("configuration");
-                Element path = configFile.createElement("path");
-                path.appendChild(configFile.createTextNode(folder));
+     NodeList profiles = configFile.getElementsByTagName("profile");
+     for (int i = 0; i < profiles.getLength(); i++) {
+     Element profile = (Element) profiles.item(i);
+     String name = profile.getElementsByTagName("name").item(0).getTextContent();
+     if (name.equals(user.getName())) {
+     Element configurations = (Element) profile.getElementsByTagName("configurations").item(0);
+     Element sensorClass = configFile.createElement("sensor");
+     sensorClass.appendChild(configFile.createTextNode(conf.getSensor().getClass().getCanonicalName()));
+     Element stimulusClass = configFile.createElement("stimulus");
+     stimulusClass.appendChild(configFile.createTextNode(conf.getStimulus().getClass().getCanonicalName()));
+     Element reactorClass = configFile.createElement("reactor");
+     reactorClass.appendChild(configFile.createTextNode(conf.getReactor().getClass().getCanonicalName()));
+     Element configuration = configFile.createElement("configuration");
+     Element path = configFile.createElement("path");
+     path.appendChild(configFile.createTextNode(folder));
 
-                configuration.appendChild(sensorClass);
-                configuration.appendChild(stimulusClass);
-                configuration.appendChild(reactorClass);
-                configuration.appendChild(path);
-                configurations.appendChild(configuration);
-                try {
-                    Transformer tr = TransformerFactory.newInstance().newTransformer();
-                    tr.setOutputProperty(OutputKeys.INDENT, "yes");
-                    tr.transform(new DOMSource(configFile),
-                            //new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
-                            new StreamResult(new FileOutputStream(new File(project_path))));
-                } catch (TransformerException | FileNotFoundException e) {
-                    e.printStackTrace(System.err);
-                }
-            }
-        }
-    }*/
-
+     configuration.appendChild(sensorClass);
+     configuration.appendChild(stimulusClass);
+     configuration.appendChild(reactorClass);
+     configuration.appendChild(path);
+     configurations.appendChild(configuration);
+     try {
+     Transformer tr = TransformerFactory.newInstance().newTransformer();
+     tr.setOutputProperty(OutputKeys.INDENT, "yes");
+     tr.transform(new DOMSource(configFile),
+     //new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
+     new StreamResult(new FileOutputStream(new File(project_path))));
+     } catch (TransformerException | FileNotFoundException e) {
+     e.printStackTrace(System.err);
+     }
+     }
+     }
+     }*/
     public void saveConfiguration(Configuration conf, User user) {
         NodeList profiles = configFile.getElementsByTagName("profile");
         for (int i = 0; i < profiles.getLength(); i++) {

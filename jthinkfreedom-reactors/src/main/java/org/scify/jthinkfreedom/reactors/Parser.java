@@ -5,6 +5,7 @@
  */
 package org.scify.jthinkfreedom.reactors;
 
+import OS.Os;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -29,6 +30,7 @@ import org.apache.logging.log4j.LogManager;
  */
 public final class Parser {
 
+    private Os os = new Os();
     private static final Logger logger = LogManager.getLogger(Parser.class);
     private ArrayList<Category> categories;
     private String xmlPath;
@@ -39,10 +41,9 @@ public final class Parser {
     public Parser() {
         categories = new ArrayList();
         try {
-            xmlPath = System.getProperty("user.dir") + "/categories.xml";
+            xmlPath = System.getProperty("user.dir") + os.returnChatracter() + "categories.xml"; //"/categories.xml";
             configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(xmlPath));
             configFile.normalize();
-            //throw ex;
         } catch (Exception ex) {
             logger.error(returnStackTrace(ex));
         }
@@ -61,13 +62,10 @@ public final class Parser {
         for (Category c : categories) {
             System.out.println(c.getName());
             foo = c.getTiles();
-            /*for (int i = 0; i < foo.size(); i++) {
-               
-             }*/
             if (c.getResourcePath() != null) {
-                System.out.println("\t" +c.getResourcePath());
+                //System.out.println("\t" + c.getResourcePath());
             } else {
-                 System.out.println("\t"+" crap");
+                //System.out.println("\t" + " crap");
             }
         }
 
@@ -114,7 +112,6 @@ public final class Parser {
                         String newFolder = createFolder(category.getFolder());
                         category.setFolder(newFolder);
                         storeTile(children.item(i), category, category.getResourcePath(), true);
-                        //copyResources(category.getFolder());
                         break;
                 }
             }
@@ -166,10 +163,6 @@ public final class Parser {
     }
 
     private void storeFilename(Element el, Category category, Element parent) {
-        //if(parent.getAttribute("resource").equals("yes")){
-
-        //}else{
-        //}
         category.setFilename(el.getTextContent());
     }
 
@@ -182,7 +175,7 @@ public final class Parser {
         for (int i = 0; i < node.getChildNodes().getLength(); i++) {
             if (node.getChildNodes().item(i).getNodeName().equals("filename")) {
                 fileName = node.getChildNodes().item(i).getTextContent();
-                imagePath = categoryFolder + "/" + fileName;
+                imagePath = categoryFolder + os.returnChatracter() + fileName;
             } else if (node.getChildNodes().item(i).getNodeName().equals("text")) {
                 text = node.getChildNodes().item(i).getTextContent();
             } else if (node.getChildNodes().item(i).getNodeName().equals("sound")) {
@@ -191,7 +184,7 @@ public final class Parser {
         }
 
         if (var) {
-            tile = new Tile(null, text, "", fileName, sound, categoryFolder + "/" + fileName);
+            tile = new Tile(null, text, "", fileName, sound, categoryFolder + os.returnChatracter() + fileName);
         } else {
             tile = new Tile(imagePath, text, "", fileName, sound, null);
         }
@@ -215,15 +208,13 @@ public final class Parser {
         category.storeTile(tile);
     }
 
-    /*if the category is a resource we have to create a new folder to store user introiduced images and text*/
     private String createFolder(String folderName) {
-        String path = System.getProperty("user.dir") + "/" + folderName;
+        String path = System.getProperty("user.dir") + os.returnChatracter() + folderName;
         File f = new File(path);
         if (f.exists()) {
             return path;
         } else {
             f.mkdirs();
-            //copyResources(folderName, path);
         }
         return path;
     }

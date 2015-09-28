@@ -468,3 +468,56 @@
 	at org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter$1.run(SensorAdapter.java:70)
 	at java.lang.Thread.run(Thread.java:745)
 
+25-09-2015 14:11:31 [Thread-0] INFO  org.scify.jthinkfreedom.reactors.MultipleImages - Application Starts
+25-09-2015 14:11:36 [Thread-0] FATAL org.scify.jthinkfreedom.reactors.MultipleImages - java.io.FileNotFoundException: sample resource (No such file or directory)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(FileInputStream.java:146)
+	at com.sun.media.sound.WaveFloatFileReader.getAudioInputStream(WaveFloatFileReader.java:164)
+	at javax.sound.sampled.AudioSystem.getAudioInputStream(AudioSystem.java:1179)
+	at org.scify.jthinkfreedom.reactors.MultipleImages.playMusic(MultipleImages.java:318)
+	at org.scify.jthinkfreedom.reactors.MultipleImages.stopThread(MultipleImages.java:269)
+	at org.scify.jthinkfreedom.reactors.SlideShowReactor.react(SlideShowReactor.java:89)
+	at org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter.callReactors(StimulusAdapter.java:46)
+	at org.scify.jthinkfreedom.keyboard.stimuli.CapturekeyStimulus.onDataReceived(CapturekeyStimulus.java:26)
+	at org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter.updateStimuli(SensorAdapter.java:44)
+	at org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter$1.run(SensorAdapter.java:70)
+	at java.lang.Thread.run(Thread.java:745)
+
+25-09-2015 14:11:39 [Thread-0] FATAL org.scify.jthinkfreedom.reactors.MultipleImages - java.io.FileNotFoundException: toualeta (No such file or directory)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(FileInputStream.java:146)
+	at com.sun.media.sound.WaveFloatFileReader.getAudioInputStream(WaveFloatFileReader.java:164)
+	at javax.sound.sampled.AudioSystem.getAudioInputStream(AudioSystem.java:1179)
+	at org.scify.jthinkfreedom.reactors.MultipleImages.playMusic(MultipleImages.java:318)
+	at org.scify.jthinkfreedom.reactors.MultipleImages.stopThread(MultipleImages.java:269)
+	at org.scify.jthinkfreedom.reactors.SlideShowReactor.react(SlideShowReactor.java:89)
+	at org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter.callReactors(StimulusAdapter.java:46)
+	at org.scify.jthinkfreedom.keyboard.stimuli.CapturekeyStimulus.onDataReceived(CapturekeyStimulus.java:26)
+	at org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter.updateStimuli(SensorAdapter.java:44)
+	at org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter$1.run(SensorAdapter.java:70)
+	at java.lang.Thread.run(Thread.java:745)
+
+25-09-2015 14:22:05 [Thread-0] INFO  org.scify.jthinkfreedom.reactors.MultipleImages - Application Starts
+25-09-2015 14:22:05 [Thread-0] ERROR org.scify.jthinkfreedom.reactors.MultipleImages - java.lang.IllegalArgumentException: input == null!
+25-09-2015 14:22:52 [Thread-0] INFO  org.scify.jthinkfreedom.reactors.MultipleImages - Application Starts
+25-09-2015 14:23:02 [Thread-0] FATAL org.scify.jthinkfreedom.reactors.MultipleImages - java.io.FileNotFoundException: Παυσίπονο (No such file or directory)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(FileInputStream.java:146)
+	at com.sun.media.sound.WaveFloatFileReader.getAudioInputStream(WaveFloatFileReader.java:164)
+	at javax.sound.sampled.AudioSystem.getAudioInputStream(AudioSystem.java:1179)
+	at org.scify.jthinkfreedom.reactors.MultipleImages.playMusic(MultipleImages.java:318)
+	at org.scify.jthinkfreedom.reactors.MultipleImages.stopThread(MultipleImages.java:269)
+	at org.scify.jthinkfreedom.reactors.SlideShowReactor.react(SlideShowReactor.java:89)
+	at org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter.callReactors(StimulusAdapter.java:46)
+	at org.scify.jthinkfreedom.keyboard.stimuli.CapturekeyStimulus.onDataReceived(CapturekeyStimulus.java:26)
+	at org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter.updateStimuli(SensorAdapter.java:44)
+	at org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter$1.run(SensorAdapter.java:70)
+	at java.lang.Thread.run(Thread.java:745)
+
+25-09-2015 14:33:17 [Thread-0] INFO  org.scify.jthinkfreedom.reactors.MultipleImages - Application Starts
+25-09-2015 14:52:19 [Thread-0] INFO  org.scify.jthinkfreedom.reactors.MultipleImages - Application Starts
+25-09-2015 14:55:13 [Thread-0] INFO  org.scify.jthinkfreedom.reactors.MultipleImages - Application Starts
+25-09-2015 15:16:18 [Thread-0] INFO  org.scify.jthinkfreedom.reactors.MultipleImages - Application Starts
+25-09-2015 15:16:56 [Thread-0] INFO  org.scify.jthinkfreedom.reactors.MultipleImages - Application Starts
+25-09-2015 15:24:12 [Thread-0] INFO  org.scify.jthinkfreedom.reactors.MultipleImages - Application Starts
+25-09-2015 15:44:04 [Thread-0] INFO  org.scify.jthinkfreedom.reactors.MultipleImages - Application Starts
