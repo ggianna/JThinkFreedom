@@ -33,6 +33,12 @@ public interface Sensor<T> {
     public T getData();
 
     /**
+     *
+     * @return an object from the sensor
+     */
+    //public Object getTimeStampedStroke();
+
+    /**
      * Calls the onDataReceived of each stimulus.
      */
     public void updateStimuli();

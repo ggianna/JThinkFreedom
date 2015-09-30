@@ -18,7 +18,7 @@
     <native name="ShellLink.dll" type="izpack">
         <os family="windows"/>
     </native>
-    <native name="COIOSHelper.dll" stage="both" type="3rdparty">
+    <native stage="both" name="COIOSHelper.dll" type="3rdparty">
         <os family="windows"/>
     </native>
     <listeners>

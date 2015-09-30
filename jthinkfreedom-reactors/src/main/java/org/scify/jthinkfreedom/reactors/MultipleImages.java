@@ -120,13 +120,13 @@ public class MultipleImages extends javax.swing.JFrame {
         usedImages++;
         JPanel panel = new JPanel(new BorderLayout());
         paneList.add(panel);
-        JLabel imgLabel = new JLabel("");
+        JLabel imgLabel = new JLabel();
         JLabel txtLabel = new JLabel(" ");
         txtLabel.setFont(new Font("Courier New", Font.PLAIN, 40));
         panel.setBorder(createBorder(Color.WHITE));
         panel.setBackground(Color.LIGHT_GRAY);
-        panel.add(txtLabel, BorderLayout.CENTER);
-        panel.add(imgLabel, BorderLayout.SOUTH);
+        panel.add(imgLabel, BorderLayout.CENTER);
+        panel.add(txtLabel, BorderLayout.NORTH);
         txtLabel.setHorizontalAlignment(JLabel.CENTER);
         imagesPanel.add(panel);
         contents.add(new Tile("", "Back", "none", "", "", null));

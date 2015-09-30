@@ -41,8 +41,7 @@ public class ConfigurationHandler {
 
     public ConfigurationHandler() {
         try {
-            project_path = System.getProperty("user.dir") +os.returnChatracter()+"conf.xml"; ///"/conf.xml";
-
+            project_path = System.getProperty("user.dir") +os.returnChatracter()+"conf.xml"; 
             File f = new File(project_path);
             if (!f.exists() || f.isDirectory()) {
                 PrintWriter writer = new PrintWriter(project_path, "UTF-8");

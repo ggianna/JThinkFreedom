@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<profiles>
+<profile>
+<name>xristos</name>
+<picture>placeholder_144x144.png</picture>
+<configurations>
+<configuration>
+<sensor>org.scify.jthinkfreedom.keyboard.sensors.KeyboardSensor</sensor>
+<stimulus>org.scify.jthinkfreedom.keyboard.stimuli.CapturekeyStimulus</stimulus>
+<reactor>org.scify.jthinkfreedom.reactors.SlideShowReactor</reactor>
+<path>/home/xrousakis/Desktop/images</path>
+</configuration>
+</configurations>
+</profile>
+</profiles>

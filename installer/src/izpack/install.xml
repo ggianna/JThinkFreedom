@@ -13,58 +13,91 @@
     <locale>
         <langpack iso3="eng"/>
     </locale>
- 
     
     <!--<installerrequirements>
         <installerrequirement conditon="installonwindows" message="This installer could only be run on Windows operating systems."/>
     </installerrequirements>-->
  
-    <guiprefs width="800" height="600" resizable="no">
-        <modifier key="useFlags" value="no"/>
-        <modifier key="langDisplayType" value="native"/>
-        <modifier key="allYGap" value="8"/>
-        <modifier key="allXGap" value="4"/>
-        <modifier key="textToControlXGap" value="4"/>
+    <guiprefs width="640" height="480" resizable="yes">
+        <modifier key="useButtonIcons" value="no"/>
+        <modifier key="useLabelIcons" value="no"/>
+        <modifier key="labelGap" value="5"/>
         <modifier key="layoutAnchor" value="NORTHWEST"/>
-        
-        <!--<laf name="substance">
-            <os family="windows" />
-            <os family="unix" />
-            <param name="variant" value="mist-silver" />
-        </laf>
-        <laf name="substance">
-            <os family="mac" />
-            <param name="variant" value="mist-aqua" />
-        </laf>
-        <modifier key="useHeadingPanel" value="yes" />-->
+        <modifier key="useHeadingPanel" value="yes"/>
+        <modifier key="headingImageOnLeft" value="yes"/>
+        <modifier key="headingLineCount" value="1"/>
+        <modifier key="headingFontSize" value="1.5"/>
     </guiprefs>
     
     <resources>
         <res id="LicencePanel.licence" src="@{izpack.staging}/licence.txt"/>
+        <res id="HTMLInfoPanel.info" src="@{izpack.staging}/info.html" />
         <!-- Place image logo.pngs on the left of the of the installer-->
         <res id="Installer.image" src="@{izpack.staging}/logo.png" />
     </resources>
  
     <panels>
         <panel classname="HelloPanel"/>
-        <!--<panel classname="CheckedHelloPanel"/>-->
+        <panel classname="HTMLInfoPanel" id="HTMLInfoPanel.info"/>
         <panel classname="LicencePanel"/>
         <panel classname="TargetPanel"/>
         <panel classname="PacksPanel"/>
         <panel classname="InstallPanel"/>
         <panel classname="ShortcutPanel"/>
+        <!--<os family="windows"/>
+        </panel>-->
         <panel classname="SimpleFinishPanel"/>
     </panels>
     
-    <!--<resources>
-        <res  id="installer.jar" src="@{izpack.staging}/lib/jthinkfreedom.gui-jar-with-dependencies.jar"/>
-    </resources>-->
- 
+    <listeners>
+        <listener classname="RegistryInstallerListener" stage="install" >
+            <os family="windows"/>
+        </listener>
+        <listener classname="RegistryUninstallerListener" stage="uninstall" >
+            <os family="windows"/>
+        </listener>
+    </listeners>
+    
+    <natives>
+        <!-- This dll is to be used for windows shortcut at a resoruce (for the aplictions exe) -->
+        
+        <native type="izpack" name="ShellLink.dll"/>
+        <native type="izpack" name="ShellLink_x64.dll"/>
+        <native type="3rdparty" name="COIOSHelper.dll" stage="both">
+            <os family="windows"/>
+        </native>
+        <native type="3rdparty" name="COIOSHelper_x64.dll" stage="both">
+            <os family="windows"/>
+        </native>
+    </natives>
+    
+    <shortcut 
+        name="Application"
+        locattion="desktop"
+        target="$INSTALL_PATH/run.sh"
+        description="Launch JThinkFreedom"
+        iconFile="@{izpack.staging}/logo.png"
+        initialState="normal"
+        programGroup="yes"
+        desktop="yes"
+        applications="no"
+        startMenu="no"
+        startup="no">
+     
+        <createForPack name="Core"/>
+    </shortcut>
+    
+    
     <packs>
         <pack name="Core" required="yes" >
-            <description>blah;bHBBH:BB:B;h:H:B:BH </description>
-            <jar src="@{izpack.staging}/lib/jthinkfreedom.gui-jar-with-dependencies.jar" targetdir="$INSTALL_PATH"/>
-            <file targetdir="$INSTALL_PATH"  src="@{izpack.staging}/lib/jthinkfreedom.gui-jar-with-dependencies.jar"/>
+            <description>The core package needs to be installed </description>
+            <file src="@{izpack.staging}/run.sh" targetdir="$INSTALL_PATH"/>
+            <file src="@{izpack.staging}/sound.wav" targetdir="$INSTALL_PATH"/>
+            <file src="@{izpack.staging}/categories.xml" targetdir="$INSTALL_PATH"/>
+            <file src="@{izpack.staging}/conf.xml" targetdir="$INSTALL_PATH"/>
+            <executable teargetdir="$INSTALL_PATH" src="foo"/>
+            <!-- Need to add categories.xml for the images , the sound.wav file ,the conf.xml to have a dummy user, -->
         </pack>
     </packs>
+    
 </izpack:installation>

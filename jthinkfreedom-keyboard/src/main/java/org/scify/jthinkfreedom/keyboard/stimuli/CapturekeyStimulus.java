@@ -6,6 +6,7 @@
 package org.scify.jthinkfreedom.keyboard.stimuli;
 
 import org.scify.jthinkfreedom.keyboard.sensors.KeyboardSensor;
+import org.scify.jthinkfreedom.keyboard.stroke.TimeStampedStroke;
 import org.scify.jthinkfreedom.skeleton.sensors.Sensor;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
 
@@ -16,21 +17,25 @@ import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
 public class CapturekeyStimulus extends StimulusAdapter {
 
     Character pressedKey;
+    //TimeStampedStroke stroke;
 
     @Override
     public void onDataReceived() {
         for (Sensor<Character> sensor : sensors) {
+            /*gets the most recent pressed key and tis  corresponding timestamp*/
+            //stroke = (TimeStampedStroke) sensor.getTimeStampedStroke();
+            //System.out.println(stroke.getTimestamp());
             pressedKey = sensor.getData();
             if (pressedKey != null) {
                 if (shouldReact()) {
                     callReactors();
-                    if(sensor instanceof KeyboardSensor)
-                        ((KeyboardSensor)sensor).restorePressedKey();
+                    if (sensor instanceof KeyboardSensor) {
+                        ((KeyboardSensor) sensor).restorePressedKey();
+                    }
                 }
             }
         }
     }
-    
 
     @Override
     public boolean shouldReact() {

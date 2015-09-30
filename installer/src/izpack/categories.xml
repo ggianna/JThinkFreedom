@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<category name="main menu" resource="no">
+	<rows>2</rows>
+	<columns>2</columns>
+	<text>main menu</text>
+	<folder>main menu </folder>
+	<filename>main menu filename</filename>
+	<category name="Toilet" resource="yes">
+		<rows>1</rows>
+		<columns>1</columns>
+		<folder>Toilet</folder>
+		<filename>toilet.png</filename>
+		<text>Τουαλέτα</text>
+		<resource>
+			<filename>bathroom.png</filename>
+			<text>Μπάνιο</text>
+			<sound></sound>
+		</resource>
+	</category>
+		<category name="Food" resource="yes">
+		<rows>1</rows>
+		<columns>1</columns>
+		<folder>Food</folder>
+		<filename>Food.png</filename>
+		<text>Φαγητό</text>
+		<resource>
+			<filename>Healthy.png</filename>
+			<text>Υγιεινή Διατροφή</text>
+			<sound></sound>
+		</resource>
+	</category>
+	<category name="medicine" resource="yes">
+		<rows>1</rows>
+		<columns>1</columns>
+		<folder>Medicine</folder>
+		<filename>pills.png</filename>
+		<text>Φάρμακα</text>
+		<resource>
+			<filename>pills.png</filename>
+			<text>Χαπάκια !!!!</text>
+			<sound></sound>
+		</resource>
+	</category>
+	<category name="Body strain" resource="yes">
+		<rows>1</rows>
+		<columns>1</columns>
+		<folder>Body_strain</folder>
+		<filename>Nausia.png</filename>
+		<text>Αδιαθεσία</text>
+		<resource>
+			<filename>StomacheAche.png</filename>
+			<text>Στομαχόπονος</text>
+			<sound></sound>
+		</resource>
+		<resource>
+			<filename>BackPain.png</filename>
+			<text>Πόνος στην μέση</text>
+			<sound></sound>
+		</resource>
+	</category>
+	<category name="entertainemnt" resource="yes">
+		<rows>1</rows>
+		<columns>1</columns>
+		<folder>entertainment</folder>
+		<filename>Movies.png</filename>
+		<text>Ψυχαγωγία</text>
+		<resource>
+			<filename>Music.png</filename>
+			<text>Μουσική</text>
+			<sound></sound>
+		</resource>
+	</category>
+
+</category>
