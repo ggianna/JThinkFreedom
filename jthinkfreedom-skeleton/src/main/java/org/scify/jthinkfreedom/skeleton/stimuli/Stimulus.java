@@ -24,6 +24,8 @@ import org.scify.jthinkfreedom.skeleton.sensors.Sensor;
  */
 public interface Stimulus {
 
+    
+    
     /**
      * The behavior that this stimulus imitates is implemented in this method.
      * The criteria that define whether or not the reactors are called are also
