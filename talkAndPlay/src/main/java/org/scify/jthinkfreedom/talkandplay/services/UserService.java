@@ -1,99 +1,119 @@
 package org.scify.jthinkfreedom.talkandplay.services;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class UserService {
 
     private ConfigurationHandler configurationHandler;
-    private Document configFile;
+    private Document configurationFile;
     String projectPath;
 
-    public void UserService() {
+    public UserService() {
         configurationHandler = new ConfigurationHandler();
-       // configFile = configurationHandler.getConfigurationFile();
+        configurationFile = configurationHandler.getConfigurationFile();
         projectPath = configurationHandler.getProjectPath();
     }
 
     /**
      * Save a user to the xml file
-     * 
-     * @param user 
+     *
+     * @param user
      */
     public void saveUser(User user) {
 
-        NodeList profiles = configFile.getElementsByTagName("profiles");
-        Element profile = configFile.createElement("profile");
-        Element name = configFile.createElement("name");
-        Element picture = configFile.createElement("picture");
-        Element configurations = configFile.createElement("configurations");
-        name.appendChild(configFile.createTextNode(user.getName()));
+        configurationHandler.getProfiles().add(user);
 
-        picture.appendChild(configFile.createTextNode(user.getPhoto().toString().split("/")[user.getPhoto().toString().split("/").length - 1]));
-        profile.appendChild(name);
-        profile.appendChild(picture);
-        profile.appendChild(configurations);
-        profiles.item(0).appendChild(profile);
+        Element profiles = configurationFile.getRootElement();
 
-        try {
-            Transformer tr = TransformerFactory.newInstance().newTransformer();
-            tr.setOutputProperty(OutputKeys.INDENT, "yes");
-            tr.transform(new DOMSource(configFile),
-                    //new StreamResult( new FileOutputStream(ConfigurationHandler.class.getClass().getResourceAsStream("/conf.xml"))));
-                    //new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
-                    new StreamResult(new FileOutputStream(new File(projectPath))));
+        Element profile = new Element("profile");
+        profile.addContent(new Element("name").setText(user.getName()));
+        profile.addContent(new Element("picture").setText(user.getPhoto().toString()));
+        profiles.addContent(profile);
 
-        } catch (TransformerException | FileNotFoundException e) {
-            e.printStackTrace(System.err);
+        /*
+         NodeList profiles = configurationFile.getElementsByTagName("profiles");
+         Element profile = configurationFile.createElement("profile");
+         Element name = configurationFile.createElement("name");
+         Element picture = configurationFile.createElement("picture");
+         Element configurations = configurationFile.createElement("configurations");
+         name.appendChild(configurationFile.createTextNode(user.getName()));
+
+         picture.appendChild(configurationFile.createTextNode(user.getPhoto().toString().split("/")[user.getPhoto().toString().split("/").length - 1]));
+         profile.appendChild(name);
+         profile.appendChild(picture);
+         profile.appendChild(configurations);
+         profiles.item(0).appendChild(profile);
+         */
+        writeToXmlFile();
+    }
+
+    /**
+     * Update a user
+     *
+     * @param name
+     */
+    public void updateUser(User user, String oldName) {
+
+        List profiles = configurationFile.getRootElement().getChildren();
+
+        //find the user from the users list
+        for (int i = 0; i < profiles.size(); i++) {
+
+            Element profile = (Element) profiles.get(i);
+
+            if (profile.getChildText("name").equals(oldName)) {
+
+                profile.getChild("name").setText(user.getName());
+                writeToXmlFile();
+            }
         }
     }
 
     /**
-     * Remove a user from the xml file 
-     * 
-     * @param user 
+     * Remove a user from the xml file
+     *
+     * @param user
      */
     public void deleteUser(User user) {
-        
+
         configurationHandler.getProfiles().remove(user);
-        NodeList profiles = configFile.getElementsByTagName("profile");
-        
-        Element profile;
-        Node parent;
-        
-        for (int i = 0; i < profiles.getLength(); i++) {
-            
-            profile = (Element) profiles.item(i);
-            
-            if (profile.getElementsByTagName("name").item(0).getTextContent().equals(user.getName())) {
-                
-                parent = profile.getParentNode();
-                parent.removeChild(profile);
-                
-                try {
-                    Transformer tr = TransformerFactory.newInstance().newTransformer();
-                    tr.setOutputProperty(OutputKeys.INDENT, "yes");
-                    tr.transform(new DOMSource(configFile),
-                            //new StreamResult(new FileOutputStream (new File(getClass().getResource("/conf.xml").toURI())) ));
-                            new StreamResult(new FileOutputStream(new File(projectPath))));
-                } catch (TransformerException | FileNotFoundException e) {
-                    e.printStackTrace(System.err);
-                }
+
+        List profiles = configurationFile.getRootElement().getChildren();
+
+        //find the user from the users list
+        for (int i = 0; i < profiles.size(); i++) {
+
+            Element profile = (Element) profiles.get(i);
+
+            if (profile.getChildText("name").equals(user.getName())) {
+                profiles.remove(i);
+                writeToXmlFile();
             }
         }
+    }
+
+    /**
+     * Write the new data to the xml file
+     */
+    private void writeToXmlFile() {
+        XMLOutputter xmlOutput = new XMLOutputter();
+        xmlOutput.setFormat(Format.getPrettyFormat());
+        try {
+            xmlOutput.output(configurationFile, new FileWriter(projectPath));
+        } catch (IOException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }

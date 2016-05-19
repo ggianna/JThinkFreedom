@@ -1,5 +1,8 @@
 package org.scify.jthinkfreedom.talkandplay.gui;
 
+import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
+import org.scify.jthinkfreedom.talkandplay.gui.configuration.ConfigurationPanel;
 import java.awt.GridBagConstraints;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -20,8 +23,8 @@ public class MainFrame extends javax.swing.JFrame {
     private int profilePaginationCounterStart = 0;
     private int profilePaginationCounterEnd = STEP;
 
-    private ConfigurationHandler cf;
-    private List<ProfilePanel> profiles;
+    private ConfigurationHandler configurationHandler;
+    private List<ProfilePanel> profilesPanel;
     private List<ConfigurationPanel> configurations;
 
     private User selectedUser;
@@ -31,8 +34,8 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public MainFrame(ConfigurationHandler cf) {
-        this.cf = cf;
+    public MainFrame(ConfigurationHandler configurationHandler) {
+        this.configurationHandler = configurationHandler;
         initComponents();
         initCustomComponents();
 
@@ -64,7 +67,9 @@ public class MainFrame extends javax.swing.JFrame {
         contentPane.setBackground(new java.awt.Color(255, 255, 255));
         contentPane.setPreferredSize(new java.awt.Dimension(800, 720));
 
+        nextProfileButton.setBackground(new java.awt.Color(255, 255, 255));
         nextProfileButton.setFont(new java.awt.Font("Comfortaa", 0, 10)); // NOI18N
+        nextProfileButton.setForeground(new java.awt.Color(51, 51, 51));
         nextProfileButton.setText(">");
         nextProfileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,7 +77,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        previousProfileButton.setBackground(new java.awt.Color(255, 255, 255));
         previousProfileButton.setFont(new java.awt.Font("Comfortaa", 0, 10)); // NOI18N
+        previousProfileButton.setForeground(new java.awt.Color(51, 51, 51));
         previousProfileButton.setText("<");
         previousProfileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,10 +91,10 @@ public class MainFrame extends javax.swing.JFrame {
         profileCountLabel.setText("n profiles");
 
         profilePanel.setBackground(new java.awt.Color(255, 255, 255));
-        profilePanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, new java.awt.Color(204, 204, 204), new java.awt.Color(102, 102, 102), null, null));
-        profilePanel.setLayout(new java.awt.GridBagLayout());
 
+        addProfileButton.setBackground(new java.awt.Color(255, 255, 255));
         addProfileButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
+        addProfileButton.setForeground(new java.awt.Color(51, 51, 51));
         addProfileButton.setText("New profile");
         addProfileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,7 +104,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/tp_logo_small.png"))); // NOI18N
 
+        configureButton.setBackground(new java.awt.Color(255, 255, 255));
         configureButton.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
+        configureButton.setForeground(new java.awt.Color(51, 51, 51));
         configureButton.setText("Configure");
         configureButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,31 +120,33 @@ public class MainFrame extends javax.swing.JFrame {
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                .addContainerGap(485, Short.MAX_VALUE)
-                .addComponent(configureButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addProfileButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(previousProfileButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nextProfileButton)
-                .addGap(16, 16, 16))
             .addGroup(contentPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(contentPaneLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(profilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1))
                     .addGroup(contentPaneLayout.createSequentialGroup()
                         .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(logoLabel)
                             .addComponent(profileCountLabel))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 612, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                        .addComponent(configureButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addProfileButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(previousProfileButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nextProfileButton)
+                        .addGap(10, 10, 10))
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addGap(245, 245, 245)
+                        .addComponent(jLabel1))))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,8 +156,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(47, 47, 47)
                 .addComponent(profileCountLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(profilePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addComponent(profilePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nextProfileButton)
                     .addComponent(previousProfileButton)
@@ -154,7 +165,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(configureButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addContainerGap())
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -180,7 +191,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_previousProfileButtonActionPerformed
 
     private void nextProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextProfileButtonActionPerformed
-        if (profilePaginationCounterEnd < profiles.size()) {
+        if (profilePaginationCounterEnd < profilesPanel.size()) {
             profilePaginationCounterEnd += STEP;
             profilePaginationCounterStart += STEP;
             repaintProfiles();
@@ -213,53 +224,26 @@ public class MainFrame extends javax.swing.JFrame {
     private void initCustomComponents() {
         profilePaginationCounterStart = 0;
         profilePaginationCounterEnd = STEP;
+
         // Grid bag layout manager fill from left to right
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.weightx = 1;
+       /* gbc = new GridBagConstraints();
+         gbc.anchor = GridBagConstraints.WEST;
+         gbc.weightx = 1;*/
         // Fill the profile panel according to pagination
-        profiles = new ArrayList<>();
-        for (User profile : cf.getProfiles()) {
-            profiles.add(new ProfilePanel(this, profile));
+        profilesPanel = new ArrayList<>();
+        for (User profile : configurationHandler.getProfiles()) {
+            profilesPanel.add(new ProfilePanel(this, profile));
         }
-        repaintProfiles();               
+        repaintProfiles();
         pack();
     }
 
-    public ConfigurationHandler getConfigurationHandler() {
-        return cf;
-    }
-
-    public List<ProfilePanel> getProfiles() {
-        return profiles;
-    }
-
-    public void setProfiles(List<ProfilePanel> profiles) {
-        this.profiles = profiles;
-    }
-
-    public List<ConfigurationPanel> getConfigurations() {
-        return configurations;
-    }
-
-    public void setConfigurations(List<ConfigurationPanel> configurations) {
-        this.configurations = configurations;
-    }
-
-    public User getSelectedUser() {
-        return selectedUser;
-    }
-
-    public void setSelectedUser(User selectedUser) {
-        this.selectedUser = selectedUser;
-    }
-
     public void removeUser(User selectedUser) {
-      //  cf.deleteUser(selectedUser);
+        //  cf.deleteUser(selectedUser);
         repaintProfiles();
-        for (ProfilePanel p : profiles) {
+        for (ProfilePanel p : profilesPanel) {
             if (p.getUser().equals(selectedUser)) {
-                profiles.remove(p);
+                profilesPanel.remove(p);
                 break;
             }
         }
@@ -270,20 +254,24 @@ public class MainFrame extends javax.swing.JFrame {
 
     public void repaintProfiles() {
         profilePanel.removeAll();
-        if (!profiles.isEmpty()) {
-            profileCountLabel.setText(profiles.size() + " profiles");
+        if (!profilesPanel.isEmpty()) {
+            profileCountLabel.setText(profilesPanel.size() + " profiles");
             for (int i = profilePaginationCounterStart; i < profilePaginationCounterEnd; i++) {
                 try {
-                    profilePanel.add(profiles.get(i), gbc);
+                    profilePanel.add(profilesPanel.get(i), gbc);
                 } catch (IndexOutOfBoundsException e) {
                     // Do nothing
                 }
             }
         }
+
         pack();
         profilePanel.repaint();
     }
 
+    public List<ProfilePanel> getProfilesPanel() {
+        return profilesPanel;
+    }
 
     private GridBagConstraints gbc;
     // Variables declaration - do not modify//GEN-BEGIN:variables

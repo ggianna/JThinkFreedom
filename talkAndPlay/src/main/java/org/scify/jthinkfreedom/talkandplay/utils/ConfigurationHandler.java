@@ -69,6 +69,15 @@ public class ConfigurationHandler {
         this.profiles = profiles;
     }
 
+    public User getProfile(String name) {
+        for (User user : this.profiles) {
+            if (user.getName().equals(name)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     /**
      * Parse the XML file that holds all users' configuration
      *
@@ -151,7 +160,6 @@ public class ConfigurationHandler {
             configurationObj.setCategories(categoriesArray);
             configurations.add(configurationObj);
         }
-
         return configurations;
     }
 
@@ -170,18 +178,22 @@ public class ConfigurationHandler {
             for (int i = 0; i < categoriesNode.size(); i++) {
 
                 Element categoryEl = (Element) categoriesNode.get(i);
+
                 Category category = new Category(Integer.parseInt(categoryEl.getChildText("rows")),
                         Integer.parseInt(categoryEl.getChildText("columns")),
                         categoryEl.getAttributeValue("name"));
 
                 List subCategoriesList = categoryEl.getChildren("categories");
+                List<Category> categoriesArray = new ArrayList<>();
+                
                 if (subCategoriesList.size() > 0) {
                     Element subCategories = (Element) subCategoriesList.get(0);
-
-                    List<Category> categoriesArray = new ArrayList<>();
-                    category.setSubCategories((ArrayList<Category>) getCategories(subCategories.getChildren(), categoriesArray));
+                    categoriesArray = getCategories(subCategories.getChildren(), categoriesArray);
                 }
+
+                category.setSubCategories((ArrayList<Category>) categoriesArray);
                 categories.add(category);
+
             }
             return categories;
         }

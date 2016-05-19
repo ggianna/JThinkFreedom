@@ -1,4 +1,4 @@
-package org.scify.jthinkfreedom.talkandplay.gui;
+package org.scify.jthinkfreedom.talkandplay.gui.configuration;
 
 import java.util.HashMap;
 import java.util.Map;

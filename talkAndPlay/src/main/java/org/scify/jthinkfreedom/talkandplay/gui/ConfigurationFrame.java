@@ -1,5 +1,7 @@
 package org.scify.jthinkfreedom.talkandplay.gui;
 
+import org.scify.jthinkfreedom.talkandplay.gui.configuration.GeneralSettingsPanel;
+import org.scify.jthinkfreedom.talkandplay.gui.configuration.CommunicationModuleSettingsPanel;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import javax.swing.DefaultListModel;
@@ -19,7 +21,6 @@ public class ConfigurationFrame extends javax.swing.JFrame {
 
     private static final int VIEW_LIMIT = 2;
 
-    private MainFrame previous;
     private ConfigurationHandler configurationHandler;
     private GeneralSettingsPanel generalSettingsPanel;
     private CommunicationModuleSettingsPanel communicationModuleSettingsPanel;
@@ -34,7 +35,6 @@ public class ConfigurationFrame extends javax.swing.JFrame {
     }
 
     public ConfigurationFrame(MainFrame previous) {
-        this.previous = previous;
         initComponents();
         initCustomComponents();
     }
@@ -49,7 +49,6 @@ public class ConfigurationFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         contentPane = new javax.swing.JPanel();
-        saveButton = new javax.swing.JButton();
         logoLabel = new javax.swing.JLabel();
         menuPanel = new javax.swing.JPanel();
         userSettingsLabel = new javax.swing.JLabel();
@@ -68,15 +67,6 @@ public class ConfigurationFrame extends javax.swing.JFrame {
 
         contentPane.setBackground(new java.awt.Color(255, 255, 255));
         contentPane.setPreferredSize(new java.awt.Dimension(800, 720));
-
-        saveButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
-        saveButton.setText("Save");
-        saveButton.setEnabled(false);
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionPerformed(evt);
-            }
-        });
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/tp_logo_small.png"))); // NOI18N
 
@@ -123,16 +113,10 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                        .addComponent(menuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(settingsTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 39, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(saveButton)))
-                .addContainerGap())
+                .addComponent(menuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(settingsTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
             .addGroup(contentPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(logoLabel)
@@ -147,9 +131,7 @@ public class ConfigurationFrame extends javax.swing.JFrame {
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(settingsTabbedPane1)
                     .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(24, 24, 24)
-                .addComponent(saveButton)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -173,26 +155,7 @@ public class ConfigurationFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formComponentResized
 
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // if (sensor != null && stimulus != null && reactor != null) {
-
-        /*if (reactor instanceof SlideShowReactor) {
-         String path = SetImageGalleryPath(reactor);
-         previous.getConfigurationHandler().saveConfiguration(new Configuration(sensor, stimulus, reactor),
-         caller.getProfile(), path);
-         } */  //else {
-        //   previous.getConfigurationHandler().saveConfiguration(new Configuration(sensor, stimulus, reactor),
-        //           caller.getProfile());
-        //}
-        //   actionSelectionPanel.removeAll();
-        pack();
-        // actionSelectionPanel.repaint();
-        //vale ta dedomena stin mnimi
-        //   caller.getProfile().addConfigurations(new Configuration(sensor, stimulus, reactor));  //setConfigurations(new Configuration(sensor,stimulus,reactor));
-        // }
-    }//GEN-LAST:event_saveButtonActionPerformed
-
-    private String SetImageGalleryPath(ReactorAdapter reactor) {
+    private String setImageGalleryPath(ReactorAdapter reactor) {
         //System.out.println("yes");
         String path = "";
         JFileChooser chooser = new JFileChooser();
@@ -216,6 +179,7 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
         gbc.weightx = 9999;
+        
         DefaultListModel model = new DefaultListModel();
         usersList.setModel(model);
         for (User user : configurationHandler.getProfiles()) {
@@ -223,16 +187,17 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         }
 
         //initialize the tabs and the panels
-        generalSettingsPanel = new GeneralSettingsPanel(this);
+        generalSettingsPanel = new GeneralSettingsPanel();
         settingsTabbedPane1.addTab("General Settings", generalSettingsPanel);
         
-        communicationModuleSettingsPanel = new CommunicationModuleSettingsPanel();
+        communicationModuleSettingsPanel = new CommunicationModuleSettingsPanel(configurationHandler.getProfiles());
         settingsTabbedPane1.addTab("Communication Module Settings", communicationModuleSettingsPanel);
 
         usersList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
-                generalSettingsPanel.repaintUserSettings(usersList.getSelectedValue().toString());
+                generalSettingsPanel.repaintSettings(usersList.getSelectedValue().toString());
+                communicationModuleSettingsPanel.repaintSettings(configurationHandler.getProfile(usersList.getSelectedValue().toString()));
             }
         });
         pack();
@@ -251,7 +216,6 @@ public class ConfigurationFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JPanel menuPanel;
-    private javax.swing.JButton saveButton;
     private javax.swing.JTabbedPane settingsTabbedPane1;
     private javax.swing.JLabel userSettingsLabel;
     private javax.swing.JList usersList;

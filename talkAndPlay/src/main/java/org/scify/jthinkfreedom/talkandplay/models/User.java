@@ -18,6 +18,10 @@ public class User {
         configurations = new ArrayList<>();
     }
 
+    public User(String name) {
+        this.name = name;
+    }
+
     public User(String name, Icon photo) {
         this.name = name;
         this.photo = photo;
@@ -47,13 +51,10 @@ public class User {
     public void setConfigurations(List<Configuration> configurations) {
         this.configurations = configurations;
     }
- 
 
     @Override
     public String toString() {
         return "User{" + "name=" + name + ", photo=" + photo + ", configurations=" + configurations + '}';
     }
-    
-    
 
 }

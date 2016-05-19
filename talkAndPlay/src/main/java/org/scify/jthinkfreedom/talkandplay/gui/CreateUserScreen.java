@@ -2,6 +2,7 @@ package org.scify.jthinkfreedom.talkandplay.gui;
 
 import javax.swing.ImageIcon;
 import org.scify.jthinkfreedom.talkandplay.models.User;
+import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
 /**
  *
@@ -10,6 +11,7 @@ import org.scify.jthinkfreedom.talkandplay.models.User;
 public class CreateUserScreen extends javax.swing.JFrame {
 
     private MainFrame caller;
+    private UserService userService;
 
     /**
      * Creates new form CreateUserScreen
@@ -20,6 +22,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
 
     public CreateUserScreen(MainFrame caller) {
         this.caller = caller;
+        this.userService = new UserService();
         initComponents();
         initCustomComponents();
     }
@@ -34,21 +37,19 @@ public class CreateUserScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         contentPane = new javax.swing.JPanel();
-        pictureLabel = new javax.swing.JLabel();
         pictureDescrLabel = new javax.swing.JLabel();
         pictureResizeLabel = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
         nameDescrLabel = new javax.swing.JLabel();
         continueButton = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
+        defaultPhotoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Think Freedom");
         setResizable(false);
 
         contentPane.setBackground(new java.awt.Color(255, 255, 255));
-
-        pictureLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/placeholder_144x144.png"))); // NOI18N
 
         pictureDescrLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         pictureDescrLabel.setText("Upload a picture (optional)");
@@ -62,7 +63,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
         nameDescrLabel.setText("Name");
 
         continueButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
-        continueButton.setText("Continue");
+        continueButton.setText("Save");
         continueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continueButtonActionPerformed(evt);
@@ -73,54 +74,61 @@ public class CreateUserScreen extends javax.swing.JFrame {
         errorLabel.setForeground(new java.awt.Color(255, 51, 51));
         errorLabel.setText("Error message");
 
+        defaultPhotoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
+
         javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPaneLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(pictureLabel)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(defaultPhotoLabel)
                     .addComponent(pictureDescrLabel)
                     .addComponent(pictureResizeLabel))
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addComponent(nameDescrLabel)
-                        .addGap(0, 0, 0))
-                    .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(contentPaneLayout.createSequentialGroup()
-                                .addComponent(errorLabel)
-                                .addGap(0, 0, 0))
-                            .addComponent(nameField))))
-                .addContainerGap())
-            .addGroup(contentPaneLayout.createSequentialGroup()
-                .addGap(289, 289, 289)
-                .addComponent(continueButton)
-                .addGap(12, 12, 12))
+                                .addComponent(nameField)
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                .addGap(0, 40, Short.MAX_VALUE)
+                                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                        .addComponent(nameDescrLabel)
+                                        .addGap(75, 75, 75))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                        .addComponent(errorLabel)
+                                        .addGap(49, 49, 49))))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(continueButton)
+                        .addContainerGap())))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPaneLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pictureLabel)
                     .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
                         .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(nameDescrLabel)
-                        .addGap(4, 4, 4)
-                        .addComponent(errorLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(errorLabel))
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(defaultPhotoLabel)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(contentPaneLayout.createSequentialGroup()
                         .addComponent(pictureDescrLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pictureResizeLabel))
                     .addComponent(continueButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -133,7 +141,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(contentPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 4, Short.MAX_VALUE))
         );
 
         pack();
@@ -141,7 +149,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
 
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
         String name = nameField.getText();
-        for (ProfilePanel pp : caller.getProfiles()) {
+        for (ProfilePanel pp : caller.getProfilesPanel()) {
             if (pp.getProfile().getName().equals(name)) {
                 errorLabel.setText("Name already exists!");
                 return;
@@ -151,11 +159,11 @@ public class CreateUserScreen extends javax.swing.JFrame {
             // Add profile panel to profile screen
             // TODO: read image and resize it to 144x144
             User createdUser = new User(name,
-                    new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/gui/resources/placeholder_144x144.png")));
-            caller.getProfiles().add(new ProfilePanel(caller, createdUser));
+                    new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png")));
+            caller.getProfilesPanel().add(new ProfilePanel(caller, createdUser));
             caller.repaintProfiles();
             // Save to xml file
-           // caller.getConfigurationHandler().saveUser(createdUser);
+            userService.saveUser(createdUser);
             dispose();
         }
     }//GEN-LAST:event_continueButtonActionPerformed
@@ -167,11 +175,11 @@ public class CreateUserScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contentPane;
     private javax.swing.JButton continueButton;
+    private javax.swing.JLabel defaultPhotoLabel;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel nameDescrLabel;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel pictureDescrLabel;
-    private javax.swing.JLabel pictureLabel;
     private javax.swing.JLabel pictureResizeLabel;
     // End of variables declaration//GEN-END:variables
 }
