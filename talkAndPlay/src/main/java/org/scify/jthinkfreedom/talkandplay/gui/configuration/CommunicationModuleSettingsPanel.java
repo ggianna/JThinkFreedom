@@ -22,10 +22,10 @@ import org.scify.jthinkfreedom.talkandplay.models.User;
  * @author christina
  */
 public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
-    
+
     private List<User> profiles;
     private JPanel categoryPanel;
-    
+
     public CommunicationModuleSettingsPanel(List<User> profiles) {
         this.profiles = profiles;
         initComponents();
@@ -41,13 +41,13 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel6 = new javax.swing.JLabel();
+        categoriesLabel = new javax.swing.JLabel();
         categoriesPanel = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel6.setText("Categories");
+        categoriesLabel.setText("Categories");
 
         categoriesPanel.setBackground(new java.awt.Color(255, 255, 255));
         categoriesPanel.setForeground(new java.awt.Color(255, 255, 255));
@@ -72,7 +72,7 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(categoriesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                        .addComponent(categoriesLabel)
                         .addGap(0, 435, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -80,7 +80,7 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(jLabel6)
+                .addComponent(categoriesLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(categoriesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(194, Short.MAX_VALUE))
@@ -88,18 +88,22 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initCustomComponents() {
+        hideElements();
         categoriesPanel.setLayout(new BoxLayout(categoriesPanel, BoxLayout.Y_AXIS));
         categoriesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
     }
-    
-    public void repaintSettings(User profile) {        
+
+    public void repaintSettings(User profile) {
+
+        categoriesLabel.setVisible(true);
+
         for (Configuration configuration : profile.getConfigurations()) {
             categoriesPanel.removeAll();
             drawCategories(configuration.getCategories());
-            
+
             categoriesPanel.revalidate();
             categoriesPanel.repaint();
-        }        
+        }
     }
 
     /**
@@ -120,19 +124,23 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
                 textField = new JTextField((new Integer(category.getRows())).toString(), 5);
                 categoryPanel.add(textField);
                 textField = new JTextField((new Integer(category.getColumns())).toString(), 5);
-                
+
                 categoryPanel.add(textField);
                 categoryPanel.setLayout(new FlowLayout());
                 categoryPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
                 categoriesPanel.add(categoryPanel);
-                
+
                 drawCategories(category.getSubCategories());
             }
         }
     }
 
+    public void hideElements() {
+        categoriesLabel.setVisible(false);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel categoriesLabel;
     private javax.swing.JPanel categoriesPanel;
-    private javax.swing.JLabel jLabel6;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,10 +1,9 @@
 package org.scify.jthinkfreedom.talkandplay.gui.configuration;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import org.scify.jthinkfreedom.talkandplay.gui.ConfigurationFrame;
+import org.scify.jthinkfreedom.talkandplay.gui.MainFrame;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
@@ -14,24 +13,22 @@ import org.scify.jthinkfreedom.talkandplay.services.UserService;
  */
 public class GeneralSettingsPanel extends javax.swing.JPanel {
 
-    private User profile;
+    private String profile;
     private UserService userService;
-    private JTextField profileNameField;
+    private ConfigurationFrame configurationFrame;
+    private MainFrame mainFrame;   
 
     /**
      * Creates new form ConfigurationPanel
      */
-    public GeneralSettingsPanel() {
-        userService = new UserService();
-        initComponents();
-    }
-
-    public GeneralSettingsPanel(User profile) {
-        this.profile = profile;
+    public GeneralSettingsPanel(ConfigurationFrame configurationFrame, MainFrame mainFrame) {
+        this.configurationFrame = configurationFrame;
+        this.mainFrame = mainFrame;
         userService = new UserService();
         initComponents();
         initCustomComponents();
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,11 +40,71 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         generalSettingsPanel = new javax.swing.JPanel();
+        profileNameLabel = new javax.swing.JLabel();
+        profileNameField = new javax.swing.JTextField();
+        deleteButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         generalSettingsPanel.setBackground(new java.awt.Color(255, 255, 255));
         generalSettingsPanel.setForeground(new java.awt.Color(255, 255, 255));
+        generalSettingsPanel.setMinimumSize(new java.awt.Dimension(100, 20));
+
+        profileNameLabel.setText("Profile name:");
+
+        profileNameField.setMinimumSize(new java.awt.Dimension(100, 23));
+
+        deleteButton.setBackground(new java.awt.Color(255, 255, 255));
+        deleteButton.setForeground(new java.awt.Color(51, 51, 51));
+        deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
+        saveButton.setBackground(new java.awt.Color(255, 255, 255));
+        saveButton.setForeground(new java.awt.Color(51, 51, 51));
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout generalSettingsPanelLayout = new javax.swing.GroupLayout(generalSettingsPanel);
+        generalSettingsPanel.setLayout(generalSettingsPanelLayout);
+        generalSettingsPanelLayout.setHorizontalGroup(
+            generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(profileNameLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(235, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalSettingsPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(deleteButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveButton)
+                .addContainerGap())
+        );
+        generalSettingsPanelLayout.setVerticalGroup(
+            generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(profileNameLabel)
+                    .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalSettingsPanelLayout.createSequentialGroup()
+                .addContainerGap(52, Short.MAX_VALUE)
+                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveButton)
+                    .addComponent(deleteButton))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -61,32 +118,49 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        userService.updateUser(new User(profileNameField.getText()), this.profile);
+
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this user profile ? ", "Warning", 0);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            userService.deleteUser(new User(profileNameField.getText()));
+            configurationFrame.removeFromUsersList();
+            mainFrame.removeFromProfilesPanel(profile);
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
     private void initCustomComponents() {
+        hideElements();
+    }
+
+    public void repaintSettings(String profile) {
+        deleteButton.setVisible(true);
+        saveButton.setVisible(true);
+        profileNameField.setVisible(true);
+        profileNameLabel.setVisible(true);
+
+        profileNameField.setText(profile);
+        this.profile = profile;
 
     }
 
-    public void repaintSettings(final String profile) {
-        generalSettingsPanel.removeAll();
-        JLabel profileNameLabel = new JLabel("Profile name:");
-        profileNameField = new JTextField(profile, 10);
-        JButton saveButton = new JButton("Save");
-
-        //add listener to button
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                System.out.println(profileNameField.getText());
-                userService.updateUser(new User(profileNameField.getText()), profile);
-            }
-        });
-
-        generalSettingsPanel.add(profileNameLabel);
-        generalSettingsPanel.add(profileNameField);
-        generalSettingsPanel.add(saveButton);
+    public void hideElements() {
+        deleteButton.setVisible(false);
+        saveButton.setVisible(false);
+        profileNameField.setVisible(false);
+        profileNameLabel.setVisible(false);
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton deleteButton;
     private javax.swing.JPanel generalSettingsPanel;
+    private javax.swing.JTextField profileNameField;
+    private javax.swing.JLabel profileNameLabel;
+    private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 }

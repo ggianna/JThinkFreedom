@@ -37,7 +37,11 @@ public class UserService {
 
         Element profile = new Element("profile");
         profile.addContent(new Element("name").setText(user.getName()));
-        profile.addContent(new Element("picture").setText(user.getPhoto().toString()));
+        profile.addContent(new Element("picture").setText(user.getPhoto().toString().split("/")[user.getPhoto().toString().split("/").length - 1]));
+
+        Element configurations = new Element("configurations");
+        profile.addContent(configurations);
+
         profiles.addContent(profile);
 
         /*

@@ -41,7 +41,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
         pictureResizeLabel = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
         nameDescrLabel = new javax.swing.JLabel();
-        continueButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
         defaultPhotoLabel = new javax.swing.JLabel();
 
@@ -62,11 +62,11 @@ public class CreateUserScreen extends javax.swing.JFrame {
         nameDescrLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         nameDescrLabel.setText("Name");
 
-        continueButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
-        continueButton.setText("Save");
-        continueButton.addActionListener(new java.awt.event.ActionListener() {
+        saveButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                continueButtonActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
 
@@ -104,7 +104,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
                                         .addGap(49, 49, 49))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(continueButton)
+                        .addComponent(saveButton)
                         .addContainerGap())))
         );
         contentPaneLayout.setVerticalGroup(
@@ -127,7 +127,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
                         .addComponent(pictureDescrLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pictureResizeLabel))
-                    .addComponent(continueButton))
+                    .addComponent(saveButton))
                 .addGap(0, 0, 0))
         );
 
@@ -147,7 +147,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         String name = nameField.getText();
         for (ProfilePanel pp : caller.getProfilesPanel()) {
             if (pp.getProfile().getName().equals(name)) {
@@ -166,7 +166,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
             userService.saveUser(createdUser);
             dispose();
         }
-    }//GEN-LAST:event_continueButtonActionPerformed
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     private void initCustomComponents() {
         errorLabel.setText("");
@@ -174,12 +174,12 @@ public class CreateUserScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contentPane;
-    private javax.swing.JButton continueButton;
     private javax.swing.JLabel defaultPhotoLabel;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel nameDescrLabel;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel pictureDescrLabel;
     private javax.swing.JLabel pictureResizeLabel;
+    private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 }

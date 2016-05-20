@@ -95,8 +95,9 @@
     </configurations>
   </profile>
   <profile>
-    <name>Test</name>
-    <picture>file:/home/christina/Projects/JThinkFreedom/talkAndPlay/target/classes/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png</picture>
+    <name>gdfgfdgd</name>
+    <picture>no-photo.png</picture>
+    <configurations />
   </profile>
 </profiles>
 

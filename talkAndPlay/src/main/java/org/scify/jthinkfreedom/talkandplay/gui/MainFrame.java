@@ -27,10 +27,7 @@ public class MainFrame extends javax.swing.JFrame {
     private List<ProfilePanel> profilesPanel;
     private List<ConfigurationPanel> configurations;
 
-    private User selectedUser;
-
     public MainFrame() {
-        this.setTitle("Talk and Play");
         initComponents();
     }
 
@@ -209,7 +206,7 @@ public class MainFrame extends javax.swing.JFrame {
         addProfileButton.setEnabled(false);
         configureButton.setEnabled(false);
         //  XmlScreen frame = new XmlScreen();
-        ConfigurationFrame configurationFrame = new ConfigurationFrame();
+        ConfigurationFrame configurationFrame = new ConfigurationFrame(this);
         configurationFrame.setVisible(true);
         configurationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         configurationFrame.addWindowListener(new WindowAdapter() {
@@ -252,7 +249,7 @@ public class MainFrame extends javax.swing.JFrame {
         //profiles.remove(cf);
     }
 
-    public void repaintProfiles() {
+    public void repaintProfiles() {           
         profilePanel.removeAll();
         if (!profilesPanel.isEmpty()) {
             profileCountLabel.setText(profilesPanel.size() + " profiles");
@@ -267,6 +264,17 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
         profilePanel.repaint();
+    }
+    
+    public void removeFromProfilesPanel(String removeProfile){
+        for (ProfilePanel p : profilesPanel) {
+            if (p.getUser().getName().equals(removeProfile)) {
+                profilesPanel.remove(p);
+                break;
+            }
+        }       
+        
+       repaintProfiles();
     }
 
     public List<ProfilePanel> getProfilesPanel() {

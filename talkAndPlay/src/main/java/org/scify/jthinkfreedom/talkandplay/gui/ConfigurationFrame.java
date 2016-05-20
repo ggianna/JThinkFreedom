@@ -24,6 +24,8 @@ public class ConfigurationFrame extends javax.swing.JFrame {
     private ConfigurationHandler configurationHandler;
     private GeneralSettingsPanel generalSettingsPanel;
     private CommunicationModuleSettingsPanel communicationModuleSettingsPanel;
+    private MainFrame mainFrame;
+    private int selectedUser;
 
     /**
      * Creates new form ConfigurationScreen
@@ -34,7 +36,9 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         initCustomComponents();
     }
 
-    public ConfigurationFrame(MainFrame previous) {
+    public ConfigurationFrame(MainFrame mainFrame) {
+        this.configurationHandler = new ConfigurationHandler();
+        this.mainFrame = mainFrame;
         initComponents();
         initCustomComponents();
     }
@@ -80,6 +84,11 @@ public class ConfigurationFrame extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        usersList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                usersListValueChanged(evt);
+            }
+        });
         jScrollPane3.setViewportView(usersList);
 
         generalSettingsLabel.setText("General Settings");
@@ -108,18 +117,22 @@ public class ConfigurationFrame extends javax.swing.JFrame {
                 .addContainerGap(192, Short.MAX_VALUE))
         );
 
+        settingsTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+        settingsTabbedPane1.setForeground(new java.awt.Color(51, 51, 51));
+
         javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                .addComponent(menuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(settingsTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(45, Short.MAX_VALUE))
             .addGroup(contentPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(logoLabel)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addComponent(menuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(settingsTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(logoLabel)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
@@ -155,6 +168,19 @@ public class ConfigurationFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formComponentResized
 
+    private void usersListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_usersListValueChanged
+
+        //if no user is selected, hide tab elements
+        if (usersList.getSelectedIndex() == -1) {
+            generalSettingsPanel.hideElements();
+            communicationModuleSettingsPanel.hideElements();
+        } else {
+            selectedUser = usersList.getSelectedIndex();
+            generalSettingsPanel.repaintSettings(usersList.getSelectedValue().toString());
+            communicationModuleSettingsPanel.repaintSettings(configurationHandler.getProfile(usersList.getSelectedValue().toString()));
+        }
+    }//GEN-LAST:event_usersListValueChanged
+
     private String setImageGalleryPath(ReactorAdapter reactor) {
         //System.out.println("yes");
         String path = "";
@@ -179,7 +205,7 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
         gbc.weightx = 9999;
-        
+
         DefaultListModel model = new DefaultListModel();
         usersList.setModel(model);
         for (User user : configurationHandler.getProfiles()) {
@@ -187,27 +213,23 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         }
 
         //initialize the tabs and the panels
-        generalSettingsPanel = new GeneralSettingsPanel();
+        generalSettingsPanel = new GeneralSettingsPanel(this, this.mainFrame);
         settingsTabbedPane1.addTab("General Settings", generalSettingsPanel);
-        
+
         communicationModuleSettingsPanel = new CommunicationModuleSettingsPanel(configurationHandler.getProfiles());
         settingsTabbedPane1.addTab("Communication Module Settings", communicationModuleSettingsPanel);
 
-        usersList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent lse) {
-                generalSettingsPanel.repaintSettings(usersList.getSelectedValue().toString());
-                communicationModuleSettingsPanel.repaintSettings(configurationHandler.getProfile(usersList.getSelectedValue().toString()));
-            }
-        });
         pack();
     }
 
-    /*
-     public void repaintSettingsPanel() {
-     userSettingsPanel.setVisible(true);
-     }
-     */
+    public void removeFromUsersList() {
+        DefaultListModel model = (DefaultListModel) usersList.getModel();
+        if (selectedUser != -1) {
+            model.remove(selectedUser);
+        }
+
+    }
+
     private Font originalFont;
     private GridBagConstraints gbc;
     // Variables declaration - do not modify//GEN-BEGIN:variables
