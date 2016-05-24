@@ -2,7 +2,6 @@ package org.scify.jthinkfreedom.talkandplay.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.Icon;
 
 /**
  *
@@ -11,20 +10,22 @@ import javax.swing.Icon;
 public class User {
 
     private String name;
-    private Icon photo;
+    private String image;
     private List<Configuration> configurations;
+    private List<Category> categories;
 
     public User() {
         configurations = new ArrayList<>();
+        categories = new ArrayList<>();
     }
 
     public User(String name) {
         this.name = name;
     }
 
-    public User(String name, Icon photo) {
+    public User(String name, String image) {
         this.name = name;
-        this.photo = photo;
+        this.image = image;
         configurations = new ArrayList<>();
     }
 
@@ -36,12 +37,12 @@ public class User {
         this.name = name;
     }
 
-    public Icon getPhoto() {
-        return photo;
+    public String getImage() {
+        return image;
     }
 
-    public void setPhoto(Icon photo) {
-        this.photo = photo;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public List<Configuration> getConfigurations() {
@@ -52,9 +53,17 @@ public class User {
         this.configurations = configurations;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
     @Override
     public String toString() {
-        return "User{" + "name=" + name + ", photo=" + photo + ", configurations=" + configurations + '}';
+        return "User{" + "name=" + name + ", image=" + image + ", configurations=" + configurations + '}';
     }
 
 }

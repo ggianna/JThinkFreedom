@@ -1,5 +1,6 @@
 package org.scify.jthinkfreedom.talkandplay.gui;
 
+import java.io.IOException;
 import java.util.List;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
 import org.scify.jthinkfreedom.talkandplay.models.Configuration;
@@ -12,7 +13,7 @@ import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
  */
 public class ApplicationLauncher {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         ConfigurationHandler conf = new ConfigurationHandler();
         MainFrame ps = new MainFrame(conf);
@@ -30,11 +31,9 @@ public class ApplicationLauncher {
 
             System.out.println("Profile: " + user.getName());
 
-            for (Configuration configuration : user.getConfigurations()) {
-                for (Category cat : configuration.getCategories()) {
+            for (Category cat : user.getCategories()) {
                     System.out.println("cat name:" + cat.getName());
                 }
-            }
         }
     }
 }

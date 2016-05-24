@@ -7,15 +7,25 @@ package org.scify.jthinkfreedom.talkandplay.gui.configuration;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import static javax.swing.BoxLayout.PAGE_AXIS;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import org.scify.jthinkfreedom.talkandplay.gui.CreateCategoryFrame;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
-import org.scify.jthinkfreedom.talkandplay.models.Configuration;
 import org.scify.jthinkfreedom.talkandplay.models.User;
+import org.scify.jthinkfreedom.talkandplay.services.CategoryService;
+import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
 
 /**
  *
@@ -23,11 +33,17 @@ import org.scify.jthinkfreedom.talkandplay.models.User;
  */
 public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
 
-    private List<User> profiles;
+    private ConfigurationHandler configurationHandler;
+    private CategoryService categoryService;
+    private User user;
+    private Set<String> allCategories;
     private JPanel categoryPanel;
+    private List<JPanel> categoriesPanels;
 
-    public CommunicationModuleSettingsPanel(List<User> profiles) {
-        this.profiles = profiles;
+    public CommunicationModuleSettingsPanel() {
+        this.categoryService = new CategoryService();
+        this.allCategories = new HashSet<>();
+        this.categoriesPanels = new ArrayList<>();
         initComponents();
         initCustomComponents();
     }
@@ -42,12 +58,32 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         categoriesLabel = new javax.swing.JLabel();
+        addCategoryButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
         categoriesPanel = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(255, 255, 255));
 
-        categoriesLabel.setText("Categories");
+        categoriesLabel.setText("Κατηγορίες");
+
+        addCategoryButton.setBackground(new java.awt.Color(255, 255, 255));
+        addCategoryButton.setForeground(new java.awt.Color(51, 51, 51));
+        addCategoryButton.setText("Προσθήκη κατηγορίας");
+        addCategoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addCategoryButtonActionPerformed(evt);
+            }
+        });
+
+        saveButton.setBackground(new java.awt.Color(255, 255, 255));
+        saveButton.setForeground(new java.awt.Color(51, 51, 51));
+        saveButton.setText("Αποθήκευση");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         categoriesPanel.setBackground(new java.awt.Color(255, 255, 255));
         categoriesPanel.setForeground(new java.awt.Color(255, 255, 255));
@@ -60,7 +96,7 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
         );
         categoriesPanelLayout.setVerticalGroup(
             categoriesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 143, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -68,42 +104,98 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(categoriesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(categoriesLabel)
-                        .addGap(0, 435, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(addCategoryButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(saveButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(categoriesLabel)
+                                .addGap(0, 415, Short.MAX_VALUE)))))
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(0, 0, 0)
                 .addComponent(categoriesLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(categoriesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(194, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addCategoryButton)
+                    .addComponent(saveButton)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void addCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCategoryButtonActionPerformed
+        CreateCategoryFrame categoryFrame = new CreateCategoryFrame(this, user, allCategories);
+        categoryFrame.setLocationRelativeTo(null);
+        categoryFrame.setVisible(true);
+    }//GEN-LAST:event_addCategoryButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        //  TableColumn categoriesColumn = categoriesTable.getColumnModel().getColumn(3);
+        //  categoriesColumn.setCellEditor(new DefaultCellEditor(comboBox));
+
+        List<Category> categories = new ArrayList<>();
+        Category category;
+
+        for (JPanel catPanel : categoriesPanels) {
+            String oldName = catPanel.getName().split("-")[1];
+            category = new Category();
+
+            for (Component comp : catPanel.getComponents()) {
+                if (("name-" + oldName).equals(comp.getName())) {
+                    if (comp instanceof JTextField) {
+                        category.setName(((JTextField) comp).getText());
+                    } else {
+                        category.setName(oldName);
+                    }
+                } else if (("rows-" + oldName).equals(comp.getName())) {
+                    category.setRows(Integer.parseInt(((JTextField) comp).getText()));
+                } else if (("columns-" + oldName).equals(comp.getName())) {
+                    category.setColumns(Integer.parseInt(((JTextField) comp).getText()));
+                } else if (("parent-" + oldName).equals(comp.getName())) {
+                    category.setParentCategory(new Category(((JComboBox) comp).getSelectedItem().toString()));
+                }
+            }
+            categories.add(category);
+        }
+
+        categoryService.save(categories, user);
+    }//GEN-LAST:event_saveButtonActionPerformed
+
     private void initCustomComponents() {
         hideElements();
-        categoriesPanel.setLayout(new BoxLayout(categoriesPanel, BoxLayout.Y_AXIS));
-        categoriesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        categoriesPanel.setLayout(new BoxLayout(categoriesPanel, PAGE_AXIS));
+        /*  categoriesPanel.setLayout(new BoxLayout(categoriesPanel, BoxLayout.Y_AXIS));
+         categoriesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);*/
     }
 
-    public void repaintSettings(User profile) {
+    public void repaintSettings(User user) {
+        this.user = user;
+        this.categoriesPanels = new ArrayList<>();
 
-        categoriesLabel.setVisible(true);
+        categoriesPanel.removeAll();
 
-        for (Configuration configuration : profile.getConfigurations()) {
-            categoriesPanel.removeAll();
-            drawCategories(configuration.getCategories());
+        showElements();
 
-            categoriesPanel.revalidate();
-            categoriesPanel.repaint();
+        if (user.getCategories().size() > 0) {
+            drawCategories(user.getCategories());
+
+        } else {
+            categoriesLabel.setVisible(false);
         }
+
+        categoriesPanel.repaint();
+        categoriesPanel.revalidate();
+
     }
 
     /**
@@ -117,30 +209,77 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
             return;
         } else {
             for (Category category : categories) {
-                categoryPanel = new JPanel();
-                categoryPanel.setBackground(Color.white);
-                JTextField textField = new JTextField(category.getName(), 10);
-                categoryPanel.add(textField);
-                textField = new JTextField((new Integer(category.getRows())).toString(), 5);
-                categoryPanel.add(textField);
-                textField = new JTextField((new Integer(category.getColumns())).toString(), 5);
+                System.out.println(category.getName() + " subsize:" + category.getSubCategories().size());
 
-                categoryPanel.add(textField);
-                categoryPanel.setLayout(new FlowLayout());
-                categoryPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-                categoriesPanel.add(categoryPanel);
+                if (category.getParentCategory() != null) {
 
+                    JPanel panel = new JPanel();
+                    panel.setName("");
+                    panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+                    JLabel categoryNameLabel = new JLabel(category.getName(), 10);
+                    categoryNameLabel.setName("name-" + category.getName());
+                    panel.add(categoryNameLabel);
+
+                    JLabel gridLabel = new JLabel("Grid: ");
+                    JTextField categoryRowField = new JTextField(Integer.toString(category.getRows()), 2);
+                    JLabel xLabel = new JLabel("x");
+                    JTextField categoryColumnField = new JTextField(Integer.toString(category.getColumns()), 2);
+
+                    JComboBox categoriesComboBox = new JComboBox();
+                    for (String c : allCategories) {
+                        categoriesComboBox.addItem(c);
+                    }
+                    categoriesComboBox.setSelectedItem(category.getParentCategory().getName());
+
+                    categoryRowField.setName("rows-" + category.getName());
+                    categoryColumnField.setName("columns-" + category.getName());
+                    categoriesComboBox.setName("parent-" + category.getName());
+                    categoriesComboBox.setBackground(Color.white);
+                    panel.setName("panel-" + category.getName());
+
+                    // JTextField image = new JTextField(category.getName(), 10);
+                    JButton deleteCategory = new JButton(new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/icons/trash_20x20.png")));
+                    deleteCategory.setBackground(Color.white);
+                    deleteCategory.setBorder(null);
+
+                    panel.setBackground(Color.white);
+                    panel.add(Box.createHorizontalGlue());
+                    panel.add(gridLabel);
+                    panel.add(categoryRowField);
+                    panel.add(xLabel);
+                    panel.add(categoryColumnField);
+                    panel.add(categoriesComboBox);
+                    panel.add(deleteCategory);
+                    // panel.add(image);
+                    categoriesPanel.add(panel);
+                    categoriesPanels.add(panel);
+                }
+                allCategories.add(category.getName());
                 drawCategories(category.getSubCategories());
             }
         }
     }
 
-    public void hideElements() {
-        categoriesLabel.setVisible(false);
+    public void showElements() {
+        categoriesLabel.setVisible(true);
+        categoriesPanel.setVisible(true);
+        addCategoryButton.setVisible(true);
+        saveButton.setVisible(true);
     }
 
+    public void hideElements() {
+        categoriesLabel.setVisible(false);
+        categoriesPanel.setVisible(false);
+        addCategoryButton.setVisible(false);
+        saveButton.setVisible(false);
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addCategoryButton;
     private javax.swing.JLabel categoriesLabel;
     private javax.swing.JPanel categoriesPanel;
+    private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 }

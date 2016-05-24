@@ -15,11 +15,6 @@ public class Configuration {
     private SensorAdapter sensor;
     private StimulusAdapter stimulus;
     private ReactorAdapter reactor;
-    private List<Category> categories;
-
-    public Configuration() {
-        categories = new ArrayList<>();
-    }
 
     public Configuration(SensorAdapter sensor, StimulusAdapter stimulus, ReactorAdapter reactor) {
         this.sensor = sensor;
@@ -51,18 +46,9 @@ public class Configuration {
         this.reactor = reactor;
     }
 
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
-
     @Override
     public String toString() {
-        return "Configuration{" + "sensor=" + sensor + ", stimulus=" + stimulus + ", reactor=" + reactor + ", categories=" + categories + '}';
+        return "Configuration{" + "sensor=" + sensor + ", stimulus=" + stimulus + ", reactor=" + reactor + '}';
     }
 
-    
 }

@@ -1,7 +1,9 @@
 package org.scify.jthinkfreedom.talkandplay.gui;
 
 import java.awt.Font;
+import java.io.IOException;
 import javax.swing.SwingConstants;
+import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 
 /**
@@ -12,21 +14,23 @@ public class ProfilePanel extends javax.swing.JPanel {
 
     private MainFrame parent;
     private User profile;
+    private GuiHelper guiHelper;
 
     /**
      * Creates new form ProfilePanel
      */
-    public User getUser(){
-       return profile;
+    public User getUser() {
+        return profile;
     }
-    
+
     public ProfilePanel() {
         initComponents();
     }
 
-    public ProfilePanel(MainFrame parent, User profile) {
+    public ProfilePanel(MainFrame parent, User profile) throws IOException {
         this.parent = parent;
         this.profile = profile;
+        this.guiHelper = new GuiHelper();
         initComponents();
         initCustomComponents();
     }
@@ -45,53 +49,33 @@ public class ProfilePanel extends javax.swing.JPanel {
         nameLabel = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
+        jPanel1.add(imageLabel, java.awt.BorderLayout.PAGE_START);
 
         nameLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nameLabel.setText("Name");
-        nameLabel.setAlignmentY(0.0F);
+        jPanel1.add(nameLabel, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(imageLabel))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(nameLabel)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(imageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nameLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void initCustomComponents() {
+    private void initCustomComponents() throws IOException {
         nameLabel.setText(profile.getName());
-        imageLabel.setIcon(profile.getPhoto());
+        imageLabel.setIcon(guiHelper.getIcon((profile.getImage())));
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    }
+    
+    public void repaintPanel(User user) throws IOException {
+        nameLabel.setText(user.getName());
+        imageLabel.setIcon(guiHelper.getIcon((user.getImage())));
     }
 
     public User getProfile() {
@@ -100,6 +84,10 @@ public class ProfilePanel extends javax.swing.JPanel {
 
     public void setProfile(User profile) {
         this.profile = profile;
+    }
+
+    public void update(String profile) {
+        nameLabel.setText(profile);
     }
 
     private Font originalFont;

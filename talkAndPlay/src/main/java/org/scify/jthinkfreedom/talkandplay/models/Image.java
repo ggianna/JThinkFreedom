@@ -2,54 +2,36 @@ package org.scify.jthinkfreedom.talkandplay.models;
 
 public class Image {
 
-    private String fileName;
-    private String imagePath;
-    private String txt;
-    private String category;
+    private String path;
+    private String name;
     private String soundFile;
-    private String imageIcon;
+    private Category category;
 
     public Image() {
 
     }
 
-    public Image(String imagePath, String txt, String category, String fileName) {
-        this.imagePath = imagePath;
-        this.txt = txt;
+    public Image(String path, String name, String soundFile, Category category) {
+        this.path = path;
+        this.name = name;
+        this.soundFile = soundFile;
         this.category = category;
-        this.fileName = fileName;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getPath() {
+        return path;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getName() {
+        return name;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getTxt() {
-        return txt;
-    }
-
-    public void setTxt(String txt) {
-        this.txt = txt;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSoundFile() {
@@ -60,14 +42,12 @@ public class Image {
         this.soundFile = soundFile;
     }
 
-    public String getImageIcon() {
-        return imageIcon;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setImageIcon(String imageIcon) {
-        this.imageIcon = imageIcon;
+    public void setCategory(Category category) {
+        this.category = category;
     }
-    
-    
 
 }

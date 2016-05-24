@@ -4,10 +4,11 @@ import org.scify.jthinkfreedom.talkandplay.gui.configuration.GeneralSettingsPane
 import org.scify.jthinkfreedom.talkandplay.gui.configuration.CommunicationModuleSettingsPanel;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.scify.jthinkfreedom.reactors.SlideShowReactor;
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.talkandplay.models.User;
@@ -58,7 +59,6 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         userSettingsLabel = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         usersList = new javax.swing.JList();
-        generalSettingsLabel = new javax.swing.JLabel();
         settingsTabbedPane1 = new javax.swing.JTabbedPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -77,7 +77,7 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         menuPanel.setBackground(new java.awt.Color(255, 255, 255));
         menuPanel.setForeground(new java.awt.Color(255, 255, 255));
 
-        userSettingsLabel.setText("User Settings");
+        userSettingsLabel.setText("Ρυθμίσεις χρηστών");
 
         usersList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -91,7 +91,8 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(usersList);
 
-        generalSettingsLabel.setText("General Settings");
+        settingsTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+        settingsTabbedPane1.setForeground(new java.awt.Color(51, 51, 51));
 
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
@@ -101,24 +102,24 @@ public class ConfigurationFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(userSettingsLabel)
-                    .addComponent(generalSettingsLabel))
-                .addGap(0, 32, Short.MAX_VALUE))
+                    .addComponent(userSettingsLabel))
+                .addGap(18, 18, 18)
+                .addComponent(settingsTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(userSettingsLabel)
-                .addGap(12, 12, 12)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(generalSettingsLabel)
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(settingsTabbedPane1)
+                    .addGroup(menuPanelLayout.createSequentialGroup()
+                        .addComponent(userSettingsLabel)
+                        .addGap(12, 12, 12)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 231, Short.MAX_VALUE)))
+                .addContainerGap())
         );
-
-        settingsTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
-        settingsTabbedPane1.setForeground(new java.awt.Color(51, 51, 51));
 
         javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -126,14 +127,11 @@ public class ConfigurationFrame extends javax.swing.JFrame {
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPaneLayout.createSequentialGroup()
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addComponent(menuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(settingsTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(menuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(contentPaneLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(logoLabel)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,17 +139,15 @@ public class ConfigurationFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(logoLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(settingsTabbedPane1)
-                    .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addComponent(menuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contentPane, javax.swing.GroupLayout.DEFAULT_SIZE, 822, Short.MAX_VALUE)
+            .addComponent(contentPane, javax.swing.GroupLayout.DEFAULT_SIZE, 828, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,9 +171,14 @@ public class ConfigurationFrame extends javax.swing.JFrame {
             generalSettingsPanel.hideElements();
             communicationModuleSettingsPanel.hideElements();
         } else {
-            selectedUser = usersList.getSelectedIndex();
-            generalSettingsPanel.repaintSettings(usersList.getSelectedValue().toString());
-            communicationModuleSettingsPanel.repaintSettings(configurationHandler.getProfile(usersList.getSelectedValue().toString()));
+            selectedUser = usersList.getSelectedIndex();            
+            try {
+                User user = configurationHandler.getProfile(usersList.getSelectedValue().toString());
+                generalSettingsPanel.repaintSettings(user);
+                communicationModuleSettingsPanel.repaintSettings(user);
+            } catch (IOException ex) {
+                Logger.getLogger(ConfigurationFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_usersListValueChanged
 
@@ -214,12 +215,23 @@ public class ConfigurationFrame extends javax.swing.JFrame {
 
         //initialize the tabs and the panels
         generalSettingsPanel = new GeneralSettingsPanel(this, this.mainFrame);
-        settingsTabbedPane1.addTab("General Settings", generalSettingsPanel);
+        settingsTabbedPane1.addTab("Γενικές ρυθμίσεις", generalSettingsPanel);
 
-        communicationModuleSettingsPanel = new CommunicationModuleSettingsPanel(configurationHandler.getProfiles());
-        settingsTabbedPane1.addTab("Communication Module Settings", communicationModuleSettingsPanel);
+        communicationModuleSettingsPanel = new CommunicationModuleSettingsPanel();
+        settingsTabbedPane1.addTab("Επικοινωνία", communicationModuleSettingsPanel);
+
+        settingsTabbedPane1.addTab("Ψυχαγωγία", null);
+
+        settingsTabbedPane1.addTab("Παιχνίδια", null);
 
         pack();
+    }
+
+    public void updateUsersList(String newName) {
+        DefaultListModel model = (DefaultListModel) usersList.getModel();
+        if (selectedUser != -1) {
+            model.set(selectedUser, newName);
+        }
     }
 
     public void removeFromUsersList() {
@@ -227,14 +239,12 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         if (selectedUser != -1) {
             model.remove(selectedUser);
         }
-
     }
 
     private Font originalFont;
     private GridBagConstraints gbc;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contentPane;
-    private javax.swing.JLabel generalSettingsLabel;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JPanel menuPanel;

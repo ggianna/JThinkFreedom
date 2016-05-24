@@ -1,22 +1,25 @@
 package org.scify.jthinkfreedom.talkandplay.gui.configuration;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.scify.jthinkfreedom.talkandplay.gui.ConfigurationFrame;
 import org.scify.jthinkfreedom.talkandplay.gui.MainFrame;
+import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
-/**
- *
- * @author peustr
- */
 public class GeneralSettingsPanel extends javax.swing.JPanel {
 
-    private String profile;
+    private User user;
     private UserService userService;
     private ConfigurationFrame configurationFrame;
-    private MainFrame mainFrame;   
+    private MainFrame mainFrame;
+    private GuiHelper guiHelper;
+    private String userImage;
 
     /**
      * Creates new form ConfigurationPanel
@@ -24,11 +27,11 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
     public GeneralSettingsPanel(ConfigurationFrame configurationFrame, MainFrame mainFrame) {
         this.configurationFrame = configurationFrame;
         this.mainFrame = mainFrame;
-        userService = new UserService();
+        this.userService = new UserService();
+        this.guiHelper = new GuiHelper();
         initComponents();
         initCustomComponents();
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,6 +47,8 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         profileNameField = new javax.swing.JTextField();
         deleteButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
+        imageLabel = new javax.swing.JLabel();
+        uploadImageButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -51,13 +56,13 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         generalSettingsPanel.setForeground(new java.awt.Color(255, 255, 255));
         generalSettingsPanel.setMinimumSize(new java.awt.Dimension(100, 20));
 
-        profileNameLabel.setText("Profile name:");
+        profileNameLabel.setText("Όνομα προφίλ:");
 
         profileNameField.setMinimumSize(new java.awt.Dimension(100, 23));
 
         deleteButton.setBackground(new java.awt.Color(255, 255, 255));
         deleteButton.setForeground(new java.awt.Color(51, 51, 51));
-        deleteButton.setText("Delete");
+        deleteButton.setText("Διαγραφή");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
@@ -66,10 +71,21 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
 
         saveButton.setBackground(new java.awt.Color(255, 255, 255));
         saveButton.setForeground(new java.awt.Color(51, 51, 51));
-        saveButton.setText("Save");
+        saveButton.setText("Αποθήκευση");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
+            }
+        });
+
+        imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
+
+        uploadImageButton.setBackground(new java.awt.Color(255, 255, 255));
+        uploadImageButton.setForeground(new java.awt.Color(51, 51, 51));
+        uploadImageButton.setText("Αλλαγή εικόνας");
+        uploadImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadImageButtonActionPerformed(evt);
             }
         });
 
@@ -79,31 +95,42 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
             generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(generalSettingsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(profileNameLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(235, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalSettingsPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(deleteButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saveButton)
-                .addContainerGap())
+                .addComponent(imageLabel)
+                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalSettingsPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(saveButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteButton)
+                        .addGap(15, 15, 15))
+                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(uploadImageButton)
+                            .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                                .addComponent(profileNameLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(19, Short.MAX_VALUE))))
         );
         generalSettingsPanelLayout.setVerticalGroup(
             generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(generalSettingsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(profileNameLabel)
-                    .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalSettingsPanelLayout.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
-                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(saveButton)
-                    .addComponent(deleteButton))
-                .addContainerGap())
+                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                        .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(profileNameLabel)
+                            .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(uploadImageButton)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                        .addComponent(imageLabel)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(saveButton)
+                            .addComponent(deleteButton)))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -119,33 +146,63 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        userService.updateUser(new User(profileNameField.getText()), this.profile);
+        User updatedUser = new User(profileNameField.getText(), this.userImage);
 
+        userService.update(updatedUser, user.getName());
+        configurationFrame.updateUsersList(profileNameField.getText());
+        
+        try {
+
+            mainFrame.updateProfilesPanel(updatedUser, user.getName());
+        } catch (IOException ex) {
+            Logger.getLogger(GeneralSettingsPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
 
-        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this user profile ? ", "Warning", 0);
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Είστε σίγουροι ότι θέλετε να διαγράψετε το προφίλ?", "Warning", 0);
         if (dialogResult == JOptionPane.YES_OPTION) {
-            userService.deleteUser(new User(profileNameField.getText()));
+            userService.delete(new User(profileNameField.getText()));
             configurationFrame.removeFromUsersList();
-            mainFrame.removeFromProfilesPanel(profile);
+            mainFrame.removeFromProfilesPanel(user.getName());
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void uploadImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadImageButtonActionPerformed
+        userImage = "";
+        JFileChooser chooser = new JFileChooser();
+
+        chooser.setDialogTitle("Διαλέξτε εικόνα");
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.setFileFilter(new FileNameExtensionFilter("Image Files", "png", "jpg", "jpeg", "JPG", "JPEG", "gif"));
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            userImage = chooser.getSelectedFile().getAbsolutePath();
+            try {
+                imageLabel.setIcon(guiHelper.getIcon(userImage));
+            } catch (IOException ex) {
+                Logger.getLogger(GeneralSettingsPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_uploadImageButtonActionPerformed
 
     private void initCustomComponents() {
         hideElements();
     }
 
-    public void repaintSettings(String profile) {
+    public void repaintSettings(User user) throws IOException {
         deleteButton.setVisible(true);
         saveButton.setVisible(true);
         profileNameField.setVisible(true);
         profileNameLabel.setVisible(true);
+        imageLabel.setVisible(true);
+        uploadImageButton.setVisible(true);
 
-        profileNameField.setText(profile);
-        this.profile = profile;
+        imageLabel.setIcon(guiHelper.getIcon(user.getImage()));
 
+        profileNameField.setText(user.getName());
+        this.user = user;
     }
 
     public void hideElements() {
@@ -153,14 +210,18 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         saveButton.setVisible(false);
         profileNameField.setVisible(false);
         profileNameLabel.setVisible(false);
+        imageLabel.setVisible(false);
+        uploadImageButton.setVisible(false);
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deleteButton;
     private javax.swing.JPanel generalSettingsPanel;
+    private javax.swing.JLabel imageLabel;
     private javax.swing.JTextField profileNameField;
     private javax.swing.JLabel profileNameLabel;
     private javax.swing.JButton saveButton;
+    private javax.swing.JButton uploadImageButton;
     // End of variables declaration//GEN-END:variables
 }

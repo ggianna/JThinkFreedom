@@ -1,6 +1,11 @@
 package org.scify.jthinkfreedom.talkandplay.gui;
 
-import javax.swing.ImageIcon;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
@@ -12,6 +17,8 @@ public class CreateUserScreen extends javax.swing.JFrame {
 
     private MainFrame caller;
     private UserService userService;
+    private GuiHelper guiHelper;
+    private String userImage;
 
     /**
      * Creates new form CreateUserScreen
@@ -23,6 +30,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
     public CreateUserScreen(MainFrame caller) {
         this.caller = caller;
         this.userService = new UserService();
+        this.guiHelper = new GuiHelper();
         initComponents();
         initCustomComponents();
     }
@@ -37,13 +45,12 @@ public class CreateUserScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         contentPane = new javax.swing.JPanel();
-        pictureDescrLabel = new javax.swing.JLabel();
-        pictureResizeLabel = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
         nameDescrLabel = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
         defaultPhotoLabel = new javax.swing.JLabel();
+        uploadImageButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Think Freedom");
@@ -51,19 +58,14 @@ public class CreateUserScreen extends javax.swing.JFrame {
 
         contentPane.setBackground(new java.awt.Color(255, 255, 255));
 
-        pictureDescrLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
-        pictureDescrLabel.setText("Upload a picture (optional)");
-
-        pictureResizeLabel.setFont(new java.awt.Font("Comfortaa", 0, 10)); // NOI18N
-        pictureResizeLabel.setText("It will automatically be resized to 144x144");
-
         nameField.setFont(new java.awt.Font("Comfortaa", 0, 14)); // NOI18N
 
         nameDescrLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
-        nameDescrLabel.setText("Name");
+        nameDescrLabel.setText("Όνομα");
 
-        saveButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
-        saveButton.setText("Save");
+        saveButton.setBackground(new java.awt.Color(255, 255, 255));
+        saveButton.setForeground(new java.awt.Color(51, 51, 51));
+        saveButton.setText("Αποθήκευση");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
@@ -76,6 +78,15 @@ public class CreateUserScreen extends javax.swing.JFrame {
 
         defaultPhotoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
 
+        uploadImageButton.setBackground(new java.awt.Color(255, 255, 255));
+        uploadImageButton.setForeground(new java.awt.Color(51, 51, 51));
+        uploadImageButton.setText("Ανεβάστε εικόνα");
+        uploadImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadImageButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
@@ -84,28 +95,24 @@ public class CreateUserScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(defaultPhotoLabel)
-                    .addComponent(pictureDescrLabel)
-                    .addComponent(pictureResizeLabel))
+                    .addComponent(uploadImageButton))
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(contentPaneLayout.createSequentialGroup()
-                                .addComponent(nameField)
-                                .addContainerGap())
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                .addGap(0, 40, Short.MAX_VALUE)
-                                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                        .addComponent(nameDescrLabel)
-                                        .addGap(75, 75, 75))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                        .addComponent(errorLabel)
-                                        .addGap(49, 49, 49))))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(nameDescrLabel)
+                        .addGap(66, 66, 66))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(saveButton)
-                        .addContainerGap())))
+                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                .addComponent(errorLabel)
+                                .addGap(45, 45, 45))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                .addComponent(saveButton)
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,14 +128,11 @@ public class CreateUserScreen extends javax.swing.JFrame {
                     .addGroup(contentPaneLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(defaultPhotoLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addComponent(pictureDescrLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pictureResizeLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uploadImageButton)
                     .addComponent(saveButton))
-                .addGap(0, 0, 0))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -141,7 +145,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(contentPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 4, Short.MAX_VALUE))
+                .addGap(0, 3, Short.MAX_VALUE))
         );
 
         pack();
@@ -156,19 +160,40 @@ public class CreateUserScreen extends javax.swing.JFrame {
             }
         }
         if (!name.replaceAll("\\s+", "").isEmpty()) {
-            // Add profile panel to profile screen
-            // TODO: read image and resize it to 144x144
-            User createdUser = new User(name,
-                    new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png")));
-            caller.getProfilesPanel().add(new ProfilePanel(caller, createdUser));
+
+            User createdUser = new User(name, userImage);
+            try {
+                caller.getProfilesPanel().add(new ProfilePanel(caller, createdUser));
+            } catch (IOException ex) {
+                Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
             caller.repaintProfiles();
             // Save to xml file
-            userService.saveUser(createdUser);
+            userService.save(createdUser);
             dispose();
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void uploadImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadImageButtonActionPerformed
+        userImage = "";
+        JFileChooser chooser = new JFileChooser();
+
+        chooser.setDialogTitle("Διαλέξτε εικόνα");
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.setFileFilter(new FileNameExtensionFilter("Image Files", "png", "jpg", "jpeg", "JPG", "JPEG", "gif"));
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            userImage = chooser.getSelectedFile().getAbsolutePath();
+            try {
+                defaultPhotoLabel.setIcon(guiHelper.getIcon(userImage));
+            } catch (IOException ex) {
+                Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_uploadImageButtonActionPerformed
+
     private void initCustomComponents() {
+        setTitle("Talk&Play");
         errorLabel.setText("");
     }
 
@@ -178,8 +203,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel nameDescrLabel;
     private javax.swing.JTextField nameField;
-    private javax.swing.JLabel pictureDescrLabel;
-    private javax.swing.JLabel pictureResizeLabel;
     private javax.swing.JButton saveButton;
+    private javax.swing.JButton uploadImageButton;
     // End of variables declaration//GEN-END:variables
 }

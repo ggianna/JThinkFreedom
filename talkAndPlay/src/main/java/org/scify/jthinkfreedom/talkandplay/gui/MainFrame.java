@@ -1,11 +1,10 @@
 package org.scify.jthinkfreedom.talkandplay.gui;
 
-import java.awt.ComponentOrientation;
-import java.awt.FlowLayout;
 import org.scify.jthinkfreedom.talkandplay.gui.configuration.ConfigurationPanel;
 import java.awt.GridBagConstraints;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
@@ -31,7 +30,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public MainFrame(ConfigurationHandler configurationHandler) {
+    public MainFrame(ConfigurationHandler configurationHandler) throws IOException {
         this.configurationHandler = configurationHandler;
         initComponents();
         initCustomComponents();
@@ -85,14 +84,14 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         profileCountLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
-        profileCountLabel.setText("n profiles");
+        profileCountLabel.setText("n προφίλ");
 
         profilePanel.setBackground(new java.awt.Color(255, 255, 255));
 
         addProfileButton.setBackground(new java.awt.Color(255, 255, 255));
         addProfileButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
         addProfileButton.setForeground(new java.awt.Color(51, 51, 51));
-        addProfileButton.setText("New profile");
+        addProfileButton.setText("Νέο προφίλ");
         addProfileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addProfileButtonActionPerformed(evt);
@@ -104,7 +103,7 @@ public class MainFrame extends javax.swing.JFrame {
         configureButton.setBackground(new java.awt.Color(255, 255, 255));
         configureButton.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
         configureButton.setForeground(new java.awt.Color(51, 51, 51));
-        configureButton.setText("Configure");
+        configureButton.setText("Ρυθμίσεις");
         configureButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 configureButtonActionPerformed(evt);
@@ -207,6 +206,7 @@ public class MainFrame extends javax.swing.JFrame {
         configureButton.setEnabled(false);
         //  XmlScreen frame = new XmlScreen();
         ConfigurationFrame configurationFrame = new ConfigurationFrame(this);
+        configurationFrame.setLocationRelativeTo(null);
         configurationFrame.setVisible(true);
         configurationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         configurationFrame.addWindowListener(new WindowAdapter() {
@@ -218,11 +218,10 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_configureButtonActionPerformed
 
-    private void initCustomComponents() {
+    private void initCustomComponents() throws IOException {
         profilePaginationCounterStart = 0;
         profilePaginationCounterEnd = STEP;
-
-        // Grid bag layout manager fill from left to right
+                // Grid bag layout manager fill from left to right
        /* gbc = new GridBagConstraints();
          gbc.anchor = GridBagConstraints.WEST;
          gbc.weightx = 1;*/
@@ -236,7 +235,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     public void removeUser(User selectedUser) {
-        //  cf.deleteUser(selectedUser);
         repaintProfiles();
         for (ProfilePanel p : profilesPanel) {
             if (p.getUser().equals(selectedUser)) {
@@ -245,14 +243,12 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         repaintProfiles();
-
-        //profiles.remove(cf);
     }
 
-    public void repaintProfiles() {           
+    public void repaintProfiles() {
         profilePanel.removeAll();
         if (!profilesPanel.isEmpty()) {
-            profileCountLabel.setText(profilesPanel.size() + " profiles");
+            profileCountLabel.setText(profilesPanel.size() + " προφίλ");
             for (int i = profilePaginationCounterStart; i < profilePaginationCounterEnd; i++) {
                 try {
                     profilePanel.add(profilesPanel.get(i), gbc);
@@ -261,20 +257,30 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         }
-
         pack();
         profilePanel.repaint();
     }
-    
-    public void removeFromProfilesPanel(String removeProfile){
+
+    public void updateProfilesPanel(User user, String oldName) throws IOException {
+                System.out.println("user: "+user.getName()+", "+oldName);
+
+        for (ProfilePanel p : profilesPanel) {
+            if (p.getUser().getName().equals(oldName)) {
+                p.repaintPanel(user);
+                break;
+            }
+        }
+        repaintProfiles();
+    }
+
+    public void removeFromProfilesPanel(String removeProfile) {
         for (ProfilePanel p : profilesPanel) {
             if (p.getUser().getName().equals(removeProfile)) {
                 profilesPanel.remove(p);
                 break;
             }
-        }       
-        
-       repaintProfiles();
+        }
+        repaintProfiles();
     }
 
     public List<ProfilePanel> getProfilesPanel() {

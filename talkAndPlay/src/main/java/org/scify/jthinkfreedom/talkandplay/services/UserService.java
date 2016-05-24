@@ -1,14 +1,8 @@
 package org.scify.jthinkfreedom.talkandplay.services;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
 
@@ -29,7 +23,7 @@ public class UserService {
      *
      * @param user
      */
-    public void saveUser(User user) {
+    public void save(User user) {
 
         configurationHandler.getProfiles().add(user);
 
@@ -37,11 +31,15 @@ public class UserService {
 
         Element profile = new Element("profile");
         profile.addContent(new Element("name").setText(user.getName()));
-        profile.addContent(new Element("picture").setText(user.getPhoto().toString().split("/")[user.getPhoto().toString().split("/").length - 1]));
+        profile.addContent(new Element("image").setText(user.getImage()));
 
         Element configurations = new Element("configurations");
         profile.addContent(configurations);
 
+        Element categories = new Element("categories");
+        profile.addContent(categories);
+
+        System.out.println(profile.toString());
         profiles.addContent(profile);
 
         /*
@@ -58,7 +56,7 @@ public class UserService {
          profile.appendChild(configurations);
          profiles.item(0).appendChild(profile);
          */
-        writeToXmlFile();
+        configurationHandler.writeToXmlFile();
     }
 
     /**
@@ -66,7 +64,7 @@ public class UserService {
      *
      * @param name
      */
-    public void updateUser(User user, String oldName) {
+    public void update(User user, String oldName) {
 
         List profiles = configurationFile.getRootElement().getChildren();
 
@@ -78,7 +76,8 @@ public class UserService {
             if (profile.getChildText("name").equals(oldName)) {
 
                 profile.getChild("name").setText(user.getName());
-                writeToXmlFile();
+                profile.getChild("image").setText(user.getImage());
+                configurationHandler.writeToXmlFile();
             }
         }
     }
@@ -88,7 +87,7 @@ public class UserService {
      *
      * @param user
      */
-    public void deleteUser(User user) {
+    public void delete(User user) {
 
         configurationHandler.getProfiles().remove(user);
 
@@ -101,23 +100,9 @@ public class UserService {
 
             if (profile.getChildText("name").equals(user.getName())) {
                 profiles.remove(i);
-                writeToXmlFile();
+                configurationHandler.writeToXmlFile();
             }
         }
-    }
-
-    /**
-     * Write the new data to the xml file
-     */
-    private void writeToXmlFile() {
-        XMLOutputter xmlOutput = new XMLOutputter();
-        xmlOutput.setFormat(Format.getPrettyFormat());
-        try {
-            xmlOutput.output(configurationFile, new FileWriter(projectPath));
-        } catch (IOException ex) {
-            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
 }

@@ -2,14 +2,19 @@ package org.scify.jthinkfreedom.talkandplay.utils;
 
 import OS.Os;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.scify.jthinkfreedom.reactors.SlideShowReactor;
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
@@ -18,47 +23,44 @@ import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
 import org.scify.jthinkfreedom.talkandplay.models.Configuration;
 import org.scify.jthinkfreedom.talkandplay.models.User;
-import org.w3c.dom.NodeList;
 
 public class ConfigurationHandler {
 
     Os os = new Os();
-    private Document configFile;
+    private Document configurationFile;
     private List<User> profiles;
     private File file;
-    private String project_path;
+    private String projectPath;
 
     public ConfigurationHandler() {
         try {
-            project_path = System.getProperty("user.dir") + os.returnChatracter() + "conf.xml";
+            projectPath = System.getProperty("user.dir") + os.returnChatracter() + "conf.xml";
 
-            file = new File(project_path);
+            file = new File(projectPath);
             if (!file.exists() || file.isDirectory()) {
-                PrintWriter writer = new PrintWriter(project_path, "UTF-8");
+                PrintWriter writer = new PrintWriter(projectPath, "UTF-8");
                 writer.println("<?xml version=\"1.0\"?>\n"
                         + "<profiles></profiles>");
                 writer.close();
             }
 
             SAXBuilder builder = new SAXBuilder();
-            configFile = (Document) builder.build(file);
+            configurationFile = (Document) builder.build(file);
 
-            /* configFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(project_path));
-             configFile.normalize();
-             */
+            /* configurationFile = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(projectPath));
+             configurationFile.normalize(); */
             profiles = parseXML();
         } catch (Exception e) {
             e.printStackTrace(System.err);
         }
-
     }
 
     public Document getConfigurationFile() {
-        return configFile;
+        return configurationFile;
     }
 
     public String getProjectPath() {
-        return project_path;
+        return projectPath;
     }
 
     public List<User> getProfiles() {
@@ -87,19 +89,22 @@ public class ConfigurationHandler {
     private List<User> parseXML() throws Exception {
 
         List<User> list = new ArrayList<>();
-        List profiles = configFile.getRootElement().getChildren();
+        List profiles = configurationFile.getRootElement().getChildren();
 
         for (int i = 0; i < profiles.size(); i++) {
 
             Element profile = (Element) profiles.get(i);
-            User user = new User(profile.getChildText("name"),
-                    new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/"
-                                    + profile.getChildText("picture"))));
+            User user = new User(profile.getChildText("name"), profile.getChildText("image"));
 
-            List configurationsList = profile.getChildren("configurations");
-            Element configurations = (Element) configurationsList.get(0);
+            Element configurations = (Element) profile.getChild("configurations");
+
+            List<Category> categoriesArray = new ArrayList<>();
+
+            Element categories = (Element) profile.getChild("communication").getChild("categories");
+            categoriesArray = getCategories(categories, categoriesArray, null);
 
             user.setConfigurations(getConfigurations(configurations.getChildren()));
+            user.setCategories(categoriesArray);
 
             list.add(user);
         }
@@ -148,16 +153,6 @@ public class ConfigurationHandler {
             }
 
             configurationObj = new Configuration(sensor, stimulus, reactor);
-            List categoriesList = configuration.getChildren("categories");
-            List<Category> categoriesArray = new ArrayList<>();
-
-            if (categoriesList.size() > 0) {
-                Element categories = (Element) categoriesList.get(0);
-                categoriesArray = getCategories(categories.getChildren(), categoriesArray);
-
-            }
-
-            configurationObj.setCategories(categoriesArray);
             configurations.add(configurationObj);
         }
         return configurations;
@@ -170,26 +165,34 @@ public class ConfigurationHandler {
      * @param categories
      * @return
      */
-    private List<Category> getCategories(List categoriesNode, List<Category> categories) {
-        if (categoriesNode.size() == 0) {
+    private List<Category> getCategories(Element categoriesNode, List<Category> categories, Category parent) {
+        if (categoriesNode == null) {
             return categories;
         } else {
             //get the user categories
-            for (int i = 0; i < categoriesNode.size(); i++) {
+            for (int i = 0; i < categoriesNode.getChildren().size(); i++) {
 
-                Element categoryEl = (Element) categoriesNode.get(i);
+                Element categoryEl = (Element) categoriesNode.getChildren().get(i);
 
-                Category category = new Category(Integer.parseInt(categoryEl.getChildText("rows")),
-                        Integer.parseInt(categoryEl.getChildText("columns")),
-                        categoryEl.getAttributeValue("name"));
+                Category category = new Category(
+                        categoryEl.getAttributeValue("name"),
+                        Integer.parseInt(categoryEl.getChildText("rows")),
+                        Integer.parseInt(categoryEl.getChildText("columns")), null);
 
-                List subCategoriesList = categoryEl.getChildren("categories");
-                List<Category> categoriesArray = new ArrayList<>();
-                
-                if (subCategoriesList.size() > 0) {
-                    Element subCategories = (Element) subCategoriesList.get(0);
-                    categoriesArray = getCategories(subCategories.getChildren(), categoriesArray);
+                if (categoryEl.getAttributeValue("editable") != null) {
+                    category.setEditable(Boolean.parseBoolean(categoryEl.getAttributeValue("editable")));
+                } else {
+                    category.setEditable(true);
                 }
+
+                if (parent != null) {
+                    category.setParentCategory(parent);
+                }
+
+                List<Category> categoriesArray = new ArrayList<>();
+
+                Element subCategories = (Element) categoryEl.getChild("categories");
+                categoriesArray = getCategories(subCategories, categoriesArray, category);
 
                 category.setSubCategories((ArrayList<Category>) categoriesArray);
                 categories.add(category);
@@ -199,25 +202,37 @@ public class ConfigurationHandler {
         }
     }
 
+    /**
+     * Write the new data to the xml file
+     */
+    public void writeToXmlFile() {
+        XMLOutputter xmlOutput = new XMLOutputter();
+        xmlOutput.setFormat(Format.getPrettyFormat());
+        try {
+            xmlOutput.output(configurationFile, new FileWriter(projectPath));
+        } catch (IOException ex) {
+            Logger.getLogger(ConfigurationHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /*
      public void saveConfiguration(Configuration conf, User user) {
-     NodeList profiles = configFile.getElementsByTagName("profile");
+     NodeList profiles = configurationFile.getElementsByTagName("profile");
      for (int i = 0; i < profiles.getLength(); i++) {
      Element profile = (Element) profiles.item(i);
      String name = profile.getElementsByTagName("name").item(0).getTextContent();
 
      if (name.equals(user.getName())) {
      Element configurations = (Element) profile.getElementsByTagName("configurations").item(0);
-     Element sensorClass = configFile.createElement("sensor");
-     sensorClass.appendChild(configFile.createTextNode(conf.getSensor().getClass().getCanonicalName()));
-     Element stimulusClass = configFile.createElement("stimulus");
+     Element sensorClass = configurationFile.createElement("sensor");
+     sensorClass.appendChild(configurationFile.createTextNode(conf.getSensor().getClass().getCanonicalName()));
+     Element stimulusClass = configurationFile.createElement("stimulus");
 
-     stimulusClass.appendChild(configFile.createTextNode(conf.getStimulus().getClass().getCanonicalName()));
-     Element reactorClass = configFile.createElement("reactor");
+     stimulusClass.appendChild(configurationFile.createTextNode(conf.getStimulus().getClass().getCanonicalName()));
+     Element reactorClass = configurationFile.createElement("reactor");
 
-     reactorClass.appendChild(configFile.createTextNode(conf.getReactor().getClass().getCanonicalName()));
-     Element configuration = configFile.createElement("configuration");
+     reactorClass.appendChild(configurationFile.createTextNode(conf.getReactor().getClass().getCanonicalName()));
+     Element configuration = configurationFile.createElement("configuration");
 
      configuration.appendChild(sensorClass);
      configuration.appendChild(stimulusClass);
@@ -227,9 +242,9 @@ public class ConfigurationHandler {
      try {
      Transformer tr = TransformerFactory.newInstance().newTransformer();
      tr.setOutputProperty(OutputKeys.INDENT, "yes");
-     tr.transform(new DOMSource(configFile),
+     tr.transform(new DOMSource(configurationFile),
      //new StreamResult(new FileOutputStream(new File(getClass().getResource("/conf.xml").toURI()))));
-     new StreamResult(new FileOutputStream(new File(project_path))));
+     new StreamResult(new FileOutputStream(new File(projectPath))));
      } catch (TransformerException | FileNotFoundException e) {
      e.printStackTrace(System.err);
      }
