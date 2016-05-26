@@ -168,8 +168,12 @@ public class CreateUserScreen extends javax.swing.JFrame {
                 Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
             caller.repaintProfiles();
-            // Save to xml file
-            userService.save(createdUser);
+            try {
+                // Save to xml file
+                userService.save(createdUser);
+            } catch (Exception ex) {
+                Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
             dispose();
         }
     }//GEN-LAST:event_saveButtonActionPerformed

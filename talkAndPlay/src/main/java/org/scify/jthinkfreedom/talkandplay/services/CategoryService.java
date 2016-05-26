@@ -17,119 +17,167 @@ public class CategoryService {
 
     public CategoryService() {
         configurationHandler = new ConfigurationHandler();
-        configurationFile = configurationHandler.getConfigurationFile();
-        projectPath = configurationHandler.getProjectPath();
     }
 
-    public void save(Category category, User user) {
-        configurationHandler.getProfile(user.getName()).getCategories();
-        Element categoryEl;
-        List profiles = configurationFile.getRootElement().getChildren();
+    public List<Category> getCategories(String userName) throws Exception {
+        List<Category> categories = new ArrayList<>();
 
-        //find the user from the users list
-        for (int i = 0; i < profiles.size(); i++) {
+        User user = configurationHandler.getUser(userName);
 
-            Element profile = (Element) profiles.get(i);
+        if (user != null) {
+            getCategories(user.getCategories(), categories);
+        }
+        return categories;
+    }
 
-            if (user.getName().equals(profile.getChildText("name"))) {
+    private void getCategories(List<Category> userCategories, List<Category> categories) {
 
-                ((Element) profile.getChild("communication").getChild("categories")).removeChildren("category");
-                Element categoryChild = new Element("category");
-                categoryChild.setAttribute(new Attribute("name", category.getName()));
-                categoryChild.addContent(new Element("rows").setText(String.valueOf(category.getRows())));
-                categoryChild.addContent(new Element("columns").setText(String.valueOf(category.getColumns())));
-                categoryChild.addContent(new Element("image").setText(category.getImage()));
-
-                ((Element) profile.getChild("communication").getChild("categories")).addContent(categoryChild);
-
-                /* 
-                 for (int j = 0; j < profile.getChildren("categories").size(); j++) {
-
-                 categoryEl = (Element) profile.getChildren("categories").get(i);
-                    
-                 if (categoryEl.getAttributeValue("name").equals(category.getParentCategory())) {
-
-                 } else {
-                 for (int k = 0; k < categoryEl.getChildren("categories").size(); k++) {
-                 categoryEl = (Element) categoryEl.getChildren("categories").get(k);
-                 if (categoryEl.getAttributeValue("name").equals(category.getParentCategory())) {
-                 break;
-                 }
-                 }
-                 }
-                 }*/
+        if (userCategories == null) {
+            return;
+        } else {
+            for (Category category : userCategories) {
+                categories.add(category);
+                getCategories(category.getSubCategories(), categories);
             }
         }
-
-        configurationHandler.writeToXmlFile();
     }
 
-    public void update(Category category, User user) {
+    /**
+     * Save a new category
+     *
+     * @param category
+     * @param user
+     */
+    public void save(Category category, User user) throws Exception {
 
+        Element profile = configurationHandler.getProfileElement(user.getName());
+
+        if (profile != null) {
+
+            Element categoryChild = new Element("category");
+            categoryChild.setAttribute(new Attribute("name", category.getName()));
+            categoryChild.addContent(new Element("rows").setText(String.valueOf(category.getRows())));
+            categoryChild.addContent(new Element("columns").setText(String.valueOf(category.getColumns())));
+            categoryChild.addContent(new Element("image").setText(category.getImage()));
+
+            attachToParent(profile.getChild("communication").getChild("categories"), category.getParentCategory().getName(), categoryChild);
+
+            configurationHandler.writeToXmlFile();
+        }
     }
 
-    public void delete(Category category, User user) {
+    /**
+     * Update a category
+     *
+     * @param category
+     * @param user
+     */
+    public void update(Category category, User user, String oldName) throws Exception {
 
+        Element profile = configurationHandler.getProfileElement(user.getName());
+
+        if (profile != null) {
+            Element categoryChild = new Element("category");
+            categoryChild.setAttribute(new Attribute("name", category.getName()));
+            categoryChild.addContent(new Element("rows").setText(String.valueOf(category.getRows())));
+            categoryChild.addContent(new Element("columns").setText(String.valueOf(category.getColumns())));
+            categoryChild.addContent(new Element("image").setText(category.getImage()));
+
+            updateToParent(profile.getChild("communication").getChild("categories"), oldName, category);
+
+            configurationHandler.writeToXmlFile();
+        }
     }
 
-    private Element findParent(Element categoryNode, String name) {
-        if (name.equals(categoryNode.getAttribute("name"))) {
+    /**
+     * Delete a category
+     *
+     * @param category
+     * @param user
+     */
+    public void delete(String categoryName, User user) throws Exception {
+        Element profile = configurationHandler.getProfileElement(user.getName());
+
+        if (profile != null) {
+
+            deleteFromParent(profile.getChild("communication").getChild("categories"), categoryName);
+
+            configurationHandler.writeToXmlFile();
+        }
+    }
+
+    /**
+     * Find the category parent and add the categoryChild
+     *
+     * @param categoryNode
+     * @param name
+     * @return
+     */
+    private Element attachToParent(Element categoryNode, String name, Element categoryChild) {
+
+        if (name.equals(categoryNode.getAttributeValue("name"))) {
+
+            if (categoryNode.getChild("categories") == null) {
+                Element categories = new Element("categories");
+                categories.addContent(categoryChild);
+                categoryNode.addContent(categories);
+            } else {
+                categoryNode.getChild("categories").addContent(categoryChild);
+            }
+
             return categoryNode;
-        } else {
-            //get the user categories
-            for (int i = 0; i < categoryNode.getChildren().size(); i++) {
 
+        } else {
+
+            for (int i = 0; i < categoryNode.getChildren().size(); i++) {
                 Element categoryEl = (Element) categoryNode.getChildren().get(i);
-                findParent(categoryEl, name);
+                attachToParent(categoryEl, name, categoryChild);
             }
         }
         return categoryNode;
     }
-        /**
-         * Returns the distance from the main menu and for the main menu the
-         * distance
-         */
-    public int depthOfCategory(Category category) {
-        int depth = 0;
-        Category parent = category.getParentCategory();
-        while (!parent.getName().equals("main menu") && !category.getName().equals("main menu")) {
-            depth++;
-            parent = parent.getParentCategory();
-        }
-        return depth;
 
+    /**
+     * For a given category, find the category and update it
+     *
+     * @param categoryNode
+     * @param name
+     * @param categoryChild
+     * @return
+     */
+    private void updateToParent(Element categoryNode, String oldName, Category categoryChild) {
+
+        if (oldName.equals(categoryNode.getAttributeValue("name"))) {
+
+            categoryNode.getAttribute("name").setValue(categoryChild.getName());
+            categoryNode.getChild("rows").setText(String.valueOf(categoryChild.getRows()));
+            categoryNode.getChild("columns").setText(String.valueOf(categoryChild.getColumns()));
+            categoryNode.getChild("image").setText(categoryChild.getImage());
+
+        } else {
+            for (int i = 0; i < categoryNode.getChildren().size(); i++) {
+                Element categoryEl = (Element) categoryNode.getChildren().get(i);
+                updateToParent(categoryEl, oldName, categoryChild);
+            }
+        }
     }
 
     /**
-     * this function checks if another category exists with the name
-     * categoryToAddName for the level of the category given
+     * Delete a given category
+     *
+     * @param categoryNode
+     * @param categoryName
      */
-    public boolean categoryExists(Category category, String categoryToAddName, boolean foo) {
+    private void deleteFromParent(Element categoryNode, String categoryName) {
 
-        if (category.getName().equals(categoryToAddName) && foo == false) {
-            return true;
-        }
-
-        for (Category c : category.getSubCategories()) {
-            //if there is a subcategory that matches the given name then return
-            if (c.getName().equals(categoryToAddName)) {
-                return true;
+        if (categoryName.equals(categoryNode.getAttributeValue("name"))) {
+            categoryNode.detach();
+        } else {
+            for (int i = 0; i < categoryNode.getChildren().size(); i++) {
+                Element categoryEl = (Element) categoryNode.getChildren().get(i);
+                deleteFromParent(categoryEl, categoryName);
             }
         }
-
-        return false;
     }
-    /*
-     public boolean imageExists(String fileName) {
-     for (Image image : this.getTiles()) {
-     if (image.getFileName().equals(fileName)) {
-     return true;
-     }
-     }
-     if (this.filename.equals(fileName)) {
-     return true;
-     }
-     return false;
-     }*/
 
 }

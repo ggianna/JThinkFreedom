@@ -34,7 +34,6 @@ public class MainFrame extends javax.swing.JFrame {
         this.configurationHandler = configurationHandler;
         initComponents();
         initCustomComponents();
-
     }
 
     /**
@@ -64,7 +63,7 @@ public class MainFrame extends javax.swing.JFrame {
         contentPane.setPreferredSize(new java.awt.Dimension(800, 720));
 
         nextProfileButton.setBackground(new java.awt.Color(255, 255, 255));
-        nextProfileButton.setFont(new java.awt.Font("Comfortaa", 0, 10)); // NOI18N
+        nextProfileButton.setFont(nextProfileButton.getFont().deriveFont(nextProfileButton.getFont().getStyle() & ~java.awt.Font.BOLD));
         nextProfileButton.setForeground(new java.awt.Color(51, 51, 51));
         nextProfileButton.setText(">");
         nextProfileButton.addActionListener(new java.awt.event.ActionListener() {
@@ -74,7 +73,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         previousProfileButton.setBackground(new java.awt.Color(255, 255, 255));
-        previousProfileButton.setFont(new java.awt.Font("Comfortaa", 0, 10)); // NOI18N
+        previousProfileButton.setFont(previousProfileButton.getFont().deriveFont(previousProfileButton.getFont().getStyle() & ~java.awt.Font.BOLD));
         previousProfileButton.setForeground(new java.awt.Color(51, 51, 51));
         previousProfileButton.setText("<");
         previousProfileButton.addActionListener(new java.awt.event.ActionListener() {
@@ -83,13 +82,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        profileCountLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
+        profileCountLabel.setFont(profileCountLabel.getFont().deriveFont(profileCountLabel.getFont().getSize()+2f));
         profileCountLabel.setText("n προφίλ");
 
         profilePanel.setBackground(new java.awt.Color(255, 255, 255));
 
         addProfileButton.setBackground(new java.awt.Color(255, 255, 255));
-        addProfileButton.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
+        addProfileButton.setFont(addProfileButton.getFont().deriveFont(addProfileButton.getFont().getSize()+2f));
         addProfileButton.setForeground(new java.awt.Color(51, 51, 51));
         addProfileButton.setText("Νέο προφίλ");
         addProfileButton.addActionListener(new java.awt.event.ActionListener() {
@@ -101,7 +100,7 @@ public class MainFrame extends javax.swing.JFrame {
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/tp_logo_small.png"))); // NOI18N
 
         configureButton.setBackground(new java.awt.Color(255, 255, 255));
-        configureButton.setFont(new java.awt.Font("DejaVu Sans", 1, 14)); // NOI18N
+        configureButton.setFont(configureButton.getFont().deriveFont(configureButton.getFont().getSize()+2f));
         configureButton.setForeground(new java.awt.Color(51, 51, 51));
         configureButton.setText("Ρυθμίσεις");
         configureButton.addActionListener(new java.awt.event.ActionListener() {
@@ -116,18 +115,6 @@ public class MainFrame extends javax.swing.JFrame {
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(contentPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(profilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(logoLabel)
-                            .addComponent(profileCountLabel))
-                        .addGap(0, 612, Short.MAX_VALUE)))
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,6 +130,19 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(contentPaneLayout.createSequentialGroup()
                         .addGap(245, 245, 245)
                         .addComponent(jLabel1))))
+            .addGroup(contentPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(profilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addComponent(logoLabel)
+                        .addGap(0, 612, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(profileCountLabel)))
+                .addContainerGap())
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -10,12 +10,10 @@ public class UserService {
 
     private ConfigurationHandler configurationHandler;
     private Document configurationFile;
-    String projectPath;
 
     public UserService() {
         configurationHandler = new ConfigurationHandler();
         configurationFile = configurationHandler.getConfigurationFile();
-        projectPath = configurationHandler.getProjectPath();
     }
 
     /**
@@ -23,7 +21,7 @@ public class UserService {
      *
      * @param user
      */
-    public void save(User user) {
+    public void save(User user) throws Exception {
 
         configurationHandler.getProfiles().add(user);
 
@@ -64,7 +62,7 @@ public class UserService {
      *
      * @param name
      */
-    public void update(User user, String oldName) {
+    public void update(User user, String oldName) throws Exception {
 
         List profiles = configurationFile.getRootElement().getChildren();
 
@@ -87,7 +85,7 @@ public class UserService {
      *
      * @param user
      */
-    public void delete(User user) {
+    public void delete(User user) throws Exception {
 
         configurationHandler.getProfiles().remove(user);
 

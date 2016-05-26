@@ -148,7 +148,11 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         User updatedUser = new User(profileNameField.getText(), this.userImage);
 
-        userService.update(updatedUser, user.getName());
+        try {
+            userService.update(updatedUser, user.getName());
+        } catch (Exception ex) {
+            Logger.getLogger(GeneralSettingsPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         configurationFrame.updateUsersList(profileNameField.getText());
         
         try {
@@ -163,7 +167,11 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
 
         int dialogResult = JOptionPane.showConfirmDialog(null, "Είστε σίγουροι ότι θέλετε να διαγράψετε το προφίλ?", "Warning", 0);
         if (dialogResult == JOptionPane.YES_OPTION) {
-            userService.delete(new User(profileNameField.getText()));
+            try {
+                userService.delete(new User(profileNameField.getText()));
+            } catch (Exception ex) {
+                Logger.getLogger(GeneralSettingsPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
             configurationFrame.removeFromUsersList();
             mainFrame.removeFromProfilesPanel(user.getName());
         }

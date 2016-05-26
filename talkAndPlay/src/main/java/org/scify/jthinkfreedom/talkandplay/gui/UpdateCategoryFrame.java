@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.scify.jthinkfreedom.talkandplay.gui.configuration.CommunicationModuleSettingsPanel;
+import org.scify.jthinkfreedom.talkandplay.gui.configuration.GeneralSettingsPanel;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
 import org.scify.jthinkfreedom.talkandplay.models.User;
@@ -21,7 +23,7 @@ import org.scify.jthinkfreedom.talkandplay.services.CategoryService;
  *
  * @author christina
  */
-public class CreateCategoryFrame extends javax.swing.JFrame {
+public class UpdateCategoryFrame extends javax.swing.JFrame {
 
     private CommunicationModuleSettingsPanel parent;
     private List<Category> allCategories;
@@ -29,18 +31,20 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
     private GuiHelper guiHelper;
     private CategoryService categoryService;
     private User user;
+    private Category category;
 
     /**
      * Creates new form CreateCategoryFrame
      */
-    public CreateCategoryFrame() {
+    public UpdateCategoryFrame() {
         initComponents();
     }
 
-    public CreateCategoryFrame(CommunicationModuleSettingsPanel parent, User user) throws Exception {
+    public UpdateCategoryFrame(Category category, CommunicationModuleSettingsPanel parent, User user) throws Exception {
         this.parent = parent;
         this.guiHelper = new GuiHelper();
         this.user = user;
+        this.category = category;
         this.categoryService = new CategoryService();
         this.allCategories = categoryService.getCategories(user.getName());
         initComponents();
@@ -68,6 +72,7 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         parentLabel = new javax.swing.JLabel();
         parentComboBox = new javax.swing.JComboBox();
+        deleteButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Talk&Play");
@@ -104,6 +109,15 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
 
         parentLabel.setText("Ανήκει σε:");
 
+        deleteButton.setBackground(new java.awt.Color(255, 255, 255));
+        deleteButton.setForeground(new java.awt.Color(51, 51, 51));
+        deleteButton.setText("Διαγραφή");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -135,6 +149,8 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(uploadButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(deleteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton)))
                 .addContainerGap())
         );
@@ -163,7 +179,9 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
                                     .addComponent(parentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uploadButton))
-                    .addComponent(saveButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(saveButton)
+                        .addComponent(deleteButton)))
                 .addGap(0, 8, Short.MAX_VALUE))
         );
 
@@ -188,33 +206,19 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
         int rows = Integer.parseInt(rowsTextField.getText());
         int columns = Integer.parseInt(columnsTextField.getText());
 
-        /*  for (ProfilePanel pp : caller.getProfilesPanel()) {
-         if (pp.getProfile().getName().equals(name)) {
-         errorLabel.setText("Name already exists!");
-         return;
-         }
-         }*/
         if (!name.replaceAll("\\s+", "").isEmpty()) {
 
-            Category category = new Category(name, rows, columns, categoryImage);
+            Category updatedCategory = new Category(name, rows, columns, categoryImage);
             category.setParentCategory(new Category(parentComboBox.getSelectedItem().toString()));
 
             try {
-                /* try {
-                 caller.getProfilesPanel().add(new ProfilePanel(caller, createdUser));
-                 } catch (IOException ex) {
-                 Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
-                 }
-                 caller.repaintProfiles();*/
-                // Save to xml file
-                categoryService.save(category, user);
-                parent.drawCategories(categoryService.getCategories(user.getName()));
-
+                categoryService.update(updatedCategory, user, category.getName());
+                parent.drawCategories(categoryService.getCategories(name));
             } catch (Exception ex) {
-                Logger.getLogger(CreateCategoryFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UpdateCategoryFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            dispose();
         }
+        dispose();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void uploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadButtonActionPerformed
@@ -235,50 +239,50 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_uploadButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        String name = nameTextField.getText();
+
+        if (!name.replaceAll("\\s+", "").isEmpty()) {
+
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Είστε σίγουροι ότι θέλετε να διαγράψετε την κατηγορία?", "Warning", 0);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                try {
+                    categoryService.delete(name, user);
+                } catch (Exception ex) {
+                    Logger.getLogger(UpdateCategoryFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    parent.drawCategories(categoryService.getCategories(name));
+                } catch (Exception ex) {
+                    Logger.getLogger(UpdateCategoryFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateCategoryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateCategoryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateCategoryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateCategoryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CreateCategoryFrame().setVisible(true);
-            }
-        });
-    }
+        dispose();
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void initCustomComponents() {
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        nameTextField.setText(category.getName());
+        rowsTextField.setText(String.valueOf(category.getRows()));
+        columnsTextField.setText(String.valueOf(category.getColumns()));
+
         for (Category c : allCategories) {
             parentComboBox.addItem(c.getName());
+        }
+
+        if (category.getParentCategory() != null) {
+            parentComboBox.setSelectedItem(category.getParentCategory().getName());
+        } else {
+            parentComboBox.setSelectedItem("Επικοινωνία");
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField columnsTextField;
     private javax.swing.JLabel defaultPhotoLabel;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JLabel gridLabel;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

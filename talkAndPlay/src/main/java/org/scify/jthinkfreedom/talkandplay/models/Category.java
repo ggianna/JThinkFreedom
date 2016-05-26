@@ -17,6 +17,8 @@ public class Category {
     }
 
     public Category(String name, ArrayList<Image> images, Category parentCategory, ArrayList<Category> subCategories) {
+        this.images = new ArrayList<>();
+        this.subCategories = new ArrayList<>();
         this.name = name;
         this.images = images;
         this.parentCategory = parentCategory;
@@ -24,6 +26,8 @@ public class Category {
     }
 
     public Category(String name, int rows, int columns, String image) {
+       this.images = new ArrayList<>();
+        this.subCategories = new ArrayList<>();
         this.rows = rows;
         this.columns = columns;
         this.name = name;
@@ -31,8 +35,9 @@ public class Category {
     }
 
     public Category() {
-        images = new ArrayList<>();
-        subCategories = new ArrayList<>();
+//        this.parentCategory = new Category();
+        this.images = new ArrayList<>();
+        this.subCategories = new ArrayList<>();
     }
 
     public int getRows() {

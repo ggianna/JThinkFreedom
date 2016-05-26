@@ -2,7 +2,7 @@
 <profiles>
   <profile>
     <name>xristos</name>
-    <image>/home/christina/Downloads/demo_imgs/animals-cats-cute-cute-cats-Favim.com-2629444.jpg</image>
+    <image>/home/christina/Downloads/demo_imgs/edfsaf.jpg</image>
     <configurations>
       <configuration>
         <sensor>org.scify.jthinkfreedom.keyboard.sensors.KeyboardSensor</sensor>
@@ -19,6 +19,62 @@
           <text>Main menu</text>
           <folder>Main menu</folder>
           <filename>main menu filename</filename>
+          <categories>
+            <category name="Test">
+              <rows>2</rows>
+              <columns>2</columns>
+              <image />
+              <categories>
+                <category name="8888">
+                  <rows>8</rows>
+                  <columns>8</columns>
+                  <image />
+                </category>
+              </categories>
+            </category>
+            <category name="llll">
+              <rows>2</rows>
+              <columns>2</columns>
+              <image />
+            </category>
+            <category name="ddadsa">
+              <rows>2</rows>
+              <columns>2</columns>
+              <image />
+            </category>
+            <category name="jghjhg">
+              <rows>5</rows>
+              <columns>5</columns>
+              <image />
+            </category>
+            <category name="rrrr">
+              <rows>3</rows>
+              <columns>3</columns>
+              <image />
+            </category>
+            <category name="TEST">
+              <rows>2</rows>
+              <columns>2</columns>
+              <image />
+              <categories>
+                <category name="GGGGG">
+                  <rows>2</rows>
+                  <columns>2</columns>
+                  <image />
+                </category>
+              </categories>
+            </category>
+            <category name="DDD">
+              <rows>3</rows>
+              <columns>3</columns>
+              <image />
+            </category>
+            <category name="eeee">
+              <rows>3</rows>
+              <columns>3</columns>
+              <image />
+            </category>
+          </categories>
         </category>
       </categories>
     </communication>
@@ -36,22 +92,51 @@
     </configurations>
     <communication>
       <categories>
-        <category name="Επικοινωνία">
+        <category name="Επικοινωνία" editable="false">
           <rows>1</rows>
           <columns>1</columns>
           <image />
-        </category>
-        <category name="Food!">
-          <rows>1</rows>
-          <columns>1</columns>
-          <image />
+          <categories>
+            <category name="κοκονι">
+              <rows>1</rows>
+              <columns>1</columns>
+              <image />
+            </category>
+            <category name="testaki">
+              <rows>2</rows>
+              <columns>2</columns>
+              <image />
+            </category>
+            <category name="kota">
+              <rows>3</rows>
+              <columns>3</columns>
+              <image />
+            </category>
+            <category name="ff">
+              <rows>4</rows>
+              <columns>4</columns>
+              <image />
+            </category>
+          </categories>
         </category>
         <category name="Drink">
           <rows>1</rows>
           <columns>1</columns>
           <image />
+          <categories>
+            <category name="fdsfs">
+              <rows>3</rows>
+              <columns>3</columns>
+              <image />
+            </category>
+            <category name="nero">
+              <rows>3</rows>
+              <columns>3</columns>
+              <image />
+            </category>
+          </categories>
         </category>
-        <category name="Entertainment">
+        <category name="Entertainment" editable="false">
           <rows>1</rows>
           <columns>1</columns>
           <image />

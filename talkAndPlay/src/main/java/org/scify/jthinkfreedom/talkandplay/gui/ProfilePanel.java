@@ -59,7 +59,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
         jPanel1.add(imageLabel, java.awt.BorderLayout.PAGE_START);
 
-        nameLabel.setFont(new java.awt.Font("Comfortaa", 1, 14)); // NOI18N
+        nameLabel.setFont(nameLabel.getFont().deriveFont(nameLabel.getFont().getSize()+2f));
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nameLabel.setText("Name");
         jPanel1.add(nameLabel, java.awt.BorderLayout.CENTER);

@@ -178,6 +178,8 @@ public class ConfigurationFrame extends javax.swing.JFrame {
                 communicationModuleSettingsPanel.repaintSettings(user);
             } catch (IOException ex) {
                 Logger.getLogger(ConfigurationFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(ConfigurationFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_usersListValueChanged
