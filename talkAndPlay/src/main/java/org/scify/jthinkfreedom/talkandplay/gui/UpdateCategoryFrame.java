@@ -268,6 +268,9 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
         rowsTextField.setText(String.valueOf(category.getRows()));
         columnsTextField.setText(String.valueOf(category.getColumns()));
 
+        if(!category.isEditable())
+            nameTextField.setEditable(false);
+        
         for (Category c : allCategories) {
             parentComboBox.addItem(c.getName());
         }

@@ -290,7 +290,7 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
             model.addRow(new Object[]{
                 category.getName(),
                 category.getRows() + "x" + category.getColumns(),
-                "-",
+                parentName,
                 category.getImages().size()});
         }
     }

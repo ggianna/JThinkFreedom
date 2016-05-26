@@ -132,7 +132,7 @@
             <category name="nero">
               <rows>3</rows>
               <columns>3</columns>
-              <image />
+              <image>/home/christina/Downloads/demo_imgs/tail.jpg</image>
             </category>
           </categories>
         </category>
