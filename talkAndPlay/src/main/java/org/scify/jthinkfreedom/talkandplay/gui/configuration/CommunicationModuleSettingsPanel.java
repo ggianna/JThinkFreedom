@@ -15,8 +15,8 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import org.scify.jthinkfreedom.talkandplay.gui.CreateCategoryFrame;
-import org.scify.jthinkfreedom.talkandplay.gui.UpdateCategoryFrame;
+import org.scify.jthinkfreedom.talkandplay.gui.categories.CreateCategoryFrame;
+import org.scify.jthinkfreedom.talkandplay.gui.categories.UpdateCategoryFrame;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.services.CategoryService;
@@ -218,12 +218,14 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
         if (evt.getClickCount() == 2 && !evt.isConsumed()) {
             evt.consume();
             int row = categoriesTable.rowAtPoint(evt.getPoint());
-            int column = categoriesTable.columnAtPoint(evt.getPoint());
 
             Category category = new Category();
             try {
-                for (Category c : categoryService.getCategories(user.getName())) {
+
+                for (Category c : categoryService.getCategories(this.user.getName())) {
+                   // System.out.println("loop " + c.getName());
                     if (c.getName().equals(categoriesTable.getValueAt(row, 0))) {
+                     //   System.out.println("category clicked: " + c.getName());
                         category = c;
                         break;
                     }
@@ -260,6 +262,9 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
 
         } else {
             categoriesLabel.setVisible(false);
+            catExplLabel.setVisible(false);
+            categoriesTable.setVisible(false);
+            jScrollPane1.setVisible(false);
         }
     }
 
@@ -313,6 +318,9 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
         saveButton.setVisible(false);
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCategoryButton;

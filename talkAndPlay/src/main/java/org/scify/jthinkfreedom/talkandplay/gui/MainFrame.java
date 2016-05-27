@@ -1,5 +1,7 @@
 package org.scify.jthinkfreedom.talkandplay.gui;
 
+import org.scify.jthinkfreedom.talkandplay.gui.users.ProfilePanel;
+import org.scify.jthinkfreedom.talkandplay.gui.users.CreateUserScreen;
 import org.scify.jthinkfreedom.talkandplay.gui.configuration.ConfigurationPanel;
 import java.awt.GridBagConstraints;
 import java.awt.event.WindowAdapter;
@@ -7,8 +9,12 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import org.scify.jthinkfreedom.talkandplay.gui.images.ImagesFrame;
 import org.scify.jthinkfreedom.talkandplay.models.User;
+import org.scify.jthinkfreedom.talkandplay.services.UserService;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
 
 /**
@@ -221,14 +227,26 @@ public class MainFrame extends javax.swing.JFrame {
     private void initCustomComponents() throws IOException {
         profilePaginationCounterStart = 0;
         profilePaginationCounterEnd = STEP;
-                // Grid bag layout manager fill from left to right
-       /* gbc = new GridBagConstraints();
-         gbc.anchor = GridBagConstraints.WEST;
-         gbc.weightx = 1;*/
+
         // Fill the profile panel according to pagination
         profilesPanel = new ArrayList<>();
-        for (User profile : configurationHandler.getProfiles()) {
-            profilesPanel.add(new ProfilePanel(this, profile));
+        for (final User profile : configurationHandler.getProfiles()) {
+            ProfilePanel profilePanel = new ProfilePanel(this, profile);
+
+            profilePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    ImagesFrame imagesFrame = null;
+                    try {
+                        imagesFrame = new ImagesFrame(configurationHandler.getProfile(profile.getName()));
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    imagesFrame.setLocationRelativeTo(null);
+                    imagesFrame.setVisible(true);
+                }
+            });
+
+            profilesPanel.add(profilePanel);
         }
         repaintProfiles();
         pack();
@@ -262,7 +280,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     public void updateProfilesPanel(User user, String oldName) throws IOException {
-                System.out.println("user: "+user.getName()+", "+oldName);
+        System.out.println("user: " + user.getName() + ", " + oldName);
 
         for (ProfilePanel p : profilesPanel) {
             if (p.getUser().getName().equals(oldName)) {

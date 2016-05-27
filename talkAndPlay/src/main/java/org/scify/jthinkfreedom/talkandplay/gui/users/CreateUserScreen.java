@@ -1,10 +1,11 @@
-package org.scify.jthinkfreedom.talkandplay.gui;
+package org.scify.jthinkfreedom.talkandplay.gui.users;
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.scify.jthinkfreedom.talkandplay.gui.MainFrame;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;

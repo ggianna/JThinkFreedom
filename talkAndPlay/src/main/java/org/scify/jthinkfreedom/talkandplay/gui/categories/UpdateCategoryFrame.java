@@ -1,4 +1,4 @@
-package org.scify.jthinkfreedom.talkandplay.gui;
+package org.scify.jthinkfreedom.talkandplay.gui.categories;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.scify.jthinkfreedom.talkandplay.gui.users.CreateUserScreen;
 import org.scify.jthinkfreedom.talkandplay.gui.configuration.CommunicationModuleSettingsPanel;
 import org.scify.jthinkfreedom.talkandplay.gui.configuration.GeneralSettingsPanel;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
@@ -61,7 +62,7 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        defaultPhotoLabel = new javax.swing.JLabel();
+        imageLabel = new javax.swing.JLabel();
         uploadButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         nameLabel = new javax.swing.JLabel();
@@ -79,7 +80,7 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        defaultPhotoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
+        imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
 
         uploadButton.setBackground(new java.awt.Color(255, 255, 255));
         uploadButton.setForeground(new java.awt.Color(51, 51, 51));
@@ -126,7 +127,7 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(defaultPhotoLabel)
+                        .addComponent(imageLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -161,7 +162,7 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(defaultPhotoLabel)
+                            .addComponent(imageLabel)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(7, 7, 7)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -213,7 +214,7 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
 
             try {
                 categoryService.update(updatedCategory, user, category.getName());
-                parent.drawCategories(categoryService.getCategories(name));
+                parent.drawCategories(categoryService.getCategories(user.getName()));
             } catch (Exception ex) {
                 Logger.getLogger(UpdateCategoryFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -232,7 +233,7 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             categoryImage = chooser.getSelectedFile().getAbsolutePath();
             try {
-                defaultPhotoLabel.setIcon(guiHelper.getIcon(categoryImage));
+                imageLabel.setIcon(guiHelper.getIcon(categoryImage));
             } catch (IOException ex) {
                 Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -248,11 +249,7 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
             if (dialogResult == JOptionPane.YES_OPTION) {
                 try {
                     categoryService.delete(name, user);
-                } catch (Exception ex) {
-                    Logger.getLogger(UpdateCategoryFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                try {
-                    parent.drawCategories(categoryService.getCategories(name));
+                    parent.drawCategories(categoryService.getCategories(user.getName()));
                 } catch (Exception ex) {
                     Logger.getLogger(UpdateCategoryFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -261,16 +258,20 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void initCustomComponents() {
+    private void initCustomComponents() throws IOException {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         nameTextField.setText(category.getName());
         rowsTextField.setText(String.valueOf(category.getRows()));
         columnsTextField.setText(String.valueOf(category.getColumns()));
-
-        if(!category.isEditable())
-            nameTextField.setEditable(false);
+        imageLabel.setIcon(guiHelper.getIcon((category.getImage())));
         
+        System.out.println(category.getName()+" "+category.getImage());
+
+        if (!category.isEditable()) {
+            nameTextField.setEditable(false);
+        }
+
         for (Category c : allCategories) {
             parentComboBox.addItem(c.getName());
         }
@@ -280,13 +281,14 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
         } else {
             parentComboBox.setSelectedItem("Επικοινωνία");
         }
+        parentComboBox.setEnabled(false);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField columnsTextField;
-    private javax.swing.JLabel defaultPhotoLabel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JLabel gridLabel;
+    private javax.swing.JLabel imageLabel;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel nameLabel;

@@ -1,8 +1,9 @@
-package org.scify.jthinkfreedom.talkandplay.gui;
+package org.scify.jthinkfreedom.talkandplay.gui.users;
 
 import java.awt.Font;
 import java.io.IOException;
 import javax.swing.SwingConstants;
+import org.scify.jthinkfreedom.talkandplay.gui.MainFrame;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 

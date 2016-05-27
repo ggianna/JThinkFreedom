@@ -26,7 +26,7 @@ public class Category {
     }
 
     public Category(String name, int rows, int columns, String image) {
-       this.images = new ArrayList<>();
+        this.images = new ArrayList<>();
         this.subCategories = new ArrayList<>();
         this.rows = rows;
         this.columns = columns;

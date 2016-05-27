@@ -3,13 +3,10 @@ package org.scify.jthinkfreedom.talkandplay.utils;
 import OS.Os;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -211,14 +208,15 @@ public class ConfigurationHandler {
             //get the user categories
 
             for (int i = 0; i < categoriesNode.getChildren().size(); i++) {
-                //     System.out.println("parent: "+parent.getName()+", cat "+categoriesNode.getAttributeValue("name"));
 
                 Element categoryEl = (Element) categoriesNode.getChildren().get(i);
 
                 Category category = new Category(
                         categoryEl.getAttributeValue("name"),
                         Integer.parseInt(categoryEl.getChildText("rows")),
-                        Integer.parseInt(categoryEl.getChildText("columns")), null);
+                        Integer.parseInt(categoryEl.getChildText("columns")),
+                        categoryEl.getChildText("image"));
+
                 if (parent != null) {
                     category.setParentCategory(new Category(parent.getName()));
                 }
@@ -246,10 +244,11 @@ public class ConfigurationHandler {
         }
     }
 
-    private void refreshXMLFile() throws Exception {
+    public List refreshXMLFile() throws Exception {
         SAXBuilder builder = new SAXBuilder();
         configurationFile = (Document) builder.build(file);
         profiles = parseXML();
+        return profiles;
     }
 
     /**

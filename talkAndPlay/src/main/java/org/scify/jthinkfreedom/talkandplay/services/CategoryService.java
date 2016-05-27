@@ -12,7 +12,6 @@ import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
 public class CategoryService {
 
     private ConfigurationHandler configurationHandler;
-    private Document configurationFile;
     String projectPath;
 
     public CategoryService() {
@@ -72,7 +71,7 @@ public class CategoryService {
      * @param category
      * @param user
      */
-    public void update(Category category, User user, String oldName) throws Exception {
+    public List<Category> update(Category category, User user, String oldName) throws Exception {
 
         Element profile = configurationHandler.getProfileElement(user.getName());
 
@@ -86,6 +85,9 @@ public class CategoryService {
             updateToParent(profile.getChild("communication").getChild("categories"), oldName, category);
 
             configurationHandler.writeToXmlFile();
+            return configurationHandler.getUser(user.getName()).getCategories();
+        } else {
+            return null;
         }
     }
 

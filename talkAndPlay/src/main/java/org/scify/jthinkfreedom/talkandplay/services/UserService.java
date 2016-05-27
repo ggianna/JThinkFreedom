@@ -27,33 +27,32 @@ public class UserService {
 
         Element profiles = configurationFile.getRootElement();
 
+        //add the general profile info
         Element profile = new Element("profile");
         profile.addContent(new Element("name").setText(user.getName()));
         profile.addContent(new Element("image").setText(user.getImage()));
 
+        //add the configurations
         Element configurations = new Element("configurations");
         profile.addContent(configurations);
 
+        //add communication module settings
+        Element communication = new Element("communication");
         Element categories = new Element("categories");
-        profile.addContent(categories);
-
-        System.out.println(profile.toString());
+        
+        //add the first category settings
+        Element commCategory = new Element("category");
+        commCategory.setAttribute("name", "Επικοινωνία");
+        commCategory.setAttribute("editable", "false");
+        commCategory.addContent(new Element("rows").setText("1"));
+        commCategory.addContent(new Element("columns").setText("1"));
+        commCategory.addContent(new Element("image"));
+        
+        categories.addContent(commCategory);
+        communication.addContent(categories);
+        profile.addContent(communication);
         profiles.addContent(profile);
-
-        /*
-         NodeList profiles = configurationFile.getElementsByTagName("profiles");
-         Element profile = configurationFile.createElement("profile");
-         Element name = configurationFile.createElement("name");
-         Element picture = configurationFile.createElement("picture");
-         Element configurations = configurationFile.createElement("configurations");
-         name.appendChild(configurationFile.createTextNode(user.getName()));
-
-         picture.appendChild(configurationFile.createTextNode(user.getPhoto().toString().split("/")[user.getPhoto().toString().split("/").length - 1]));
-         profile.appendChild(name);
-         profile.appendChild(picture);
-         profile.appendChild(configurations);
-         profiles.item(0).appendChild(profile);
-         */
+        
         configurationHandler.writeToXmlFile();
     }
 

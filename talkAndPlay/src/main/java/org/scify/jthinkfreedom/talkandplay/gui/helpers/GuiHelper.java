@@ -26,5 +26,6 @@ public class GuiHelper {
             return new ImageIcon(new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png")).getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
         }
     }
+    
 
 }

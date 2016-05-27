@@ -1,4 +1,4 @@
-package org.scify.jthinkfreedom.talkandplay.gui;
+package org.scify.jthinkfreedom.talkandplay.gui.categories;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.lang3.StringUtils;
+import org.scify.jthinkfreedom.talkandplay.gui.users.CreateUserScreen;
 import org.scify.jthinkfreedom.talkandplay.gui.configuration.CommunicationModuleSettingsPanel;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
@@ -68,11 +70,13 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         parentLabel = new javax.swing.JLabel();
         parentComboBox = new javax.swing.JComboBox();
+        errorLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Talk&Play");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
         defaultPhotoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
 
@@ -104,6 +108,11 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
 
         parentLabel.setText("Ανήκει σε:");
 
+        errorLabel.setBackground(new java.awt.Color(153, 0, 0));
+        errorLabel.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        errorLabel.setForeground(new java.awt.Color(204, 0, 0));
+        errorLabel.setText("Παρακαλώ συμπληρώστε σωστά όλα τα πεδία");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -130,8 +139,9 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(columnsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 48, Short.MAX_VALUE))
+                                .addComponent(columnsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(errorLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(uploadButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -144,7 +154,7 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(defaultPhotoLabel)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(7, 7, 7)
@@ -160,7 +170,10 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
                                 .addGap(15, 15, 15)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(parentLabel)
-                                    .addComponent(parentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(parentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(errorLabel)
+                                .addGap(0, 0, 0)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uploadButton))
                     .addComponent(saveButton, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -171,9 +184,7 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,31 +196,22 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         String name = nameTextField.getText();
-        int rows = Integer.parseInt(rowsTextField.getText());
-        int columns = Integer.parseInt(columnsTextField.getText());
 
-        /*  for (ProfilePanel pp : caller.getProfilesPanel()) {
-         if (pp.getProfile().getName().equals(name)) {
-         errorLabel.setText("Name already exists!");
-         return;
-         }
-         }*/
-        if (!name.replaceAll("\\s+", "").isEmpty()) {
-
+        if (name.isEmpty()
+                || rowsTextField.getText().isEmpty() || !StringUtils.isNumeric(rowsTextField.getText())
+                || columnsTextField.getText().isEmpty() || !StringUtils.isNumeric(columnsTextField.getText())
+                || categoryImage.isEmpty()) {
+            errorLabel.setVisible(true);
+        } else {
+            int rows = Integer.parseInt(rowsTextField.getText());
+            int columns = Integer.parseInt(columnsTextField.getText());
+            errorLabel.setVisible(false);
             Category category = new Category(name, rows, columns, categoryImage);
             category.setParentCategory(new Category(parentComboBox.getSelectedItem().toString()));
 
             try {
-                /* try {
-                 caller.getProfilesPanel().add(new ProfilePanel(caller, createdUser));
-                 } catch (IOException ex) {
-                 Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
-                 }
-                 caller.repaintProfiles();*/
-                // Save to xml file
                 categoryService.save(category, user);
                 parent.drawCategories(categoryService.getCategories(user.getName()));
-
             } catch (Exception ex) {
                 Logger.getLogger(CreateCategoryFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -235,42 +237,10 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_uploadButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateCategoryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateCategoryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateCategoryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateCategoryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CreateCategoryFrame().setVisible(true);
-            }
-        });
-    }
-
     private void initCustomComponents() {
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        errorLabel.setVisible(false);
         for (Category c : allCategories) {
             parentComboBox.addItem(c.getName());
         }
@@ -279,6 +249,7 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField columnsTextField;
     private javax.swing.JLabel defaultPhotoLabel;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel gridLabel;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
