@@ -39,7 +39,7 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public CreateCategoryFrame(CommunicationModuleSettingsPanel parent, User user) throws Exception {
+    public CreateCategoryFrame(CommunicationModuleSettingsPanel parent, User user) {
         this.parent = parent;
         this.guiHelper = new GuiHelper();
         this.user = user;
@@ -229,11 +229,7 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             categoryImage = chooser.getSelectedFile().getAbsolutePath();
-            try {
-                defaultPhotoLabel.setIcon(guiHelper.getIcon(categoryImage));
-            } catch (IOException ex) {
-                Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            defaultPhotoLabel.setIcon(guiHelper.getIcon(categoryImage));
         }
     }//GEN-LAST:event_uploadButtonActionPerformed
 

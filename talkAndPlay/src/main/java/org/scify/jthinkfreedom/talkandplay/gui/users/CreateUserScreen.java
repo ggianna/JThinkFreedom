@@ -163,11 +163,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
         if (!name.replaceAll("\\s+", "").isEmpty()) {
 
             User createdUser = new User(name, userImage);
-            try {
-                caller.getProfilesPanel().add(new ProfilePanel(caller, createdUser));
-            } catch (IOException ex) {
-                Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            caller.getProfilesPanel().add(new ProfilePanel(caller, createdUser));
             caller.repaintProfiles();
             try {
                 // Save to xml file
@@ -189,11 +185,7 @@ public class CreateUserScreen extends javax.swing.JFrame {
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             userImage = chooser.getSelectedFile().getAbsolutePath();
-            try {
-                defaultPhotoLabel.setIcon(guiHelper.getIcon(userImage));
-            } catch (IOException ex) {
-                Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            defaultPhotoLabel.setIcon(guiHelper.getIcon(userImage));
         }
     }//GEN-LAST:event_uploadImageButtonActionPerformed
 

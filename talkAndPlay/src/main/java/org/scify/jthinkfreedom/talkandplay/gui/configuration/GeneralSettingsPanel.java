@@ -155,12 +155,7 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         }
         configurationFrame.updateUsersList(profileNameField.getText());
         
-        try {
-
-            mainFrame.updateProfilesPanel(updatedUser, user.getName());
-        } catch (IOException ex) {
-            Logger.getLogger(GeneralSettingsPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        mainFrame.updateProfilesPanel(updatedUser, user.getName());
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -187,11 +182,7 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             userImage = chooser.getSelectedFile().getAbsolutePath();
-            try {
-                imageLabel.setIcon(guiHelper.getIcon(userImage));
-            } catch (IOException ex) {
-                Logger.getLogger(GeneralSettingsPanel.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            imageLabel.setIcon(guiHelper.getIcon(userImage));
         }
     }//GEN-LAST:event_uploadImageButtonActionPerformed
 

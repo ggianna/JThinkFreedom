@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.scify.jthinkfreedom.talkandplay.gui.images.ImagesFrame;
 import org.scify.jthinkfreedom.talkandplay.models.User;
-import org.scify.jthinkfreedom.talkandplay.services.UserService;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
 
 /**
@@ -36,7 +36,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public MainFrame(ConfigurationHandler configurationHandler) throws IOException {
+    public MainFrame(ConfigurationHandler configurationHandler) {
         this.configurationHandler = configurationHandler;
         initComponents();
         initCustomComponents();
@@ -224,7 +224,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_configureButtonActionPerformed
 
-    private void initCustomComponents() throws IOException {
+    private void initCustomComponents() {
         profilePaginationCounterStart = 0;
         profilePaginationCounterEnd = STEP;
 
@@ -232,17 +232,22 @@ public class MainFrame extends javax.swing.JFrame {
         profilesPanel = new ArrayList<>();
         for (final User profile : configurationHandler.getProfiles()) {
             ProfilePanel profilePanel = new ProfilePanel(this, profile);
-
+            final MainFrame currentFrame = this;
+            
             profilePanel.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    ImagesFrame imagesFrame = null;
                     try {
-                        imagesFrame = new ImagesFrame(configurationHandler.getProfile(profile.getName()));
+                        ImagesFrame imagesFrame = new ImagesFrame(configurationHandler.getProfile(profile.getName()));
+                        imagesFrame.setLocationRelativeTo(null);
+                        imagesFrame.setVisible(true);
                     } catch (IOException ex) {
-                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Couldn't find images");
+                        JOptionPane.showMessageDialog(currentFrame,
+                                "Πρόβλημα με τις εικόνες",
+                                "Σφάλμα",
+                                JOptionPane.ERROR_MESSAGE);
                     }
-                    imagesFrame.setLocationRelativeTo(null);
-                    imagesFrame.setVisible(true);
+
                 }
             });
 
@@ -279,7 +284,7 @@ public class MainFrame extends javax.swing.JFrame {
         profilePanel.repaint();
     }
 
-    public void updateProfilesPanel(User user, String oldName) throws IOException {
+    public void updateProfilesPanel(User user, String oldName) {
         System.out.println("user: " + user.getName() + ", " + oldName);
 
         for (ProfilePanel p : profilesPanel) {

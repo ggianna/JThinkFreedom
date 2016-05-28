@@ -7,9 +7,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.scify.jthinkfreedom.talkandplay.gui.users.CreateUserScreen;
 import org.scify.jthinkfreedom.talkandplay.gui.configuration.CommunicationModuleSettingsPanel;
-import org.scify.jthinkfreedom.talkandplay.gui.configuration.GeneralSettingsPanel;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
 import org.scify.jthinkfreedom.talkandplay.models.User;
@@ -232,11 +230,7 @@ public class UpdateCategoryFrame extends javax.swing.JFrame {
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             categoryImage = chooser.getSelectedFile().getAbsolutePath();
-            try {
-                imageLabel.setIcon(guiHelper.getIcon(categoryImage));
-            } catch (IOException ex) {
-                Logger.getLogger(CreateUserScreen.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            imageLabel.setIcon(guiHelper.getIcon(categoryImage));
         }
     }//GEN-LAST:event_uploadButtonActionPerformed
 

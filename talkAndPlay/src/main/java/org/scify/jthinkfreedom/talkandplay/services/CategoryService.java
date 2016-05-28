@@ -18,7 +18,7 @@ public class CategoryService {
         configurationHandler = new ConfigurationHandler();
     }
 
-    public List<Category> getCategories(String userName) throws Exception {
+    public List<Category> getCategories(String userName){
         List<Category> categories = new ArrayList<>();
 
         User user = configurationHandler.getUser(userName);

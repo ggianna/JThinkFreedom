@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
@@ -90,16 +91,8 @@ public class ImagesFrame extends javax.swing.JFrame {
 
     private void initCustomComponents() throws IOException {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        /* GridLayout gridLayout = new GridLayout(user.getCategories().get(0).getRows(), user.getCategories().get(0).getColumns(), IMAGE_PADDING, IMAGE_PADDING);
-         imagesPanel.setLayout(gridLayout);
-
-         for (Category category : user.getCategories()) {
-
-         JPanel imagePanel = createCategoryItem(category);
-         imagesPanel.add(imagePanel);
-         }*/
         drawImages(user.getCategories().get(0));
+
     }
 
     private void drawImages(Category parentCategory) throws IOException {
@@ -168,6 +161,7 @@ public class ImagesFrame extends javax.swing.JFrame {
                     } catch (IOException ex) {
                         Logger.getLogger(ImagesFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
                 }
             }
         });

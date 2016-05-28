@@ -127,7 +127,7 @@ public class ConfigurationHandler {
      * @return
      * @throws Exception
      */
-    public User getUser(String userName) throws Exception {
+    public User getUser(String userName) {
 
         Element profile = getProfileElement(userName);
         User user = null;
@@ -155,7 +155,7 @@ public class ConfigurationHandler {
      * @return
      * @throws Exception
      */
-    private List<Configuration> getConfigurations(List configurationNode) throws Exception {
+    private List<Configuration> getConfigurations(List configurationNode) {
         Configuration configurationObj;
         List<Configuration> configurations = new ArrayList<>();
         SensorAdapter sensor = null;
@@ -165,7 +165,7 @@ public class ConfigurationHandler {
         for (int i = 0; i < configurationNode.size(); i++) {
 
             Element configuration = (Element) configurationNode.get(i);
-
+/*
             if (configuration.getChildText("sensor") != null) {
                 sensor = (SensorAdapter) createInstanceFromClassName(configuration.getChildText("sensor"));
             }
@@ -181,7 +181,7 @@ public class ConfigurationHandler {
                     reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"), stimulus);
                 }
             }
-
+*/
             String path = configuration.getChildText("path");
             if (reactor instanceof SlideShowReactor) {
                 ((SlideShowReactor) reactor).setPath(path);

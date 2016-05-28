@@ -14,7 +14,7 @@ import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
  */
 public class ApplicationLauncher {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         
         setUIFont(new javax.swing.plaf.FontUIResource("Arial", Font.BOLD, 12));
         ConfigurationHandler conf = new ConfigurationHandler();
