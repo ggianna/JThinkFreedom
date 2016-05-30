@@ -10,23 +10,23 @@ public class Category {
     private boolean editable;
     private Category parentCategory;
     private ArrayList<Category> subCategories;
-    private ArrayList<Image> images;
+    private ArrayList<Tile> tiles;
 
     public Category(String name) {
         this.name = name;
     }
 
-    public Category(String name, ArrayList<Image> images, Category parentCategory, ArrayList<Category> subCategories) {
-        this.images = new ArrayList<>();
+    public Category(String name, ArrayList<Tile> tiles, Category parentCategory, ArrayList<Category> subCategories) {
+        this.tiles = new ArrayList<>();
         this.subCategories = new ArrayList<>();
         this.name = name;
-        this.images = images;
+        this.tiles = tiles;
         this.parentCategory = parentCategory;
         this.subCategories = subCategories;
     }
 
     public Category(String name, int rows, int columns, String image) {
-        this.images = new ArrayList<>();
+        this.tiles = new ArrayList<>();
         this.subCategories = new ArrayList<>();
         this.rows = rows;
         this.columns = columns;
@@ -36,7 +36,7 @@ public class Category {
 
     public Category() {
 //        this.parentCategory = new Category();
-        this.images = new ArrayList<>();
+        this.tiles = new ArrayList<>();
         this.subCategories = new ArrayList<>();
     }
 
@@ -64,8 +64,8 @@ public class Category {
         this.name = name;
     }
 
-    public ArrayList<Image> getImages() {
-        return images;
+    public ArrayList<Tile> getTiles() {
+        return tiles;
     }
 
     public String getImage() {
@@ -76,8 +76,8 @@ public class Category {
         this.image = image;
     }
 
-    public void setImages(ArrayList<Image> images) {
-        this.images = images;
+    public void setTiles(ArrayList<Tile> tiles) {
+        this.tiles = tiles;
     }
 
     public Category getParentCategory() {
@@ -106,7 +106,7 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" + "rows=" + rows + ", columns=" + columns + ", name=" + name + ", images=" + images + ", parentCategory=" + parentCategory + ", subCategories=" + subCategories + '}';
+        return "Category{" + "rows=" + rows + ", columns=" + columns + ", name=" + name + ", tiles=" + tiles + ", parentCategory=" + parentCategory + ", subCategories=" + subCategories + '}';
     }
 
 }

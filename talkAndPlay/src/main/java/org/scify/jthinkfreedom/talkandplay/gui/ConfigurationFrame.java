@@ -42,6 +42,7 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         this.mainFrame = mainFrame;
         initComponents();
         initCustomComponents();
+        setTitle("Ρυθμίσεις - Talk&Play");
     }
 
     /**
@@ -171,9 +172,9 @@ public class ConfigurationFrame extends javax.swing.JFrame {
             generalSettingsPanel.hideElements();
             communicationModuleSettingsPanel.hideElements();
         } else {
-            selectedUser = usersList.getSelectedIndex();            
+            selectedUser = usersList.getSelectedIndex();
             try {
-                User user = configurationHandler.getProfile(usersList.getSelectedValue().toString());
+                User user = configurationHandler.getUser(usersList.getSelectedValue().toString());
                 generalSettingsPanel.repaintSettings(user);
                 communicationModuleSettingsPanel.repaintSettings(user);
             } catch (IOException ex) {

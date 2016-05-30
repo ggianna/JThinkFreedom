@@ -19,6 +19,7 @@ import org.scify.jthinkfreedom.skeleton.stimuli.Stimulus;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
 import org.scify.jthinkfreedom.talkandplay.models.Configuration;
+import org.scify.jthinkfreedom.talkandplay.models.Tile;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 
 /**
@@ -61,11 +62,16 @@ public class ConfigurationHandler {
     }
 
     public List<User> getProfiles() {
-        return profiles;
+        try {
+            profiles = parseXML();
+            return profiles;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
-    public User getProfile(String name) {
-        for (User user : this.profiles) {
+    public User getUser(String name) {
+        for (User user : getProfiles()) {
             if (user.getName().equals(name)) {
                 return user;
             }
@@ -73,8 +79,10 @@ public class ConfigurationHandler {
         return null;
     }
 
-    public Element getProfileElement(String name) {
+    public Element getProfileElement(String name) throws Exception {
         Element profile = null;
+        SAXBuilder builder = new SAXBuilder();
+        configurationFile = (Document) builder.build(file);
         List profiles = configurationFile.getRootElement().getChildren();
 
         for (int i = 0; i < profiles.size(); i++) {
@@ -102,7 +110,13 @@ public class ConfigurationHandler {
         for (int i = 0; i < profiles.size(); i++) {
 
             Element profile = (Element) profiles.get(i);
-            User user = new User(profile.getChildText("name"), profile.getChildText("image"));
+            User user = new User(profile.getChildText("name"), profile.getChildText("image"), Integer.parseInt(profile.getChildText("rotationSpeed")));
+
+            if (profile.getAttributeValue("preselected") != null) {
+                user.setPreselected(Boolean.parseBoolean(profile.getAttributeValue("preselected")));
+            } else {
+                user.setPreselected(false);
+            }
 
             Element configurations = (Element) profile.getChild("configurations");
 
@@ -127,26 +141,25 @@ public class ConfigurationHandler {
      * @return
      * @throws Exception
      */
-    public User getUser(String userName) {
+    /* public User getUser(String userName) throws Exception {
 
-        Element profile = getProfileElement(userName);
-        User user = null;
+     Element profile = getProfileElement(userName);
+     User user = null;
 
-        if (profile != null) {
-            user = new User(profile.getChildText("name"), profile.getChildText("image"));
-            Element configurations = (Element) profile.getChild("configurations");
+     if (profile != null) {
+     user = new User(profile.getChildText("name"), profile.getChildText("image"));
+     Element configurations = (Element) profile.getChild("configurations");
 
-            List<Category> categoriesArray = new ArrayList<>();
+     List<Category> categoriesArray = new ArrayList<>();
 
-            Element categories = (Element) profile.getChild("communication").getChild("categories");
-            categoriesArray = getCategories(categories, categoriesArray, null);
+     Element categories = (Element) profile.getChild("communication").getChild("categories");
+     categoriesArray = getCategories(categories, categoriesArray, null);
 
-            user.setConfigurations(getConfigurations(configurations.getChildren()));
-            user.setCategories(categoriesArray);
-        }
-        return user;
-    }
-
+     user.setConfigurations(getConfigurations(configurations.getChildren()));
+     user.setCategories(categoriesArray);
+     }
+     return user;
+     }*/
     /**
      * Get the configuration list for a certain user
      *
@@ -165,23 +178,23 @@ public class ConfigurationHandler {
         for (int i = 0; i < configurationNode.size(); i++) {
 
             Element configuration = (Element) configurationNode.get(i);
-/*
-            if (configuration.getChildText("sensor") != null) {
-                sensor = (SensorAdapter) createInstanceFromClassName(configuration.getChildText("sensor"));
-            }
-            if (configuration.getChildText("sensor") != null) {
-                stimulus = (StimulusAdapter) createInstanceFromClassName(configuration.getChildText("stimulus"));
-            }
+            /*
+             if (configuration.getChildText("sensor") != null) {
+             sensor = (SensorAdapter) createInstanceFromClassName(configuration.getChildText("sensor"));
+             }
+             if (configuration.getChildText("sensor") != null) {
+             stimulus = (StimulusAdapter) createInstanceFromClassName(configuration.getChildText("stimulus"));
+             }
 
-            //TODO: check why it throws exception
-            if (configuration.getChildText("reactor") != null) {
-                try {
-                    reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"));
-                } catch (Exception e) {
-                    reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"), stimulus);
-                }
-            }
-*/
+             //TODO: check why it throws exception
+             if (configuration.getChildText("reactor") != null) {
+             try {
+             reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"));
+             } catch (Exception e) {
+             reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"), stimulus);
+             }
+             }
+             */
             String path = configuration.getChildText("path");
             if (reactor instanceof SlideShowReactor) {
                 ((SlideShowReactor) reactor).setPath(path);
@@ -225,6 +238,15 @@ public class ConfigurationHandler {
                     category.setEditable(Boolean.parseBoolean(categoryEl.getAttributeValue("editable")));
                 } else {
                     category.setEditable(true);
+                }
+
+                //set the tiles
+                if (categoryEl.getChild("tiles") != null) {
+                    Element tileEl;
+                    for (int j = 0; j < categoryEl.getChild("tiles").getChildren().size(); j++) {
+                        tileEl = (Element) categoryEl.getChild("tiles").getChildren().get(j);
+                        category.getTiles().add(new Tile(tileEl.getChildText("name"), tileEl.getChildText("image"), tileEl.getChildText("sound")));
+                    }
                 }
 
                 if (parent != null) {

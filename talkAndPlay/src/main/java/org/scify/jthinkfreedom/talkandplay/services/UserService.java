@@ -1,6 +1,7 @@
 package org.scify.jthinkfreedom.talkandplay.services;
 
 import java.util.List;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.scify.jthinkfreedom.talkandplay.models.User;
@@ -31,6 +32,8 @@ public class UserService {
         Element profile = new Element("profile");
         profile.addContent(new Element("name").setText(user.getName()));
         profile.addContent(new Element("image").setText(user.getImage()));
+        profile.addContent(new Element("rotationSpeed").setText("2"));
+        profile.setAttribute(new Attribute("preselected", String.valueOf(user.isPreselected())));
 
         //add the configurations
         Element configurations = new Element("configurations");
@@ -39,7 +42,7 @@ public class UserService {
         //add communication module settings
         Element communication = new Element("communication");
         Element categories = new Element("categories");
-        
+
         //add the first category settings
         Element commCategory = new Element("category");
         commCategory.setAttribute("name", "Επικοινωνία");
@@ -47,12 +50,12 @@ public class UserService {
         commCategory.addContent(new Element("rows").setText("1"));
         commCategory.addContent(new Element("columns").setText("1"));
         commCategory.addContent(new Element("image"));
-        
+
         categories.addContent(commCategory);
         communication.addContent(categories);
         profile.addContent(communication);
         profiles.addContent(profile);
-        
+
         configurationHandler.writeToXmlFile();
     }
 
@@ -73,7 +76,15 @@ public class UserService {
             if (profile.getChildText("name").equals(oldName)) {
 
                 profile.getChild("name").setText(user.getName());
-                profile.getChild("image").setText(user.getImage());
+                profile.getChild("rotationSpeed").setText(String.valueOf(user.getRotationSpeed()));
+                profile.setAttribute(new Attribute("preselected", String.valueOf(user.isPreselected())));
+
+                if (user.getImage() == null) {
+                    profile.getChild("image").setText(profile.getChildText("image"));
+                } else {
+                    profile.getChild("image").setText(user.getImage());
+                }
+
                 configurationHandler.writeToXmlFile();
             }
         }

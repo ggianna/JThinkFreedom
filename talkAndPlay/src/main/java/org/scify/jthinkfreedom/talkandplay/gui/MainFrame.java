@@ -233,21 +233,19 @@ public class MainFrame extends javax.swing.JFrame {
         for (final User profile : configurationHandler.getProfiles()) {
             ProfilePanel profilePanel = new ProfilePanel(this, profile);
             final MainFrame currentFrame = this;
-            
+
             profilePanel.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    ImagesFrame imagesFrame;
                     try {
-                        ImagesFrame imagesFrame = new ImagesFrame(configurationHandler.getProfile(profile.getName()));
+                        imagesFrame = new ImagesFrame(configurationHandler.getUser(profile.getName()));
                         imagesFrame.setLocationRelativeTo(null);
+                        imagesFrame.setTitle("Talk&Play");
+                        imagesFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
                         imagesFrame.setVisible(true);
                     } catch (IOException ex) {
-                        System.out.println("Couldn't find images");
-                        JOptionPane.showMessageDialog(currentFrame,
-                                "Πρόβλημα με τις εικόνες",
-                                "Σφάλμα",
-                                JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
                 }
             });
 

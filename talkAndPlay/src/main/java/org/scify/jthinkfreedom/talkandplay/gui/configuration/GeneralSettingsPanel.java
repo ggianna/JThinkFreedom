@@ -13,7 +13,7 @@ import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
 public class GeneralSettingsPanel extends javax.swing.JPanel {
-
+    
     private User user;
     private UserService userService;
     private ConfigurationFrame configurationFrame;
@@ -49,6 +49,10 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         saveButton = new javax.swing.JButton();
         imageLabel = new javax.swing.JLabel();
         uploadImageButton = new javax.swing.JButton();
+        rotationSpeedLabel = new javax.swing.JLabel();
+        rotationSpeedTextField = new javax.swing.JTextField();
+        errorLabel = new javax.swing.JLabel();
+        preselectedCheckbox = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -89,48 +93,83 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
             }
         });
 
+        rotationSpeedLabel.setText("Ταχύτητα scanning:");
+
+        rotationSpeedTextField.setMinimumSize(new java.awt.Dimension(100, 23));
+        rotationSpeedTextField.setPreferredSize(new java.awt.Dimension(100, 23));
+
+        errorLabel.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        errorLabel.setForeground(new java.awt.Color(204, 0, 0));
+        errorLabel.setText("Παρακαλώ συμπληρώστε σωστά όλα τα πεδία");
+
+        preselectedCheckbox.setBackground(new java.awt.Color(255, 255, 255));
+        preselectedCheckbox.setForeground(new java.awt.Color(51, 51, 51));
+        preselectedCheckbox.setText("Προεπιλεγμένο προφίλ");
+
         javax.swing.GroupLayout generalSettingsPanelLayout = new javax.swing.GroupLayout(generalSettingsPanel);
         generalSettingsPanel.setLayout(generalSettingsPanelLayout);
         generalSettingsPanelLayout.setHorizontalGroup(
             generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(generalSettingsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imageLabel)
                 .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalSettingsPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(saveButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButton)
-                        .addGap(15, 15, 15))
                     .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(6, 6, 6)
+                        .addComponent(uploadImageButton))
+                    .addComponent(imageLabel))
+                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                            .addGap(56, 56, 56)
+                            .addComponent(deleteButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(saveButton))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalSettingsPanelLayout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(errorLabel)))
+                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(uploadImageButton)
                             .addGroup(generalSettingsPanelLayout.createSequentialGroup()
                                 .addComponent(profileNameLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(19, Short.MAX_VALUE))))
+                                .addGap(49, 49, 49)
+                                .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(preselectedCheckbox)
+                            .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                                .addComponent(rotationSpeedLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rotationSpeedTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         generalSettingsPanelLayout.setVerticalGroup(
             generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 8, Short.MAX_VALUE)
                 .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
                         .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(profileNameLabel)
                             .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(uploadImageButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                        .addComponent(imageLabel)
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(saveButton)
-                            .addComponent(deleteButton)))))
+                            .addComponent(rotationSpeedLabel)
+                            .addComponent(rotationSpeedTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(preselectedCheckbox)
+                        .addGap(41, 41, 41)
+                        .addComponent(errorLabel))
+                    .addComponent(imageLabel))
+                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(deleteButton)
+                            .addComponent(saveButton)))
+                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(uploadImageButton)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -141,25 +180,36 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(generalSettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(generalSettingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        User updatedUser = new User(profileNameField.getText(), this.userImage);
-
-        try {
-            userService.update(updatedUser, user.getName());
-        } catch (Exception ex) {
-            Logger.getLogger(GeneralSettingsPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        configurationFrame.updateUsersList(profileNameField.getText());
         
-        mainFrame.updateProfilesPanel(updatedUser, user.getName());
+        if (profileNameField.getText().isEmpty()) {
+            errorLabel.setVisible(true);
+        } else {
+            errorLabel.setVisible(false);
+            
+            User updatedUser = new User(profileNameField.getText(), this.userImage, Integer.parseInt(rotationSpeedTextField.getText()));
+            updatedUser.setPreselected(preselectedCheckbox.isSelected());
+            
+            try {
+                userService.update(updatedUser, user.getName());
+            } catch (Exception ex) {
+                Logger.getLogger(GeneralSettingsPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            configurationFrame.updateUsersList(profileNameField.getText());
+            
+            mainFrame.updateProfilesPanel(updatedUser, user.getName());
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-
+        
         int dialogResult = JOptionPane.showConfirmDialog(null, "Είστε σίγουροι ότι θέλετε να διαγράψετε το προφίλ?", "Warning", 0);
         if (dialogResult == JOptionPane.YES_OPTION) {
             try {
@@ -175,7 +225,7 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
     private void uploadImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadImageButtonActionPerformed
         userImage = "";
         JFileChooser chooser = new JFileChooser();
-
+        
         chooser.setDialogTitle("Διαλέξτε εικόνα");
         chooser.setAcceptAllFileFilterUsed(false);
         chooser.setFileFilter(new FileNameExtensionFilter("Image Files", "png", "jpg", "jpeg", "JPG", "JPEG", "gif"));
@@ -185,41 +235,54 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
             imageLabel.setIcon(guiHelper.getIcon(userImage));
         }
     }//GEN-LAST:event_uploadImageButtonActionPerformed
-
+    
     private void initCustomComponents() {
         hideElements();
     }
-
+    
     public void repaintSettings(User user) throws IOException {
         deleteButton.setVisible(true);
         saveButton.setVisible(true);
         profileNameField.setVisible(true);
         profileNameLabel.setVisible(true);
         imageLabel.setVisible(true);
+        rotationSpeedLabel.setVisible(true);
+        rotationSpeedTextField.setVisible(true);
         uploadImageButton.setVisible(true);
-
+        preselectedCheckbox.setVisible(true);
+        
         imageLabel.setIcon(guiHelper.getIcon(user.getImage()));
-
+        
         profileNameField.setText(user.getName());
+        rotationSpeedTextField.setText(String.valueOf(user.getRotationSpeed()));
+        preselectedCheckbox.setSelected(user.isPreselected());
         this.user = user;
     }
-
+    
     public void hideElements() {
         deleteButton.setVisible(false);
         saveButton.setVisible(false);
         profileNameField.setVisible(false);
         profileNameLabel.setVisible(false);
         imageLabel.setVisible(false);
+        rotationSpeedLabel.setVisible(false);
+        rotationSpeedTextField.setVisible(false);
         uploadImageButton.setVisible(false);
+        errorLabel.setVisible(false);
+        preselectedCheckbox.setVisible(false);
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deleteButton;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JPanel generalSettingsPanel;
     private javax.swing.JLabel imageLabel;
+    private javax.swing.JCheckBox preselectedCheckbox;
     private javax.swing.JTextField profileNameField;
     private javax.swing.JLabel profileNameLabel;
+    private javax.swing.JLabel rotationSpeedLabel;
+    private javax.swing.JTextField rotationSpeedTextField;
     private javax.swing.JButton saveButton;
     private javax.swing.JButton uploadImageButton;
     // End of variables declaration//GEN-END:variables

@@ -11,6 +11,8 @@ public class User {
 
     private String name;
     private String image;
+    private int rotationSpeed;
+    private boolean preselected;
     private List<Configuration> configurations;
     private List<Category> categories;
 
@@ -29,6 +31,13 @@ public class User {
         configurations = new ArrayList<>();
     }
 
+    public User(String name, String image, int rotationSpeed) {
+        this.name = name;
+        this.image = image;
+        this.rotationSpeed = rotationSpeed;
+        configurations = new ArrayList<>();
+    }
+
     public String getName() {
         return name;
     }
@@ -43,6 +52,22 @@ public class User {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getRotationSpeed() {
+        return rotationSpeed;
+    }
+
+    public void setRotationSpeed(int rotationSpeed) {
+        this.rotationSpeed = rotationSpeed;
+    }
+
+    public boolean isPreselected() {
+        return preselected;
+    }
+
+    public void setPreselected(boolean preselected) {
+        this.preselected = preselected;
     }
 
     public List<Configuration> getConfigurations() {

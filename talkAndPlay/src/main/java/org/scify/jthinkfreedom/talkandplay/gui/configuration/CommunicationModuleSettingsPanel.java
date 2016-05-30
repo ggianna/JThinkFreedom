@@ -52,7 +52,6 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
 
         categoriesLabel = new javax.swing.JLabel();
         addCategoryButton = new javax.swing.JButton();
-        saveButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         categoriesTable = new javax.swing.JTable();
         catExplLabel = new javax.swing.JLabel();
@@ -68,15 +67,6 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
         addCategoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addCategoryButtonActionPerformed(evt);
-            }
-        });
-
-        saveButton.setBackground(new java.awt.Color(255, 255, 255));
-        saveButton.setForeground(new java.awt.Color(51, 51, 51));
-        saveButton.setText("Αποθήκευση");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionPerformed(evt);
             }
         });
 
@@ -132,26 +122,18 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(addCategoryButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(159, 159, 159)
-                                .addComponent(addCategoryButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(saveButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(categoriesLabel)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                            .addComponent(categoriesLabel)
+                            .addComponent(catExplLabel))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(catExplLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,10 +144,9 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
                 .addComponent(catExplLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addCategoryButton)
-                    .addComponent(saveButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addCategoryButton)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -181,62 +162,13 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_addCategoryButtonActionPerformed
 
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        //  TableColumn categoriesColumn = categoriesTable.getColumnModel().getColumn(3);
-        //  categoriesColumn.setCellEditor(new DefaultCellEditor(comboBox));
-
-        List<Category> categories = new ArrayList<>();
-        Category category;
-
-        for (JPanel catPanel : categoriesPanels) {
-            String oldName = catPanel.getName().split("-")[1];
-            category = new Category();
-
-            for (Component comp : catPanel.getComponents()) {
-                if (("name-" + oldName).equals(comp.getName())) {
-                    if (comp instanceof JTextField) {
-                        category.setName(((JTextField) comp).getText());
-                    } else {
-                        category.setName(oldName);
-                    }
-                } else if (("rows-" + oldName).equals(comp.getName())) {
-                    category.setRows(Integer.parseInt(((JTextField) comp).getText()));
-                } else if (("columns-" + oldName).equals(comp.getName())) {
-                    category.setColumns(Integer.parseInt(((JTextField) comp).getText()));
-                } else if (("parent-" + oldName).equals(comp.getName())) {
-                    category.setParentCategory(new Category(((JComboBox) comp).getSelectedItem().toString()));
-                }
-            }
-            categories.add(category);
-
-        }
-
-        // categoryService.save(categories, user);
-    }//GEN-LAST:event_saveButtonActionPerformed
-
     private void categoriesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_categoriesTableMouseClicked
         if (evt.getClickCount() == 2 && !evt.isConsumed()) {
             evt.consume();
             int row = categoriesTable.rowAtPoint(evt.getPoint());
-
-            Category category = new Category();
+           
             try {
-
-                for (Category c : categoryService.getCategories(this.user.getName())) {
-                   // System.out.println("loop " + c.getName());
-                    if (c.getName().equals(categoriesTable.getValueAt(row, 0))) {
-                     //   System.out.println("category clicked: " + c.getName());
-                        category = c;
-                        break;
-                    }
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(CommunicationModuleSettingsPanel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            UpdateCategoryFrame categoryFrame;
-
-            try {
-                categoryFrame = new UpdateCategoryFrame(category, this, user);
+                UpdateCategoryFrame categoryFrame = new UpdateCategoryFrame(categoriesTable.getValueAt(row, 0).toString(), this, user);
                 categoryFrame.setLocationRelativeTo(null);
                 categoryFrame.setVisible(true);
             } catch (Exception ex) {
@@ -296,7 +228,7 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
                 category.getName(),
                 category.getRows() + "x" + category.getColumns(),
                 parentName,
-                category.getImages().size()});
+                category.getTiles().size()});
         }
     }
 
@@ -306,7 +238,7 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
         categoriesTable.setVisible(true);
         jScrollPane1.setVisible(true);
         addCategoryButton.setVisible(true);
-        saveButton.setVisible(true);
+        //   saveButton.setVisible(true);
     }
 
     public void hideElements() {
@@ -315,7 +247,7 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
         categoriesTable.setVisible(false);
         jScrollPane1.setVisible(false);
         addCategoryButton.setVisible(false);
-        saveButton.setVisible(false);
+        //  saveButton.setVisible(false);
     }
 
     public void setUser(User user) {
@@ -328,6 +260,5 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
     private javax.swing.JLabel categoriesLabel;
     private javax.swing.JTable categoriesTable;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 }

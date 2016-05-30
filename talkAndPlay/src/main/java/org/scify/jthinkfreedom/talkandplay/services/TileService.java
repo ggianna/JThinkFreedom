@@ -1,84 +1,47 @@
 package org.scify.jthinkfreedom.talkandplay.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
+import org.scify.jthinkfreedom.talkandplay.models.Tile;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
 
-public class CategoryService {
+public class TileService {
 
     private ConfigurationHandler configurationHandler;
     String projectPath;
 
-    public CategoryService() {
+    public TileService() {
         configurationHandler = new ConfigurationHandler();
     }
 
-    public Category getCategory(String categoryName, String userName) {
-        List<Category> categories = getCategories(userName);
-        Category category = null;
-        
-        for (Category cat : categories) {
-            if (cat.getName().equals(categoryName)) {
-                category = cat;
-            }
-        }
-        return category;
-    }
-
-    public List<Category> getCategories(String userName) {
-        List<Category> categories = new ArrayList<>();
-
-        User user = configurationHandler.getUser(userName);
-
-        if (user != null) {
-            categories = getCategories(user.getCategories(), categories);
-        }
-        return categories;
-    }
-
-    private List<Category> getCategories(List<Category> userCategories, List<Category> categories) {
-
-        if (userCategories == null) {
-            return categories;
-        } else {
-            for (Category category : userCategories) {
-                categories.add(category);
-                getCategories(category.getSubCategories(), categories);
-            }
-            return categories;
-        }
-    }
-
     /**
-     * Save a new category
+     * Save a new image
      *
      * @param category
      * @param user
      */
-    public void save(Category category, User user) throws Exception {
+    public void save(Tile image, User user) throws Exception {
 
         Element profile = configurationHandler.getProfileElement(user.getName());
 
         if (profile != null) {
 
-            Element categoryChild = new Element("category");
-            categoryChild.setAttribute(new Attribute("name", category.getName()));
-            categoryChild.addContent(new Element("rows").setText(String.valueOf(category.getRows())));
-            categoryChild.addContent(new Element("columns").setText(String.valueOf(category.getColumns())));
-            categoryChild.addContent(new Element("image").setText(category.getImage()));
+            Element tile = new Element("tile");
+            tile.addContent(new Element("name").setText(image.getName()));
+            tile.addContent(new Element("image").setText(image.getImage()));
+            tile.addContent(new Element("sound").setText(image.getSound()));
 
-            attachToParent(profile.getChild("communication").getChild("categories"), category.getParentCategory().getName(), categoryChild);
+            attachToParent(profile.getChild("communication").getChild("categories"), image.getCategory().getName(), tile);
 
             configurationHandler.writeToXmlFile();
         }
     }
 
     /**
-     * Update a category
+     * Update a tile
      *
      * @param category
      * @param user
@@ -121,38 +84,37 @@ public class CategoryService {
     }
 
     /**
-     * Find the category parent and add the categoryChild
+     * Find the category parent and add the tile
      *
      * @param categoryNode
      * @param name
      * @return
      */
-    private Element attachToParent(Element categoryNode, String name, Element categoryChild) {
+    private Element attachToParent(Element categoryNode, String name, Element tile) {
 
         if (name.equals(categoryNode.getAttributeValue("name"))) {
 
-            if (categoryNode.getChild("categories") == null) {
-                Element categories = new Element("categories");
-                categories.addContent(categoryChild);
-                categoryNode.addContent(categories);
+            if (categoryNode.getChild("tiles") == null) {
+                Element tiles = new Element("tiles");
+                tiles.addContent(tile);
+                categoryNode.addContent(tiles);
             } else {
-                categoryNode.getChild("categories").addContent(categoryChild);
+                categoryNode.getChild("tiles").addContent(tile);
             }
-
             return categoryNode;
 
         } else {
 
             for (int i = 0; i < categoryNode.getChildren().size(); i++) {
                 Element categoryEl = (Element) categoryNode.getChildren().get(i);
-                attachToParent(categoryEl, name, categoryChild);
+                attachToParent(categoryEl, name, tile);
             }
         }
         return categoryNode;
     }
 
     /**
-     * For a given category, find the category and update it
+     * For a given category, find the tile and update it
      *
      * @param categoryNode
      * @param name
@@ -166,12 +128,8 @@ public class CategoryService {
             categoryNode.getAttribute("name").setValue(categoryChild.getName());
             categoryNode.getChild("rows").setText(String.valueOf(categoryChild.getRows()));
             categoryNode.getChild("columns").setText(String.valueOf(categoryChild.getColumns()));
+            categoryNode.getChild("image").setText(categoryChild.getImage());
 
-            if (categoryChild.getImage() == null) {
-                categoryNode.getChild("image").setText(categoryNode.getChildText("image"));
-            } else {
-                categoryNode.getChild("image").setText(categoryChild.getImage());
-            }
         } else {
             for (int i = 0; i < categoryNode.getChildren().size(); i++) {
                 Element categoryEl = (Element) categoryNode.getChildren().get(i);

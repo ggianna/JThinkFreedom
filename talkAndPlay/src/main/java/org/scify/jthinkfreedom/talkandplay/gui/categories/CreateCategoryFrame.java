@@ -47,6 +47,7 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
         this.allCategories = categoryService.getCategories(user.getName());
         initComponents();
         initCustomComponents();
+        setTitle("Δημιουργία Κατηγορίας - Talk&Play");
     }
 
     /**

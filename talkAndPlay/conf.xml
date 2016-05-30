@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <profiles>
-  <profile>
+  <profile preselected="true">
     <name>xristos</name>
-    <image>/home/christina/Downloads/demo_imgs/edfsaf.jpg</image>
+    <image>/home/christina/Downloads/demo_imgs/cat_1.jpg</image>
+    <rotationSpeed>1</rotationSpeed>
     <configurations>
       <configuration>
         <sensor>org.scify.jthinkfreedom.keyboard.sensors.KeyboardSensor</sensor>
@@ -15,9 +16,10 @@
       <categories />
     </communication>
   </profile>
-  <profile>
+  <profile preselected="false">
     <name>christina</name>
     <image>/home/christina/Downloads/demo_imgs/7887736_f260.jpg</image>
+    <rotationSpeed>1</rotationSpeed>
     <configurations>
       <configuration>
         <sensor>org.scify.jthinkfreedom.keyboard.sensors.KeyboardSensor</sensor>
@@ -34,9 +36,21 @@
           <image>/home/christina/Downloads/2013-01-10.jpg</image>
           <categories>
             <category name="d">
-              <rows>2</rows>
-              <columns>2</columns>
-              <image>/home/christina/Downloads/2013-01-10.jpg</image>
+              <rows>1</rows>
+              <columns>3</columns>
+              <image>/home/christina/Desktop/back-arrow.png</image>
+              <tiles>
+                <tile>
+                  <name>test</name>
+                  <image>/home/christina/Desktop/talkandplay/coffee.png</image>
+                  <sound>/home/christina/Desktop/talkandplay/sounds/drink.mp3</sound>
+                </tile>
+                <tile>
+                  <name>ttttt</name>
+                  <image>/home/christina/Desktop/talkandplay/cat-black.png</image>
+                  <sound>/home/christina/Desktop/talkandplay/sounds/kitty.mp3</sound>
+                </tile>
+              </tiles>
             </category>
           </categories>
         </category>
@@ -51,6 +65,7 @@
   <profile>
     <name>dddd</name>
     <image />
+    <rotationSpeed>1</rotationSpeed>
     <configurations />
     <communication>
       <categories>
@@ -91,13 +106,36 @@
   <profile>
     <name>test</name>
     <image />
+    <rotationSpeed>3</rotationSpeed>
     <configurations />
     <communication>
       <categories>
         <category name="Επικοινωνία" editable="false">
           <rows>1</rows>
           <columns>1</columns>
-          <image />
+          <image>/home/christina/Desktop/talkandplay/cat.png</image>
+          <categories>
+            <category name="Food">
+              <rows>2</rows>
+              <columns>3</columns>
+              <image>/home/christina/Desktop/talkandplay/food-2.png</image>
+            </category>
+            <category name="Drink">
+              <rows>3</rows>
+              <columns>3</columns>
+              <image>/home/christina/Desktop/talkandplay/glass-1.png</image>
+            </category>
+            <category name="Sweets">
+              <rows>2</rows>
+              <columns>2</columns>
+              <image>/home/christina/Desktop/talkandplay/cupcake.png</image>
+            </category>
+            <category name="Feelings!">
+              <rows>2</rows>
+              <columns>3</columns>
+              <image>/home/christina/Desktop/talkandplay/confused.png</image>
+            </category>
+          </categories>
         </category>
       </categories>
     </communication>
