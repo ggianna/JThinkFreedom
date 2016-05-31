@@ -24,8 +24,9 @@ public class UserService {
      * @return
      */
     public User getUser(String name) {
+        User user = configurationHandler.getUser(name);
 
-        return configurationHandler.getUser(name);
+        return user;
     }
 
     /**

@@ -238,7 +238,7 @@ public class MainFrame extends javax.swing.JFrame {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     ImagesFrame imagesFrame;
                     try {
-                        imagesFrame = new ImagesFrame(userService.getUser(profile.getName()));
+                        imagesFrame = new ImagesFrame(profile.getName());
                         imagesFrame.setLocationRelativeTo(null);
                         imagesFrame.setTitle("Talk&Play");
                         imagesFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);

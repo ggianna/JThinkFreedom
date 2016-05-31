@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
 import org.scify.jthinkfreedom.talkandplay.models.Tile;
 import org.scify.jthinkfreedom.talkandplay.models.User;
+import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
 /**
  *
@@ -31,7 +31,7 @@ public class ImagesFrame extends javax.swing.JFrame {
 
     private User user;
     private GuiHelper guiHelper;
-    private int currentPanel;
+    private UserService userService;
     private Timer timer;
     int selected;
     protected ArrayList<JPanel> panelList;
@@ -47,8 +47,9 @@ public class ImagesFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public ImagesFrame(User user) throws IOException {
-        this.user = user;
+    public ImagesFrame(String userName) throws IOException {
+        this.userService = new UserService();
+        this.user = userService.getUser(userName);
         this.guiHelper = guiHelper;
         this.panelList = new ArrayList<>();
         this.timer = new Timer();
