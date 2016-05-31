@@ -20,7 +20,7 @@ public class CategoryService {
     public Category getCategory(String categoryName, String userName) {
         List<Category> categories = getCategories(userName);
         Category category = null;
-        
+
         for (Category cat : categories) {
             if (cat.getName().equals(categoryName)) {
                 category = cat;
@@ -70,6 +70,7 @@ public class CategoryService {
             categoryChild.addContent(new Element("rows").setText(String.valueOf(category.getRows())));
             categoryChild.addContent(new Element("columns").setText(String.valueOf(category.getColumns())));
             categoryChild.addContent(new Element("image").setText(category.getImage()));
+            categoryChild.addContent(new Element("order").setText(String.valueOf(category.getOrder())));
 
             attachToParent(profile.getChild("communication").getChild("categories"), category.getParentCategory().getName(), categoryChild);
 
@@ -93,6 +94,7 @@ public class CategoryService {
             categoryChild.addContent(new Element("rows").setText(String.valueOf(category.getRows())));
             categoryChild.addContent(new Element("columns").setText(String.valueOf(category.getColumns())));
             categoryChild.addContent(new Element("image").setText(category.getImage()));
+            categoryChild.addContent(new Element("order").setText(String.valueOf(category.getOrder())));
 
             updateToParent(profile.getChild("communication").getChild("categories"), oldName, category);
 
@@ -166,6 +168,7 @@ public class CategoryService {
             categoryNode.getAttribute("name").setValue(categoryChild.getName());
             categoryNode.getChild("rows").setText(String.valueOf(categoryChild.getRows()));
             categoryNode.getChild("columns").setText(String.valueOf(categoryChild.getColumns()));
+            categoryNode.getChild("order").setText(String.valueOf(categoryChild.getOrder()));
 
             if (categoryChild.getImage() == null) {
                 categoryNode.getChild("image").setText(categoryNode.getChildText("image"));

@@ -33,6 +33,7 @@ public class TileService {
             tile.addContent(new Element("name").setText(image.getName()));
             tile.addContent(new Element("image").setText(image.getImage()));
             tile.addContent(new Element("sound").setText(image.getSound()));
+            tile.addContent(new Element("order").setText(String.valueOf(image.getOrder())));
 
             attachToParent(profile.getChild("communication").getChild("categories"), image.getCategory().getName(), tile);
 

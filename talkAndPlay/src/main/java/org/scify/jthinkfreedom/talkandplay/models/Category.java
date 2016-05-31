@@ -7,6 +7,7 @@ public class Category {
     private int rows, columns;
     private String name;
     private String image;
+    private int order;
     private boolean editable;
     private Category parentCategory;
     private ArrayList<Category> subCategories;
@@ -62,6 +63,14 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 
     public ArrayList<Tile> getTiles() {

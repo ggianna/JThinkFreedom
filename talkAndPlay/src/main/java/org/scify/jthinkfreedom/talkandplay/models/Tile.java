@@ -5,16 +5,18 @@ public class Tile {
     private String name;
     private String image;
     private String sound;
+    private int order;
     private Category category;
 
     public Tile() {
 
     }
 
-    public Tile(String name, String image, String sound) {
+    public Tile(String name, String image, String sound, int order) {
         this.image = image;
         this.name = name;
         this.sound = sound;
+        this.order = order;
     }
 
     public Tile(String name, String image, String sound, Category category) {
@@ -46,6 +48,14 @@ public class Tile {
 
     public void setSound(String sound) {
         this.sound = sound;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 
     public Category getCategory() {
