@@ -13,6 +13,9 @@ public class User {
     private String image;
     private int rotationSpeed;
     private boolean preselected;
+    private int defaultGridRow;
+    private int defaultGridColumn;
+
     private List<Configuration> configurations;
     private List<Category> categories;
 
@@ -68,6 +71,22 @@ public class User {
 
     public void setPreselected(boolean preselected) {
         this.preselected = preselected;
+    }
+
+    public int getDefaultGridRow() {
+        return defaultGridRow;
+    }
+
+    public void setDefaultGridRow(int defaultGridRow) {
+        this.defaultGridRow = defaultGridRow;
+    }
+
+    public int getDefaultGridColumn() {
+        return defaultGridColumn;
+    }
+
+    public void setDefaultGridColumn(int defaultGridColumn) {
+        this.defaultGridColumn = defaultGridColumn;
     }
 
     public List<Configuration> getConfigurations() {

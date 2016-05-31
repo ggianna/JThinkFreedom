@@ -1,7 +1,5 @@
 package org.scify.jthinkfreedom.talkandplay.models;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;

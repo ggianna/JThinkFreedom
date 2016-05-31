@@ -18,6 +18,17 @@ public class UserService {
     }
 
     /**
+     * Find one user
+     *
+     * @param name
+     * @return
+     */
+    public User getUser(String name) {
+
+        return configurationHandler.getUser(name);
+    }
+
+    /**
      * Save a user to the xml file
      *
      * @param user
@@ -33,6 +44,8 @@ public class UserService {
         profile.addContent(new Element("name").setText(user.getName()));
         profile.addContent(new Element("image").setText(user.getImage()));
         profile.addContent(new Element("rotationSpeed").setText("2"));
+        profile.addContent(new Element("defaultGridRow").setText("2"));
+        profile.addContent(new Element("defaultGriColumn").setText("2"));
         profile.setAttribute(new Attribute("preselected", String.valueOf(user.isPreselected())));
 
         //add the configurations
@@ -64,7 +77,7 @@ public class UserService {
      *
      * @param name
      */
-    public void update(User user, String oldName) throws Exception {
+    public User update(User user, String oldName) throws Exception {
 
         List profiles = configurationFile.getRootElement().getChildren();
 
@@ -77,17 +90,20 @@ public class UserService {
 
                 profile.getChild("name").setText(user.getName());
                 profile.getChild("rotationSpeed").setText(String.valueOf(user.getRotationSpeed()));
+                profile.getChild("defaultGridRow").setText(String.valueOf(user.getDefaultGridRow()));
+                profile.getChild("defaultGridColumn").setText(String.valueOf(user.getDefaultGridColumn()));
                 profile.setAttribute(new Attribute("preselected", String.valueOf(user.isPreselected())));
 
                 if (user.getImage() == null) {
                     profile.getChild("image").setText(profile.getChildText("image"));
+                    user.setImage(profile.getChildText("image"));
                 } else {
                     profile.getChild("image").setText(user.getImage());
                 }
-
                 configurationHandler.writeToXmlFile();
             }
         }
+        return user;
     }
 
     /**

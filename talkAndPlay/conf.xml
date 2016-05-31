@@ -4,6 +4,8 @@
     <name>xristos</name>
     <image>/home/christina/Downloads/demo_imgs/cat_1.jpg</image>
     <rotationSpeed>1</rotationSpeed>
+    <defaultGridRow>2</defaultGridRow>
+    <defaultGridColumn>2</defaultGridColumn>
     <configurations>
       <configuration>
         <sensor>org.scify.jthinkfreedom.keyboard.sensors.KeyboardSensor</sensor>
@@ -17,9 +19,11 @@
     </communication>
   </profile>
   <profile preselected="false">
-    <name>christina</name>
+    <name>christina!</name>
     <image>/home/christina/Downloads/demo_imgs/7887736_f260.jpg</image>
     <rotationSpeed>1</rotationSpeed>
+    <defaultGridRow>2</defaultGridRow>
+    <defaultGridColumn>2</defaultGridColumn>
     <configurations>
       <configuration>
         <sensor>org.scify.jthinkfreedom.keyboard.sensors.KeyboardSensor</sensor>
@@ -31,13 +35,13 @@
     <communication>
       <categories>
         <category name="Επικοινωνία" editable="false">
-          <rows>1</rows>
-          <columns>1</columns>
+          <rows>2</rows>
+          <columns>2</columns>
           <image>/home/christina/Downloads/2013-01-10.jpg</image>
           <categories>
             <category name="d">
-              <rows>1</rows>
-              <columns>3</columns>
+              <rows>3</rows>
+              <columns>1</columns>
               <image>/home/christina/Desktop/back-arrow.png</image>
               <tiles>
                 <tile>
@@ -66,6 +70,8 @@
     <name>dddd</name>
     <image />
     <rotationSpeed>1</rotationSpeed>
+    <defaultGridRow>2</defaultGridRow>
+    <defaultGridColumn>2</defaultGridColumn>
     <configurations />
     <communication>
       <categories>
@@ -103,10 +109,12 @@
       </categories>
     </communication>
   </profile>
-  <profile>
+  <profile preselected="false">
     <name>test</name>
     <image />
-    <rotationSpeed>3</rotationSpeed>
+    <rotationSpeed>1</rotationSpeed>
+    <defaultGridRow>3</defaultGridRow>
+    <defaultGridColumn>4</defaultGridColumn>
     <configurations />
     <communication>
       <categories>

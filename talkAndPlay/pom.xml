@@ -62,7 +62,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>org.scify.jthinkfreedom.gui.ApplicationLauncher</mainClass>
+                                    <mainClass>org.scify.jthinkfreedom.talkandplay.gui.ApplicationLauncher</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>

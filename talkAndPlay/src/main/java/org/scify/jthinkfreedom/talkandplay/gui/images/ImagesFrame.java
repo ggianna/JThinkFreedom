@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
 import org.scify.jthinkfreedom.talkandplay.models.Tile;
@@ -32,8 +32,10 @@ public class ImagesFrame extends javax.swing.JFrame {
     private User user;
     private GuiHelper guiHelper;
     private int currentPanel;
+    private Timer timer;
     int selected;
     protected ArrayList<JPanel> panelList;
+    private GridLayout gridLayout;
 
     protected final int BORDER_SIZE = 5;
     protected final int IMAGE_PADDING = 10;
@@ -49,6 +51,7 @@ public class ImagesFrame extends javax.swing.JFrame {
         this.user = user;
         this.guiHelper = guiHelper;
         this.panelList = new ArrayList<>();
+        this.timer = new Timer();
         initComponents();
         initCustomComponents();
     }
@@ -111,8 +114,22 @@ public class ImagesFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initCustomComponents() throws IOException {
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        gridLayout = new GridLayout();
+        gridLayout.setHgap(IMAGE_PADDING);
+        gridLayout.setVgap(IMAGE_PADDING);
+
         drawImages(user.getCategories().get(0), true);
+        setTimer();
+        
+        //add a listener to stop the timer when the window closes
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                timer.cancel();
+            }
+        });
+        pack();
     }
 
     /**
@@ -126,7 +143,11 @@ public class ImagesFrame extends javax.swing.JFrame {
         imagesPanel.removeAll();
         panelList = new ArrayList<>();
 
-        GridLayout gridLayout = new GridLayout(category.getRows(), category.getColumns(), IMAGE_PADDING, IMAGE_PADDING);
+        System.out.println("grid " + category.getRows() + "x" + category.getColumns());
+
+        gridLayout.setRows(category.getRows());
+        gridLayout.setColumns(category.getColumns());
+        // gridLayout = new GridLayout(category.getRows(), category.getColumns(), IMAGE_PADDING, IMAGE_PADDING);
         imagesPanel.setLayout(gridLayout);
 
         if (category.getParentCategory() == null && isRootPanel) {
@@ -150,19 +171,18 @@ public class ImagesFrame extends javax.swing.JFrame {
         } else {
             imagesPanel.add(createBackItem(category));
         }
+
         imagesPanel.revalidate();
         imagesPanel.repaint();
 
-        setTimer();
+        selected = 0;
     }
 
     private void setTimer() {
-        selected = 0;
-        Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("selected " + selected + " size " + panelList.size());
+                // System.out.println("selected " + selected + " size " + panelList.size());
 
                 if (selected == 0) {
                     panelList.get(panelList.size() - 1).setBorder(null);

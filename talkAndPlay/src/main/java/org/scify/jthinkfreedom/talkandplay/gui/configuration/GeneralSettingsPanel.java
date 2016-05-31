@@ -13,7 +13,7 @@ import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
 public class GeneralSettingsPanel extends javax.swing.JPanel {
-    
+
     private User user;
     private UserService userService;
     private ConfigurationFrame configurationFrame;
@@ -53,6 +53,9 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         rotationSpeedTextField = new javax.swing.JTextField();
         errorLabel = new javax.swing.JLabel();
         preselectedCheckbox = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
+        gridRowsTextField = new javax.swing.JTextField();
+        gridColumnsTextField = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -106,6 +109,22 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         preselectedCheckbox.setForeground(new java.awt.Color(51, 51, 51));
         preselectedCheckbox.setText("Προεπιλεγμένο προφίλ");
 
+        jLabel1.setText("Προεπιλεγμένο μέγεθος πίνακα:");
+
+        gridRowsTextField.setPreferredSize(new java.awt.Dimension(30, 23));
+        gridRowsTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gridRowsTextFieldActionPerformed(evt);
+            }
+        });
+
+        gridColumnsTextField.setPreferredSize(new java.awt.Dimension(30, 23));
+        gridColumnsTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gridColumnsTextFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout generalSettingsPanelLayout = new javax.swing.GroupLayout(generalSettingsPanel);
         generalSettingsPanel.setLayout(generalSettingsPanelLayout);
         generalSettingsPanelLayout.setHorizontalGroup(
@@ -115,39 +134,39 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
                 .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(generalSettingsPanelLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(uploadImageButton))
-                    .addComponent(imageLabel))
-                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                            .addGap(56, 56, 56)
-                            .addComponent(deleteButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(saveButton))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalSettingsPanelLayout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(errorLabel)))
+                        .addComponent(uploadImageButton)
+                        .addGap(61, 61, 61)
+                        .addComponent(deleteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton))
                     .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(imageLabel)
+                        .addGap(18, 18, 18)
                         .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(generalSettingsPanelLayout.createSequentialGroup()
                                 .addComponent(profileNameLabel)
                                 .addGap(49, 49, 49)
                                 .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(preselectedCheckbox)
                             .addGroup(generalSettingsPanelLayout.createSequentialGroup()
                                 .addComponent(rotationSpeedLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rotationSpeedTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(68, Short.MAX_VALUE))
+                                .addComponent(rotationSpeedTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(gridRowsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(gridColumnsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(preselectedCheckbox)
+                            .addComponent(errorLabel))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         generalSettingsPanelLayout.setVerticalGroup(
             generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                .addGap(0, 8, Short.MAX_VALUE)
-                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                        .addGap(4, 4, 4)
                         .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(profileNameLabel)
                             .addComponent(profileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -155,21 +174,22 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
                         .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(rotationSpeedLabel)
                             .addComponent(rotationSpeedTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(gridRowsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(gridColumnsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(preselectedCheckbox)
-                        .addGap(41, 41, 41)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(errorLabel))
                     .addComponent(imageLabel))
-                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(deleteButton)
-                            .addComponent(saveButton)))
-                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(uploadImageButton)))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uploadImageButton)
+                    .addComponent(deleteButton)
+                    .addComponent(saveButton))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -181,35 +201,40 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(generalSettingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 59, Short.MAX_VALUE))
+                .addComponent(generalSettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        
+
         if (profileNameField.getText().isEmpty()) {
+            errorLabel.setVisible(true);
+        } else if (Integer.parseInt(gridRowsTextField.getText()) < 2 || Integer.parseInt(gridColumnsTextField.getText()) < 2) {
+            errorLabel.setText("min 2x2");
             errorLabel.setVisible(true);
         } else {
             errorLabel.setVisible(false);
-            
+
             User updatedUser = new User(profileNameField.getText(), this.userImage, Integer.parseInt(rotationSpeedTextField.getText()));
             updatedUser.setPreselected(preselectedCheckbox.isSelected());
-            
+            updatedUser.setDefaultGridRow(Integer.parseInt(gridRowsTextField.getText()));
+            updatedUser.setDefaultGridColumn(Integer.parseInt(gridColumnsTextField.getText()));
+
             try {
-                userService.update(updatedUser, user.getName());
+                updatedUser = userService.update(updatedUser, user.getName());
             } catch (Exception ex) {
                 Logger.getLogger(GeneralSettingsPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             configurationFrame.updateUsersList(profileNameField.getText());
-            
+
             mainFrame.updateProfilesPanel(updatedUser, user.getName());
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        
+
         int dialogResult = JOptionPane.showConfirmDialog(null, "Είστε σίγουροι ότι θέλετε να διαγράψετε το προφίλ?", "Warning", 0);
         if (dialogResult == JOptionPane.YES_OPTION) {
             try {
@@ -225,7 +250,7 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
     private void uploadImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadImageButtonActionPerformed
         userImage = "";
         JFileChooser chooser = new JFileChooser();
-        
+
         chooser.setDialogTitle("Διαλέξτε εικόνα");
         chooser.setAcceptAllFileFilterUsed(false);
         chooser.setFileFilter(new FileNameExtensionFilter("Image Files", "png", "jpg", "jpeg", "JPG", "JPEG", "gif"));
@@ -235,11 +260,19 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
             imageLabel.setIcon(guiHelper.getIcon(userImage));
         }
     }//GEN-LAST:event_uploadImageButtonActionPerformed
-    
+
+    private void gridRowsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gridRowsTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gridRowsTextFieldActionPerformed
+
+    private void gridColumnsTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gridColumnsTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gridColumnsTextFieldActionPerformed
+
     private void initCustomComponents() {
         hideElements();
     }
-    
+
     public void repaintSettings(User user) throws IOException {
         deleteButton.setVisible(true);
         saveButton.setVisible(true);
@@ -250,15 +283,20 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         rotationSpeedTextField.setVisible(true);
         uploadImageButton.setVisible(true);
         preselectedCheckbox.setVisible(true);
-        
+        gridColumnsTextField.setVisible(true);
+        gridRowsTextField.setVisible(true);
+
         imageLabel.setIcon(guiHelper.getIcon(user.getImage()));
-        
+
         profileNameField.setText(user.getName());
         rotationSpeedTextField.setText(String.valueOf(user.getRotationSpeed()));
         preselectedCheckbox.setSelected(user.isPreselected());
+        gridRowsTextField.setText(String.valueOf(user.getDefaultGridRow()));
+        gridColumnsTextField.setText(String.valueOf(user.getDefaultGridColumn()));
+        
         this.user = user;
     }
-    
+
     public void hideElements() {
         deleteButton.setVisible(false);
         saveButton.setVisible(false);
@@ -270,6 +308,8 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         uploadImageButton.setVisible(false);
         errorLabel.setVisible(false);
         preselectedCheckbox.setVisible(false);
+        gridColumnsTextField.setVisible(false);
+        gridRowsTextField.setVisible(false);
     }
 
 
@@ -277,7 +317,10 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
     private javax.swing.JButton deleteButton;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JPanel generalSettingsPanel;
+    private javax.swing.JTextField gridColumnsTextField;
+    private javax.swing.JTextField gridRowsTextField;
     private javax.swing.JLabel imageLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JCheckBox preselectedCheckbox;
     private javax.swing.JTextField profileNameField;
     private javax.swing.JLabel profileNameLabel;

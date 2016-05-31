@@ -2,7 +2,6 @@ package org.scify.jthinkfreedom.talkandplay.gui;
 
 import org.scify.jthinkfreedom.talkandplay.gui.users.ProfilePanel;
 import org.scify.jthinkfreedom.talkandplay.gui.users.CreateUserScreen;
-import org.scify.jthinkfreedom.talkandplay.gui.configuration.ConfigurationPanel;
 import java.awt.GridBagConstraints;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -12,9 +11,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import org.scify.jthinkfreedom.talkandplay.gui.images.ImagesFrame;
 import org.scify.jthinkfreedom.talkandplay.models.User;
+import org.scify.jthinkfreedom.talkandplay.services.UserService;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
 
 /**
@@ -23,14 +22,14 @@ import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    private static final int STEP = 4;
+    private static final int STEP = 6;
 
     private int profilePaginationCounterStart = 0;
     private int profilePaginationCounterEnd = STEP;
 
     private ConfigurationHandler configurationHandler;
     private List<ProfilePanel> profilesPanel;
-    private List<ConfigurationPanel> configurations;
+    private UserService userService;
 
     public MainFrame() {
         initComponents();
@@ -38,6 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     public MainFrame(ConfigurationHandler configurationHandler) {
         this.configurationHandler = configurationHandler;
+        this.userService = new UserService();
         initComponents();
         initCustomComponents();
     }
@@ -210,7 +210,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         addProfileButton.setEnabled(false);
         configureButton.setEnabled(false);
-        //  XmlScreen frame = new XmlScreen();
+
         ConfigurationFrame configurationFrame = new ConfigurationFrame(this);
         configurationFrame.setLocationRelativeTo(null);
         configurationFrame.setVisible(true);
@@ -238,7 +238,7 @@ public class MainFrame extends javax.swing.JFrame {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     ImagesFrame imagesFrame;
                     try {
-                        imagesFrame = new ImagesFrame(configurationHandler.getUser(profile.getName()));
+                        imagesFrame = new ImagesFrame(userService.getUser(profile.getName()));
                         imagesFrame.setLocationRelativeTo(null);
                         imagesFrame.setTitle("Talk&Play");
                         imagesFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
