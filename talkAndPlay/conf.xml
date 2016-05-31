@@ -56,6 +56,12 @@
                 </tile>
               </tiles>
             </category>
+            <category name="test">
+              <rows>2</rows>
+              <columns>2</columns>
+              <image>/home/christina/Desktop/talkandplay/fish.png</image>
+              <order>0</order>
+            </category>
           </categories>
         </category>
         <category name="Entertainment" editable="false">

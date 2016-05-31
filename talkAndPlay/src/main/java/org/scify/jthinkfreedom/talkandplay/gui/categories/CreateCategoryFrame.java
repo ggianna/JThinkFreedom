@@ -45,6 +45,7 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
         this.user = user;
         this.categoryService = new CategoryService();
         this.allCategories = categoryService.getCategories(user.getName());
+        this.categoryImage = "";
         initComponents();
         initCustomComponents();
         setTitle("Δημιουργία Κατηγορίας - Talk&Play");
@@ -236,6 +237,9 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
 
     private void initCustomComponents() {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        rowsTextField.setText(String.valueOf(user.getDefaultGridRow()));
+        columnsTextField.setText(String.valueOf(user.getDefaultGridColumn()));
 
         errorLabel.setVisible(false);
         for (Category c : allCategories) {
