@@ -2,16 +2,15 @@ package org.scify.jthinkfreedom.talkandplay.gui.grid;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.imageio.ImageIO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -69,6 +68,7 @@ public class GridFrame extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 255, 255));
 
         gridPanel.setBackground(new java.awt.Color(255, 255, 255));
+        gridPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         gridPanel.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout gridPanelLayout = new javax.swing.GroupLayout(gridPanel);
@@ -79,38 +79,28 @@ public class GridFrame extends javax.swing.JFrame {
         );
         gridPanelLayout.setVerticalGroup(
             gridPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 472, Short.MAX_VALUE)
+            .addGap(0, 497, Short.MAX_VALUE)
         );
 
+        getContentPane().add(gridPanel, java.awt.BorderLayout.CENTER);
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/tp_logo_small.png"))); // NOI18N
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(gridPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 984, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(53, 53, 53)
-                .addComponent(gridPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 1));
+        getContentPane().add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void initCustomComponents() {
+        /*  setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+         JLabel logoLabel = new JLabel(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/tp_logo_small.png")));
+         JPanel logoPanel = new JPanel();
+         logoPanel.setLayout(new BorderLayout(10, 10));
+         logoPanel.add(logoLabel);
+         */
+        //   JPanel gridPanel = new JPanel();
         GridLayout gridLayout = new GridLayout(1, 3, IMAGE_PADDING, IMAGE_PADDING);
         gridPanel.setLayout(gridLayout);
 
@@ -127,10 +117,51 @@ public class GridFrame extends javax.swing.JFrame {
         panelList.add(gameImg);
 
         setTimer();
-        
+
         gridPanel.revalidate();
         gridPanel.repaint();
+        getContentPane().add(gridPanel);
 
+        final GridFrame gridFrame = this;
+
+        //launch the communication grid        
+        commImg.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+                    timer.cancel();
+                    getContentPane().remove(gridPanel);
+                    try {
+                        getContentPane().add(new CommunicationPanel(user));
+                    } catch (IOException ex) {
+                        Logger.getLogger(GridFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+
+        //launch the entertainment grid        
+        entImg.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+                    JOptionPane.showMessageDialog(gridFrame,
+                            "Υπό κατασκευή",
+                            "",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
+
+        //launch the games grid        
+        gameImg.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+                    JOptionPane.showMessageDialog(gridFrame,
+                            "Υπό κατασκευή",
+                            "",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
     }
 
     private void setTimer() {

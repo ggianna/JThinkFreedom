@@ -13,11 +13,6 @@
 			<enabled>true</enabled>
 			<image>/home/christina/Desktop/talkandplay/emoticon.png</image>
 			<categories>
-				<category name="Επικοινωνία" editable="false">
-					<rows>1</rows>
-					<columns>1</columns>
-					<image>/home/christina/Downloads/demo_imgs/cat_1.jpg</image>
-					<categories>
 						<category name="Φαγητό">
 							<rows>3</rows>
 							<columns>3</columns>
@@ -42,8 +37,6 @@
 								</category>
 							</categories>
 						</category>
-					</categories>
-				</category>
 			</categories>
 		</communication>
 		<entertainment>

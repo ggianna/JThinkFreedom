@@ -22,7 +22,7 @@ import org.scify.jthinkfreedom.talkandplay.models.Category;
 import org.scify.jthinkfreedom.talkandplay.models.Tile;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 
-public class CommunicationPanel extends javax.swing.JPanel {
+public class CommunicationPanel1 extends javax.swing.JPanel {
 
     private User user;
     private Timer timer;
@@ -34,7 +34,7 @@ public class CommunicationPanel extends javax.swing.JPanel {
     protected final int BORDER_SIZE = 5;
     protected final int IMAGE_PADDING = 10;
 
-    public CommunicationPanel(User user) throws IOException {
+    public CommunicationPanel1(User user) throws IOException {
         this.user = user;
         this.timer = new Timer();
         initComponents();
@@ -176,7 +176,7 @@ public class CommunicationPanel extends javax.swing.JPanel {
                     try {
                         drawImages(category.getSubCategories(), false);
                     } catch (IOException ex) {
-                        Logger.getLogger(CommunicationPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(CommunicationPanel1.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -195,7 +195,7 @@ public class CommunicationPanel extends javax.swing.JPanel {
         JPanel panel = createImagePanel(tile.getImage(), tile.getName());
         panelList.add(panel);
         imagesPanel.add(panel);
-        final CommunicationPanel currentPanel = this;
+        final CommunicationPanel1 currentPanel = this;
 
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -229,7 +229,7 @@ public class CommunicationPanel extends javax.swing.JPanel {
                     try {
                         drawImages(category.getSubCategories(), true);
                     } catch (IOException ex) {
-                        Logger.getLogger(CommunicationPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(CommunicationPanel1.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                 }
@@ -256,7 +256,7 @@ public class CommunicationPanel extends javax.swing.JPanel {
                     try {
                         drawImages(category.getSubCategories(), false);
                     } catch (IOException ex) {
-                        Logger.getLogger(CommunicationPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(CommunicationPanel1.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -282,7 +282,7 @@ public class CommunicationPanel extends javax.swing.JPanel {
                     try {
                         drawImages(category.getSubCategories(), false);
                     } catch (IOException ex) {
-                        Logger.getLogger(CommunicationPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(CommunicationPanel1.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
