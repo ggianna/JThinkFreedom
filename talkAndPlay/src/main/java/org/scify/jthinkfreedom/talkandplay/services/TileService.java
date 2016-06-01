@@ -49,22 +49,23 @@ public class TileService {
      */
     public List<Category> update(Category category, User user, String oldName) throws Exception {
 
-        Element profile = configurationHandler.getProfileElement(user.getName());
+        return null;
+        /* Element profile = configurationHandler.getProfileElement(user.getName());
 
-        if (profile != null) {
-            Element categoryChild = new Element("category");
-            categoryChild.setAttribute(new Attribute("name", category.getName()));
-            categoryChild.addContent(new Element("rows").setText(String.valueOf(category.getRows())));
-            categoryChild.addContent(new Element("columns").setText(String.valueOf(category.getColumns())));
-            categoryChild.addContent(new Element("image").setText(category.getImage()));
+         if (profile != null) {
+         Element categoryChild = new Element("category");
+         categoryChild.setAttribute(new Attribute("name", category.getName()));
+         categoryChild.addContent(new Element("rows").setText(String.valueOf(category.getRows())));
+         categoryChild.addContent(new Element("columns").setText(String.valueOf(category.getColumns())));
+         categoryChild.addContent(new Element("image").setText(category.getImage()));
 
-            updateToParent(profile.getChild("communication").getChild("categories"), oldName, category);
+         updateToParent(profile.getChild("communication").getChild("categories"), oldName, category);
 
-            configurationHandler.writeToXmlFile();
-            return configurationHandler.getUser(user.getName()).getCategories();
-        } else {
-            return null;
-        }
+         configurationHandler.writeToXmlFile();
+         return configurationHandler.getUser(user.getName()).getCategories();
+         } else {
+         return null;
+         }*/
     }
 
     /**

@@ -216,10 +216,10 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         } else {
             errorLabel.setVisible(false);
 
-            User updatedUser = new User(profileNameField.getText(), this.userImage, Integer.parseInt(rotationSpeedTextField.getText()));
+            User updatedUser = new User(profileNameField.getText(), this.userImage);
             updatedUser.setPreselected(preselectedCheckbox.isSelected());
-            updatedUser.setDefaultGridRow(Integer.parseInt(gridRowsTextField.getText()));
-            updatedUser.setDefaultGridColumn(Integer.parseInt(gridColumnsTextField.getText()));
+            updatedUser.getConfiguration().setDefaultGridRow(Integer.parseInt(gridRowsTextField.getText()));
+            updatedUser.getConfiguration().setDefaultGridColumn(Integer.parseInt(gridColumnsTextField.getText()));
 
             try {
                 updatedUser = userService.update(updatedUser, user.getName());
@@ -289,10 +289,10 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         imageLabel.setIcon(guiHelper.getIcon(user.getImage()));
 
         profileNameField.setText(user.getName());
-        rotationSpeedTextField.setText(String.valueOf(user.getRotationSpeed()));
+        rotationSpeedTextField.setText(String.valueOf(user.getConfiguration().getRotationSpeed()));
         preselectedCheckbox.setSelected(user.isPreselected());
-        gridRowsTextField.setText(String.valueOf(user.getDefaultGridRow()));
-        gridColumnsTextField.setText(String.valueOf(user.getDefaultGridColumn()));
+        gridRowsTextField.setText(String.valueOf(user.getConfiguration().getDefaultGridRow()));
+        gridColumnsTextField.setText(String.valueOf(user.getConfiguration().getDefaultGridColumn()));
         
         this.user = user;
     }

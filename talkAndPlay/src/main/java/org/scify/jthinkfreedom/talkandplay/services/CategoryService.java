@@ -35,7 +35,7 @@ public class CategoryService {
         User user = configurationHandler.getUser(userName);
 
         if (user != null) {
-            categories = getCategories(user.getCategories(), categories);
+            categories = getCategories(user.getCommunicationModule().getCategories(), categories);
         }
         return categories;
     }
@@ -99,7 +99,7 @@ public class CategoryService {
             updateToParent(profile.getChild("communication").getChild("categories"), oldName, category);
 
             configurationHandler.writeToXmlFile();
-            return configurationHandler.getUser(user.getName()).getCategories();
+            return configurationHandler.getUser(user.getName()).getCommunicationModule().getCategories();
         } else {
             return null;
         }

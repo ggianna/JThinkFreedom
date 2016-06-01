@@ -238,8 +238,8 @@ public class CreateCategoryFrame extends javax.swing.JFrame {
     private void initCustomComponents() {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        rowsTextField.setText(String.valueOf(user.getDefaultGridRow()));
-        columnsTextField.setText(String.valueOf(user.getDefaultGridColumn()));
+        rowsTextField.setText(String.valueOf(user.getConfiguration().getDefaultGridRow()));
+        columnsTextField.setText(String.valueOf(user.getConfiguration().getDefaultGridColumn()));
 
         errorLabel.setVisible(false);
         for (Category c : allCategories) {

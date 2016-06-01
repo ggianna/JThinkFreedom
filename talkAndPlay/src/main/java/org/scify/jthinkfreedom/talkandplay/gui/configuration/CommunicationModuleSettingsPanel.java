@@ -166,7 +166,7 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
         if (evt.getClickCount() == 2 && !evt.isConsumed()) {
             evt.consume();
             int row = categoriesTable.rowAtPoint(evt.getPoint());
-           
+
             try {
                 UpdateCategoryFrame categoryFrame = new UpdateCategoryFrame(categoriesTable.getValueAt(row, 0).toString(), this, user);
                 categoryFrame.setLocationRelativeTo(null);
@@ -189,7 +189,7 @@ public class CommunicationModuleSettingsPanel extends javax.swing.JPanel {
 
         DefaultTableModel model = (DefaultTableModel) categoriesTable.getModel();
 
-        if (user.getCategories().size() > 0) {
+        if (user.getCommunicationModule().getCategories().size() > 0) {
             drawCategories(categoryService.getCategories(user.getName()));
 
         } else {

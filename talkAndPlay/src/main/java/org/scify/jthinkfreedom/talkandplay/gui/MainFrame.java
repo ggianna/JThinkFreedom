@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-import org.scify.jthinkfreedom.talkandplay.gui.images.ImagesFrame;
+import org.scify.jthinkfreedom.talkandplay.gui.grid.GridFrame;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
@@ -236,9 +236,9 @@ public class MainFrame extends javax.swing.JFrame {
 
             profilePanel.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    ImagesFrame imagesFrame;
+                    GridFrame imagesFrame;
                     try {
-                        imagesFrame = new ImagesFrame(profile.getName());
+                        imagesFrame = new GridFrame(profile.getName());
                         imagesFrame.setLocationRelativeTo(null);
                         imagesFrame.setTitle("Talk&Play");
                         imagesFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);

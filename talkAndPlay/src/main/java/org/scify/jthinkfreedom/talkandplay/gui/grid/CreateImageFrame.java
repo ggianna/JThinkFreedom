@@ -1,4 +1,4 @@
-package org.scify.jthinkfreedom.talkandplay.gui.images;
+package org.scify.jthinkfreedom.talkandplay.gui.grid;
 
 import java.io.File;
 import java.io.IOException;

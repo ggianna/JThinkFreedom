@@ -3,25 +3,22 @@ package org.scify.jthinkfreedom.talkandplay.models;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author peustr
- */
 public class User {
 
     private String name;
     private String image;
-    private int rotationSpeed;
     private boolean preselected;
-    private int defaultGridRow;
-    private int defaultGridColumn;
 
-    private List<Configuration> configurations;
-    private List<Category> categories;
+    private Configuration configuration;
+    private CommunicationModule communicationModule;
+    private EntertainmentModule entertainmentModule;
+    private GameModule gameModule;
 
     public User() {
-        configurations = new ArrayList<>();
-        categories = new ArrayList<>();
+        configuration = new Configuration();
+        communicationModule = new CommunicationModule();
+        entertainmentModule = new EntertainmentModule();
+        gameModule = new GameModule();
     }
 
     public User(String name) {
@@ -31,14 +28,7 @@ public class User {
     public User(String name, String image) {
         this.name = name;
         this.image = image;
-        configurations = new ArrayList<>();
-    }
-
-    public User(String name, String image, int rotationSpeed) {
-        this.name = name;
-        this.image = image;
-        this.rotationSpeed = rotationSpeed;
-        configurations = new ArrayList<>();
+        configuration = new Configuration();
     }
 
     public String getName() {
@@ -57,14 +47,6 @@ public class User {
         this.image = image;
     }
 
-    public int getRotationSpeed() {
-        return rotationSpeed;
-    }
-
-    public void setRotationSpeed(int rotationSpeed) {
-        this.rotationSpeed = rotationSpeed;
-    }
-
     public boolean isPreselected() {
         return preselected;
     }
@@ -73,41 +55,36 @@ public class User {
         this.preselected = preselected;
     }
 
-    public int getDefaultGridRow() {
-        return defaultGridRow;
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
-    public void setDefaultGridRow(int defaultGridRow) {
-        this.defaultGridRow = defaultGridRow;
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
     }
 
-    public int getDefaultGridColumn() {
-        return defaultGridColumn;
+    public CommunicationModule getCommunicationModule() {
+        return communicationModule;
     }
 
-    public void setDefaultGridColumn(int defaultGridColumn) {
-        this.defaultGridColumn = defaultGridColumn;
+    public void setCommunicationModule(CommunicationModule communicationModule) {
+        this.communicationModule = communicationModule;
     }
 
-    public List<Configuration> getConfigurations() {
-        return configurations;
+    public EntertainmentModule getEntertainmentModule() {
+        return entertainmentModule;
     }
 
-    public void setConfigurations(List<Configuration> configurations) {
-        this.configurations = configurations;
+    public void setEntertainmentModule(EntertainmentModule entertainmentModule) {
+        this.entertainmentModule = entertainmentModule;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public GameModule getGameModule() {
+        return gameModule;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" + "name=" + name + ", image=" + image + ", configurations=" + configurations + '}';
+    public void setGameModule(GameModule gameModule) {
+        this.gameModule = gameModule;
     }
 
 }

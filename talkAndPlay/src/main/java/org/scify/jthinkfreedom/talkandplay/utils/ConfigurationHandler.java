@@ -12,13 +12,15 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import org.scify.jthinkfreedom.reactors.SlideShowReactor;
 import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
 import org.scify.jthinkfreedom.skeleton.stimuli.Stimulus;
 import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
+import org.scify.jthinkfreedom.talkandplay.models.CommunicationModule;
 import org.scify.jthinkfreedom.talkandplay.models.Configuration;
+import org.scify.jthinkfreedom.talkandplay.models.EntertainmentModule;
+import org.scify.jthinkfreedom.talkandplay.models.GameModule;
 import org.scify.jthinkfreedom.talkandplay.models.Tile;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 
@@ -109,9 +111,7 @@ public class ConfigurationHandler {
         for (int i = 0; i < profiles.size(); i++) {
 
             Element profile = (Element) profiles.get(i);
-            User user = new User(profile.getChildText("name"), profile.getChildText("image"), Integer.parseInt(profile.getChildText("rotationSpeed")));
-            user.setDefaultGridRow(Integer.parseInt(profile.getChildText("defaultGridRow")));
-            user.setDefaultGridColumn(Integer.parseInt(profile.getChildText("defaultGridColumn")));
+            User user = new User(profile.getChildText("name"), profile.getChildText("image"));
 
             if (profile.getAttributeValue("preselected") != null) {
                 user.setPreselected(Boolean.parseBoolean(profile.getAttributeValue("preselected")));
@@ -119,15 +119,36 @@ public class ConfigurationHandler {
                 user.setPreselected(false);
             }
 
-            Element configurations = (Element) profile.getChild("configurations");
+            Element configuration = (Element) profile.getChild("configuration");
+            user.setConfiguration(getConfiguration(configuration));
 
+            //set the communication module settings
             List<Category> categoriesArray = new ArrayList<>();
 
             Element categories = (Element) profile.getChild("communication").getChild("categories");
             categoriesArray = getCategories(categories, categoriesArray, null);
 
-            user.setConfigurations(getConfigurations(configurations.getChildren()));
-            user.setCategories(categoriesArray);
+            CommunicationModule communicationModule = new CommunicationModule();
+            communicationModule.setName(profile.getChild("communication").getChildText("name"));
+            communicationModule.setImage(profile.getChild("communication").getChildText("image"));
+            communicationModule.setEnabled("true".equals(profile.getChild("communication").getChildText("image")));
+            communicationModule.setCategories(categoriesArray);
+
+            //set the entertainment module settings
+            EntertainmentModule entertainmentModule = new EntertainmentModule();
+            entertainmentModule.setName(profile.getChild("entertainment").getChildText("name"));
+            entertainmentModule.setImage(profile.getChild("entertainment").getChildText("image"));
+            entertainmentModule.setEnabled("true".equals(profile.getChild("entertainment").getChildText("image")));
+
+            //set the game module settings
+            GameModule gameModule = new GameModule();
+            gameModule.setName(profile.getChild("games").getChildText("name"));
+            gameModule.setImage(profile.getChild("games").getChildText("image"));
+            gameModule.setEnabled("true".equals(profile.getChild("games").getChildText("image")));
+
+            user.setCommunicationModule(communicationModule);
+            user.setEntertainmentModule(entertainmentModule);
+            user.setGameModule(gameModule);
 
             list.add(user);
         }
@@ -136,32 +157,6 @@ public class ConfigurationHandler {
     }
 
     /**
-     * Get one user
-     *
-     * @param userName
-     * @return
-     * @throws Exception
-     */
-    /* public User getUser(String userName) throws Exception {
-
-     Element profile = getProfileElement(userName);
-     User user = null;
-
-     if (profile != null) {
-     user = new User(profile.getChildText("name"), profile.getChildText("image"));
-     Element configurations = (Element) profile.getChild("configurations");
-
-     List<Category> categoriesArray = new ArrayList<>();
-
-     Element categories = (Element) profile.getChild("communication").getChild("categories");
-     categoriesArray = getCategories(categories, categoriesArray, null);
-
-     user.setConfigurations(getConfigurations(configurations.getChildren()));
-     user.setCategories(categoriesArray);
-     }
-     return user;
-     }*/
-    /**
      * Get the configuration list for a certain user
      *
      * @param configurationNode
@@ -169,42 +164,40 @@ public class ConfigurationHandler {
      * @return
      * @throws Exception
      */
-    private List<Configuration> getConfigurations(List configurationNode) {
+    private Configuration getConfiguration(Element configurationNode) {
         Configuration configurationObj;
-        List<Configuration> configurations = new ArrayList<>();
+        Configuration configuration = new Configuration();
         SensorAdapter sensor = null;
         StimulusAdapter stimulus = null;
         ReactorAdapter reactor = null;
 
-        for (int i = 0; i < configurationNode.size(); i++) {
+        configuration.setRotationSpeed(Integer.parseInt(configurationNode.getChildText("rotationSpeed")));
+        configuration.setDefaultGridRow(Integer.parseInt(configurationNode.getChildText("defaultGridRow")));
+        configuration.setDefaultGridColumn(Integer.parseInt(configurationNode.getChildText("defaultGridColumn")));
 
-            Element configuration = (Element) configurationNode.get(i);
-            /*
-             if (configuration.getChildText("sensor") != null) {
-             sensor = (SensorAdapter) createInstanceFromClassName(configuration.getChildText("sensor"));
-             }
-             if (configuration.getChildText("sensor") != null) {
-             stimulus = (StimulusAdapter) createInstanceFromClassName(configuration.getChildText("stimulus"));
-             }
+        /*
+         if (configuration.getChildText("sensor") != null) {
+         sensor = (SensorAdapter) createInstanceFromClassName(configuration.getChildText("sensor"));
+         }
+         if (configuration.getChildText("sensor") != null) {
+         stimulus = (StimulusAdapter) createInstanceFromClassName(configuration.getChildText("stimulus"));
+         }
 
-             //TODO: check why it throws exception
-             if (configuration.getChildText("reactor") != null) {
-             try {
-             reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"));
-             } catch (Exception e) {
-             reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"), stimulus);
-             }
-             }
-             */
-            String path = configuration.getChildText("path");
-            if (reactor instanceof SlideShowReactor) {
-                ((SlideShowReactor) reactor).setPath(path);
-            }
-
-            configurationObj = new Configuration(sensor, stimulus, reactor);
-            configurations.add(configurationObj);
-        }
-        return configurations;
+         //TODO: check why it throws exception
+         if (configuration.getChildText("reactor") != null) {
+         try {
+         reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"));
+         } catch (Exception e) {
+         reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"), stimulus);
+         }
+         }
+         */
+        /*  String path = configuration.getChildText("path");
+         if (reactor instanceof SlideShowReactor) {
+         ((SlideShowReactor) reactor).setPath(path);
+         }
+         */
+        return configuration;
     }
 
     /**

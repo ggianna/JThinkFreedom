@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import org.scify.jthinkfreedom.talkandplay.gui.configuration.CommunicationModuleSettingsPanel;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
-import org.scify.jthinkfreedom.talkandplay.gui.images.CreateImageFrame;
+import org.scify.jthinkfreedom.talkandplay.gui.grid.CreateImageFrame;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
 import org.scify.jthinkfreedom.talkandplay.models.Tile;
 import org.scify.jthinkfreedom.talkandplay.models.User;

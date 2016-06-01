@@ -44,14 +44,14 @@ public class UserService {
         Element profile = new Element("profile");
         profile.addContent(new Element("name").setText(user.getName()));
         profile.addContent(new Element("image").setText(user.getImage()));
-        profile.addContent(new Element("rotationSpeed").setText("2"));
-        profile.addContent(new Element("defaultGridRow").setText("2"));
-        profile.addContent(new Element("defaultGriColumn").setText("2"));
         profile.setAttribute(new Attribute("preselected", String.valueOf(user.isPreselected())));
 
         //add the configurations
-        Element configurations = new Element("configurations");
-        profile.addContent(configurations);
+        Element configuration = new Element("configuration");
+        configuration.addContent(new Element("rotationSpeed").setText("2"));
+        configuration.addContent(new Element("defaultGridRow").setText("2"));
+        configuration.addContent(new Element("defaultGriColumn").setText("2"));
+        profile.addContent(configuration);
 
         //add communication module settings
         Element communication = new Element("communication");
@@ -90,9 +90,9 @@ public class UserService {
             if (profile.getChildText("name").equals(oldName)) {
 
                 profile.getChild("name").setText(user.getName());
-                profile.getChild("rotationSpeed").setText(String.valueOf(user.getRotationSpeed()));
-                profile.getChild("defaultGridRow").setText(String.valueOf(user.getDefaultGridRow()));
-                profile.getChild("defaultGridColumn").setText(String.valueOf(user.getDefaultGridColumn()));
+                profile.getChild("configuration").getChild("rotationSpeed").setText(String.valueOf(user.getConfiguration().getRotationSpeed()));
+                profile.getChild("configuration").getChild("defaultGridRow").setText(String.valueOf(user.getConfiguration().getDefaultGridRow()));
+                profile.getChild("configuration").getChild("defaultGridColumn").setText(String.valueOf(user.getConfiguration().getDefaultGridColumn()));
                 profile.setAttribute(new Attribute("preselected", String.valueOf(user.isPreselected())));
 
                 if (user.getImage() == null) {

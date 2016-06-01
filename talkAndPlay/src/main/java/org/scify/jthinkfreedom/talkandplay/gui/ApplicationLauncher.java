@@ -45,7 +45,7 @@ public class ApplicationLauncher {
 
             System.out.println("Profile: " + user.getName());
 
-            for (Category cat : user.getCategories()) {
+            for (Category cat : user.getCommunicationModule().getCategories()) {
                 System.out.println("cat name:" + cat.getName());
             }
         }
