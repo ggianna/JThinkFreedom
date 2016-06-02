@@ -87,6 +87,19 @@ public class CategoryService {
         }
     }
 
+    public Category getCategoriesWithRootParent(User user) {
+        Category communication = new Category(user.getCommunicationModule().getName(),
+                user.getCommunicationModule().getRows(),
+                user.getCommunicationModule().getColumns(),
+                user.getCommunicationModule().getImage());
+
+        List<Category> subCategories = new ArrayList<>();
+
+        communication.setSubCategories(user.getCommunicationModule().getCategories());
+
+        return communication;
+    }
+
     /**
      * Save a new category
      *

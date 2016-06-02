@@ -99,10 +99,10 @@ public class GridFrame extends javax.swing.JFrame {
         pack();
 
         final GridFrame gridFrame = this;
-        
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setFocusable(true);
-        
+
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent evt) {
@@ -156,7 +156,7 @@ public class GridFrame extends javax.swing.JFrame {
 
         gridPanel.revalidate();
         gridPanel.repaint();
-        getContentPane().add(gridPanel);
+        add(gridPanel);
 
         final GridFrame gridFrame = this;
 
@@ -166,9 +166,9 @@ public class GridFrame extends javax.swing.JFrame {
                 Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
                 if (sensorService.shouldSelect(sensor)) {
                     timer.cancel();
-                    getContentPane().remove(gridPanel);
+                    remove(gridPanel);
                     try {
-                        getContentPane().add(new CommunicationPanel(user.getName(), gridFrame));
+                        CommunicationPanel communicationPanel = new CommunicationPanel(user.getName(), gridFrame);
                     } catch (IOException ex) {
                         Logger.getLogger(GridFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }

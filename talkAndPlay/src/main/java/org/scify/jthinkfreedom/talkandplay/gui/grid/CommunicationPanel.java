@@ -27,7 +27,7 @@ import org.scify.jthinkfreedom.talkandplay.services.CategoryService;
 import org.scify.jthinkfreedom.talkandplay.services.SensorService;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
-public class CommunicationPanel extends javax.swing.JPanel{
+public class CommunicationPanel extends javax.swing.JPanel {
 
     private User user;
     private Timer timer;
@@ -39,7 +39,7 @@ public class CommunicationPanel extends javax.swing.JPanel{
     private CategoryService categoryService;
     private UserService userService;
     private SensorService sensorService;
-    private List<Category> categories;
+    private Category rootCategory;
 
     protected final int BORDER_SIZE = 5;
     protected final int IMAGE_PADDING = 10;
@@ -49,7 +49,7 @@ public class CommunicationPanel extends javax.swing.JPanel{
         this.userService = new UserService();
         this.user = userService.getUser(userName);
         this.sensorService = new SensorService(this.user);
-        this.categories = categoryService.getCategories(userName);
+        this.rootCategory = categoryService.getCategoriesWithRootParent(user);
         this.timer = new Timer();
         this.parent = parent;
         initComponents();
@@ -95,15 +95,10 @@ public class CommunicationPanel extends javax.swing.JPanel{
         gridLayout.setHgap(IMAGE_PADDING);
         gridLayout.setVgap(IMAGE_PADDING);
 
-        for (Category category : categories) {
-            if (category.getName().equals(user.getCommunicationModule().getName())) {
-                drawImages(category);
-                break;
-            }
-        }
+        drawImages(rootCategory);
 
-        // drawImages(user.getCommunicationModule().getCategories(), null);
-        //setTimer();
+        //  drawImages(user.getCommunicationModule().getCategories(), null);
+        setTimer();
         //check if timer closes
     }
 
@@ -124,12 +119,12 @@ public class CommunicationPanel extends javax.swing.JPanel{
 
         //if there are more images than the grid size, 
         //add another row to display the more and back icons
-        if ((categories.size() - 1) > grid) {
-            gridLayout.setRows(rows + 1);
-        } else {
-            gridLayout.setRows(rows);
-        }
-
+ /*       if ((categories.size() - 1) > grid) {
+         gridLayout.setRows(rows + 1);
+         } else {
+         gridLayout.setRows(rows);
+         }
+         */
         gridLayout.setRows(rows);
         gridLayout.setColumns(columns);
         imagesPanel.setLayout(gridLayout);
@@ -141,86 +136,26 @@ public class CommunicationPanel extends javax.swing.JPanel{
             if (category.getSubCategories().size() > 0) {
 
                 for (Category childCategory : category.getSubCategories()) {
-                    System.out.println("category " + childCategory.getName());
                     imagesPanel.add(createCategoryItem(childCategory));
                 }
 
             } else if (category.getTiles().size() > 0) {
                 //draw the tile images
-
             }
         }
 
-        imagesPanel.add(createBackItem(category));
+        //if parent is null, display the first menu
+        if (category.getParentCategory() == null) {
+            imagesPanel.add(createBackItem(category, true));
+        } else {
+            imagesPanel.add(createBackItem(category, false));
+        }
+
         imagesPanel.revalidate();
         imagesPanel.repaint();
-        selectedImage = 0;
-    }
-
-    /**
-     * Draw the sub categories or images for the current selectedImage category
-     *
-     * @param category
-     * @param isRootPanel
-     * @throws IOException
-     */
-    private void drawImages(List<Category> categories, Category parent) throws IOException {
-        imagesPanel.removeAll();
-        panelList = new ArrayList<>();
-        int rows, columns, grid;
-
-        if (parent != null) {
-            rows = parent.getRows();
-            columns = parent.getColumns();
-            grid = rows * columns;
-        } else {
-            rows = user.getConfiguration().getDefaultGridRow();
-            columns = user.getConfiguration().getDefaultGridColumn();
-            grid = rows * columns;
-        }
-
-        System.out.println("Grid " + rows + "x" + columns);
-
-        //if there are more images than the grid size, 
-        //add another row to display the more and back icons
-        if ((categories.size() - 1) > grid) {
-            gridLayout.setRows(rows + 1);
-        } else {
-            gridLayout.setRows(rows);
-        }
-
-        gridLayout.setRows(rows);
-        gridLayout.setColumns(columns);
-        imagesPanel.setLayout(gridLayout);
-
-        for (int i = moreImages; i < categories.size(); i++) {
-
-            if (categories.get(i).getParentCategory() != null) {
-                System.out.println("Cat " + categories.get(i).getName() + " parent " + categories.get(i).getParentCategory().getName());
-            }
-
-            //display the more button
-            if (parent != null
-                    && moreImages == 0
-                    && i >= (parent.getRows() * parent.getColumns())) {
-                moreImages = i;
-                imagesPanel.add(createMoreItem(categories.get(i)));
-
-                break;
-            } else {
-                JPanel imagePanel = createCategoryItem(categories.get(i));
-                imagesPanel.add(imagePanel);
-            }
-
-            if (moreImages > 0) {
-                moreImages = 0;
-                imagesPanel.add(createLessItem(categories.get(i)));
-            }
-        }
-
-        imagesPanel.add(createBackItem(parent));
-        imagesPanel.revalidate();
-        imagesPanel.repaint();
+        parent.add(imagesPanel);
+        parent.revalidate();
+        parent.repaint();
         selectedImage = 0;
     }
 
@@ -238,25 +173,21 @@ public class CommunicationPanel extends javax.swing.JPanel{
 
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-
                 Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
-
                 if (sensorService.shouldSelect(sensor)) {
                     try {
                         drawImages(category);
                     } catch (IOException ex) {
                         Logger.getLogger(CommunicationPanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } else {
+                } /*else {
                     System.out.println("do nth");
-                }
+                }*/
 
             }
         });
         return panel;
     }
-    
-  
 
     /**
      * Create the JPanel that holds a tile
@@ -291,7 +222,7 @@ public class CommunicationPanel extends javax.swing.JPanel{
      * @return
      * @throws IOException
      */
-    private JPanel createBackItem(final Category category) throws IOException {
+    private JPanel createBackItem(final Category category, final boolean isRoot) throws IOException {
         JPanel panel = createImagePanel("/home/christina/Desktop/talkandplay/back-arrow.png", "Πίσω");
         panelList.add(panel);
         imagesPanel.add(panel);
@@ -299,12 +230,25 @@ public class CommunicationPanel extends javax.swing.JPanel{
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2 && !evt.isConsumed()) {
-                    try {
-                        drawImages(category);
-                    } catch (IOException ex) {
-                        Logger.getLogger(CommunicationPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
 
+                    if (isRoot) {
+                        //main menu
+                        System.out.println("display menu");
+                    } else if (!isRoot && category.getParentCategory() == null) {
+                        System.out.println("first level");
+                        try {
+                            drawImages(rootCategory);
+                            //first level
+                        } catch (IOException ex) {
+                            Logger.getLogger(CommunicationPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        try {
+                            drawImages(category.getParentCategory());
+                        } catch (IOException ex) {
+                            Logger.getLogger(CommunicationPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
             }
         });
@@ -327,7 +271,7 @@ public class CommunicationPanel extends javax.swing.JPanel{
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2 && !evt.isConsumed()) {
                     try {
-                        drawImages(category.getSubCategories(), category.getParentCategory());
+                        drawImages(category);
                     } catch (IOException ex) {
                         Logger.getLogger(CommunicationPanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -353,7 +297,7 @@ public class CommunicationPanel extends javax.swing.JPanel{
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2 && !evt.isConsumed()) {
                     try {
-                        drawImages(category.getSubCategories(), category.getParentCategory());
+                        drawImages(category);
                     } catch (IOException ex) {
                         Logger.getLogger(CommunicationPanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -426,7 +370,5 @@ public class CommunicationPanel extends javax.swing.JPanel{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel imagesPanel;
     // End of variables declaration//GEN-END:variables
-
-
 
 }

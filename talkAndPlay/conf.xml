@@ -88,6 +88,13 @@
           <columns>3</columns>
           <order>0</order>
           <image>/home/christina/Desktop/talkandplay/glass-1.png</image>
+          <categories>
+            <category name="Κοκτέιλς">
+              <rows>3</rows>
+              <columns>3</columns>
+              <image>/home/christina/Desktop/talkandplay/cocktail.png</image>
+            </category>
+          </categories>
         </category>
         <category name="Sweets">
           <rows>2</rows>
