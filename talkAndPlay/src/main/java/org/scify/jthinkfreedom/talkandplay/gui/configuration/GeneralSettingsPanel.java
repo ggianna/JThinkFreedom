@@ -10,6 +10,9 @@ import org.scify.jthinkfreedom.talkandplay.gui.ConfigurationFrame;
 import org.scify.jthinkfreedom.talkandplay.gui.MainFrame;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.User;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.KeyboardSensor;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.MouseSensor;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.Sensor;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
 public class GeneralSettingsPanel extends javax.swing.JPanel {
@@ -20,6 +23,8 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
     private MainFrame mainFrame;
     private GuiHelper guiHelper;
     private String userImage;
+    private Sensor selectionSensor;
+    private Sensor navigationSensor;
 
     /**
      * Creates new form ConfigurationPanel
@@ -45,8 +50,6 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         generalSettingsPanel = new javax.swing.JPanel();
         profileNameLabel = new javax.swing.JLabel();
         profileNameField = new javax.swing.JTextField();
-        deleteButton = new javax.swing.JButton();
-        saveButton = new javax.swing.JButton();
         imageLabel = new javax.swing.JLabel();
         uploadImageButton = new javax.swing.JButton();
         rotationSpeedLabel = new javax.swing.JLabel();
@@ -56,6 +59,13 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         gridRowsTextField = new javax.swing.JTextField();
         gridColumnsTextField = new javax.swing.JTextField();
+        deleteButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        navigationTextField = new javax.swing.JTextField();
+        selectionTextField = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -66,24 +76,6 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         profileNameLabel.setText("Όνομα προφίλ:");
 
         profileNameField.setMinimumSize(new java.awt.Dimension(100, 23));
-
-        deleteButton.setBackground(new java.awt.Color(255, 255, 255));
-        deleteButton.setForeground(new java.awt.Color(51, 51, 51));
-        deleteButton.setText("Διαγραφή");
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
-            }
-        });
-
-        saveButton.setBackground(new java.awt.Color(255, 255, 255));
-        saveButton.setForeground(new java.awt.Color(51, 51, 51));
-        saveButton.setText("Αποθήκευση");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionPerformed(evt);
-            }
-        });
 
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
 
@@ -125,6 +117,58 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
             }
         });
 
+        deleteButton.setBackground(new java.awt.Color(255, 255, 255));
+        deleteButton.setForeground(new java.awt.Color(51, 51, 51));
+        deleteButton.setText("Διαγραφή");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
+        saveButton.setBackground(new java.awt.Color(255, 255, 255));
+        saveButton.setForeground(new java.awt.Color(51, 51, 51));
+        saveButton.setText("Αποθήκευση");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Κουμπί επιλογής:");
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel3.setText("Ρυθμίσεις κουμπιών");
+
+        jLabel4.setText("Κουμπί πλοήγησης:");
+
+        navigationTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                navigationTextFieldMouseClicked(evt);
+            }
+        });
+        navigationTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                navigationTextFieldKeyPressed(evt);
+            }
+        });
+
+        selectionTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectionTextFieldMouseClicked(evt);
+            }
+        });
+        selectionTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectionTextFieldActionPerformed(evt);
+            }
+        });
+        selectionTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                selectionTextFieldKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout generalSettingsPanelLayout = new javax.swing.GroupLayout(generalSettingsPanel);
         generalSettingsPanel.setLayout(generalSettingsPanelLayout);
         generalSettingsPanelLayout.setHorizontalGroup(
@@ -132,17 +176,28 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
             .addGroup(generalSettingsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(uploadImageButton)
-                        .addGap(61, 61, 61)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalSettingsPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(deleteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
                     .addGroup(generalSettingsPanelLayout.createSequentialGroup()
-                        .addComponent(imageLabel)
+                        .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(imageLabel)
+                            .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(uploadImageButton)))
                         .addGap(18, 18, 18)
                         .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selectionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel3)
+                            .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(navigationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(generalSettingsPanelLayout.createSequentialGroup()
                                 .addComponent(profileNameLabel)
                                 .addGap(49, 49, 49)
@@ -158,8 +213,9 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(gridColumnsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(preselectedCheckbox)
-                            .addComponent(errorLabel))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                            .addComponent(errorLabel))
+                        .addGap(0, 19, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         generalSettingsPanelLayout.setVerticalGroup(
             generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,23 +240,39 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(errorLabel))
                     .addComponent(imageLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uploadImageButton))
+                    .addGroup(generalSettingsPanelLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel3)
+                        .addGap(8, 8, 8)
+                        .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(selectionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(navigationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(generalSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(uploadImageButton)
-                    .addComponent(deleteButton)
-                    .addComponent(saveButton))
-                .addContainerGap(64, Short.MAX_VALUE))
+                    .addComponent(saveButton)
+                    .addComponent(deleteButton))
+                .addGap(16, 16, 16))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(generalSettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(generalSettingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(generalSettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -220,6 +292,8 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
             updatedUser.setPreselected(preselectedCheckbox.isSelected());
             updatedUser.getConfiguration().setDefaultGridRow(Integer.parseInt(gridRowsTextField.getText()));
             updatedUser.getConfiguration().setDefaultGridColumn(Integer.parseInt(gridColumnsTextField.getText()));
+            updatedUser.getConfiguration().setNavigationSensor(navigationSensor);
+            updatedUser.getConfiguration().setSelectionSensor(selectionSensor);
 
             try {
                 updatedUser = userService.update(updatedUser, user.getName());
@@ -269,6 +343,26 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_gridColumnsTextFieldActionPerformed
 
+    private void selectionTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectionTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selectionTextFieldActionPerformed
+
+    private void selectionTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_selectionTextFieldKeyPressed
+        selectionSensor = new KeyboardSensor(evt.getKeyCode(), evt.getKeyChar(), "keyboard");
+    }//GEN-LAST:event_selectionTextFieldKeyPressed
+
+    private void navigationTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_navigationTextFieldKeyPressed
+        navigationSensor = new KeyboardSensor(evt.getKeyCode(), evt.getKeyChar(), "keyboard");
+    }//GEN-LAST:event_navigationTextFieldKeyPressed
+
+    private void navigationTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navigationTextFieldMouseClicked
+        navigationSensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
+    }//GEN-LAST:event_navigationTextFieldMouseClicked
+
+    private void selectionTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectionTextFieldMouseClicked
+        selectionSensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
+    }//GEN-LAST:event_selectionTextFieldMouseClicked
+
     private void initCustomComponents() {
         hideElements();
     }
@@ -293,7 +387,7 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
         preselectedCheckbox.setSelected(user.isPreselected());
         gridRowsTextField.setText(String.valueOf(user.getConfiguration().getDefaultGridRow()));
         gridColumnsTextField.setText(String.valueOf(user.getConfiguration().getDefaultGridColumn()));
-        
+
         this.user = user;
     }
 
@@ -321,12 +415,17 @@ public class GeneralSettingsPanel extends javax.swing.JPanel {
     private javax.swing.JTextField gridRowsTextField;
     private javax.swing.JLabel imageLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JTextField navigationTextField;
     private javax.swing.JCheckBox preselectedCheckbox;
     private javax.swing.JTextField profileNameField;
     private javax.swing.JLabel profileNameLabel;
     private javax.swing.JLabel rotationSpeedLabel;
     private javax.swing.JTextField rotationSpeedTextField;
     private javax.swing.JButton saveButton;
+    private javax.swing.JTextField selectionTextField;
     private javax.swing.JButton uploadImageButton;
     // End of variables declaration//GEN-END:variables
 }

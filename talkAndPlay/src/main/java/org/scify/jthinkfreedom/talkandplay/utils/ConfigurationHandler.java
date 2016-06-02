@@ -4,7 +4,6 @@ import OS.Os;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import org.jdom.Document;
@@ -12,17 +11,16 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
-import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
-import org.scify.jthinkfreedom.skeleton.stimuli.Stimulus;
-import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
 import org.scify.jthinkfreedom.talkandplay.models.Category;
-import org.scify.jthinkfreedom.talkandplay.models.CommunicationModule;
+import org.scify.jthinkfreedom.talkandplay.models.modules.CommunicationModule;
 import org.scify.jthinkfreedom.talkandplay.models.Configuration;
-import org.scify.jthinkfreedom.talkandplay.models.EntertainmentModule;
-import org.scify.jthinkfreedom.talkandplay.models.GameModule;
+import org.scify.jthinkfreedom.talkandplay.models.modules.EntertainmentModule;
+import org.scify.jthinkfreedom.talkandplay.models.modules.GameModule;
 import org.scify.jthinkfreedom.talkandplay.models.Tile;
 import org.scify.jthinkfreedom.talkandplay.models.User;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.KeyboardSensor;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.MouseSensor;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.Sensor;
 
 /**
  * ConfigurationHandler is responsible for parsing the xml and other xml-related
@@ -131,20 +129,22 @@ public class ConfigurationHandler {
             CommunicationModule communicationModule = new CommunicationModule();
             communicationModule.setName(profile.getChild("communication").getChildText("name"));
             communicationModule.setImage(profile.getChild("communication").getChildText("image"));
-            communicationModule.setEnabled("true".equals(profile.getChild("communication").getChildText("image")));
+            communicationModule.setRows(Integer.parseInt(profile.getChild("communication").getChildText("rows")));
+            communicationModule.setColumns(Integer.parseInt(profile.getChild("communication").getChildText("columns")));
+            communicationModule.setEnabled("true".equals(profile.getChild("communication").getChildText("enabled")));
             communicationModule.setCategories(categoriesArray);
 
             //set the entertainment module settings
             EntertainmentModule entertainmentModule = new EntertainmentModule();
             entertainmentModule.setName(profile.getChild("entertainment").getChildText("name"));
             entertainmentModule.setImage(profile.getChild("entertainment").getChildText("image"));
-            entertainmentModule.setEnabled("true".equals(profile.getChild("entertainment").getChildText("image")));
+            entertainmentModule.setEnabled("true".equals(profile.getChild("entertainment").getChildText("enabled")));
 
             //set the game module settings
             GameModule gameModule = new GameModule();
             gameModule.setName(profile.getChild("games").getChildText("name"));
             gameModule.setImage(profile.getChild("games").getChildText("image"));
-            gameModule.setEnabled("true".equals(profile.getChild("games").getChildText("image")));
+            gameModule.setEnabled("true".equals(profile.getChild("games").getChildText("enabled")));
 
             user.setCommunicationModule(communicationModule);
             user.setEntertainmentModule(entertainmentModule);
@@ -165,38 +165,37 @@ public class ConfigurationHandler {
      * @throws Exception
      */
     private Configuration getConfiguration(Element configurationNode) {
-        Configuration configurationObj;
         Configuration configuration = new Configuration();
-        SensorAdapter sensor = null;
-        StimulusAdapter stimulus = null;
-        ReactorAdapter reactor = null;
+        Sensor selectionSensor = null;
+        Sensor navigationSensor = null;
 
         configuration.setRotationSpeed(Integer.parseInt(configurationNode.getChildText("rotationSpeed")));
         configuration.setDefaultGridRow(Integer.parseInt(configurationNode.getChildText("defaultGridRow")));
         configuration.setDefaultGridColumn(Integer.parseInt(configurationNode.getChildText("defaultGridColumn")));
 
-        /*
-         if (configuration.getChildText("sensor") != null) {
-         sensor = (SensorAdapter) createInstanceFromClassName(configuration.getChildText("sensor"));
-         }
-         if (configuration.getChildText("sensor") != null) {
-         stimulus = (StimulusAdapter) createInstanceFromClassName(configuration.getChildText("stimulus"));
-         }
+        Element selectionSensorEl = configurationNode.getChild("selectionSensor");
+        if ("mouse".equals(selectionSensorEl.getChildText("type"))) {
+            selectionSensor = new MouseSensor(Integer.parseInt(selectionSensorEl.getChildText("button")),
+                    Integer.parseInt(selectionSensorEl.getChildText("clickCount")), selectionSensorEl.getChildText("mouse"));
+        } else if ("keyboard".equals(selectionSensorEl.getChildText("type"))) {
+            selectionSensor = new KeyboardSensor(Integer.parseInt(selectionSensorEl.getChildText("keyCode")),
+                    selectionSensorEl.getChildText("keyChar").charAt(0), selectionSensorEl.getChildText("mouse"));
+        }
 
-         //TODO: check why it throws exception
-         if (configuration.getChildText("reactor") != null) {
-         try {
-         reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"));
-         } catch (Exception e) {
-         reactor = (ReactorAdapter) createInstanceFromClassName(configuration.getChildText("reactor"), stimulus);
-         }
-         }
-         */
-        /*  String path = configuration.getChildText("path");
-         if (reactor instanceof SlideShowReactor) {
-         ((SlideShowReactor) reactor).setPath(path);
-         }
-         */
+        Element navigationSensorEl = configurationNode.getChild("navigationSensor");
+        if (navigationSensorEl != null) {
+            if ("mouse".equals(navigationSensorEl.getChildText("type"))) {
+                navigationSensor = new MouseSensor(Integer.parseInt(navigationSensorEl.getChildText("button")),
+                        Integer.parseInt(navigationSensorEl.getChildText("clickCount")), navigationSensorEl.getChildText("mouse"));
+            } else if ("keyboard".equals(navigationSensorEl.getChildText("type"))) {
+                navigationSensor = new KeyboardSensor(Integer.parseInt(navigationSensorEl.getChildText("keyCode")),
+                        navigationSensorEl.getChildText("keyChar").charAt(0), navigationSensorEl.getChildText("mouse"));
+            }
+            configuration.setNavigationSensor(navigationSensor);
+        }
+
+        configuration.setSelectionSensor(selectionSensor);
+
         return configuration;
     }
 
@@ -288,15 +287,4 @@ public class ConfigurationHandler {
         xmlOutput.output(configurationFile, new FileWriter(projectPath));
     }
 
-    private Object createInstanceFromClassName(String className) throws Exception {
-        Class<?> clazz = Class.forName(className);
-        Constructor<?> ctor = clazz.getConstructor();
-        return ctor.newInstance();
-    }
-
-    private Object createInstanceFromClassName(String className, StimulusAdapter arg) throws Exception {
-        Class<?> clazz = Class.forName(className);
-        Constructor<?> ctor = clazz.getConstructor(Stimulus.class);
-        return ctor.newInstance(arg);
-    }
 }

@@ -1,4 +1,4 @@
-package org.scify.jthinkfreedom.talkandplay.models;
+package org.scify.jthinkfreedom.talkandplay.models.modules;
 
 public class EntertainmentModule extends Module {
 

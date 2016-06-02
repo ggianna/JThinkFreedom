@@ -5,6 +5,8 @@ import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.scify.jthinkfreedom.talkandplay.models.User;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.KeyboardSensor;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.MouseSensor;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
 
 public class UserService {
@@ -51,6 +53,37 @@ public class UserService {
         configuration.addContent(new Element("rotationSpeed").setText("2"));
         configuration.addContent(new Element("defaultGridRow").setText("2"));
         configuration.addContent(new Element("defaultGriColumn").setText("2"));
+
+        //add the selection sensor
+        Element selectionSensor = new Element("selectionSensor");
+
+        if (user.getConfiguration().getSelectionSensor() instanceof MouseSensor) {
+            selectionSensor.addContent(new Element("type").setText("mouse"));
+            selectionSensor.addContent(new Element("button").setText(String.valueOf(((MouseSensor) user.getConfiguration().getSelectionSensor()).getButton())));
+            selectionSensor.addContent(new Element("clickCount").setText(String.valueOf(((MouseSensor) user.getConfiguration().getSelectionSensor()).getClickCount())));
+        } else if (user.getConfiguration().getSelectionSensor() instanceof KeyboardSensor) {
+            selectionSensor.addContent(new Element("type").setText("keyboard"));
+            selectionSensor.addContent(new Element("keyCode").setText(String.valueOf(((KeyboardSensor) user.getConfiguration().getSelectionSensor()).getKeyCode())));
+            selectionSensor.addContent(new Element("keyChar").setText(String.valueOf(((KeyboardSensor) user.getConfiguration().getSelectionSensor()).getKeyChar())));
+        }
+
+        //add the navigation sensor, if any
+        if (user.getConfiguration().getNavigationSensor() != null) {
+            Element navigationSensor = new Element("navigationSensor");
+
+            if (user.getConfiguration().getNavigationSensor() instanceof MouseSensor) {
+                navigationSensor.addContent(new Element("type").setText("mouse"));
+                navigationSensor.addContent(new Element("button").setText(String.valueOf(((MouseSensor) user.getConfiguration().getNavigationSensor()).getButton())));
+                navigationSensor.addContent(new Element("clickCount").setText(String.valueOf(((MouseSensor) user.getConfiguration().getNavigationSensor()).getClickCount())));
+            } else if (user.getConfiguration().getNavigationSensor() instanceof KeyboardSensor) {
+                navigationSensor.addContent(new Element("type").setText("keyboard"));
+                navigationSensor.addContent(new Element("keyCode").setText(String.valueOf(((KeyboardSensor) user.getConfiguration().getNavigationSensor()).getKeyCode())));
+                navigationSensor.addContent(new Element("keyChar").setText(String.valueOf(((KeyboardSensor) user.getConfiguration().getNavigationSensor()).getKeyChar())));
+            }
+            configuration.addContent(navigationSensor);
+        }
+
+        configuration.addContent(selectionSensor);
         profile.addContent(configuration);
 
         //add communication module settings
@@ -94,6 +127,39 @@ public class UserService {
                 profile.getChild("configuration").getChild("defaultGridRow").setText(String.valueOf(user.getConfiguration().getDefaultGridRow()));
                 profile.getChild("configuration").getChild("defaultGridColumn").setText(String.valueOf(user.getConfiguration().getDefaultGridColumn()));
                 profile.setAttribute(new Attribute("preselected", String.valueOf(user.isPreselected())));
+
+                Element selectionSensor = new Element("selectionSensor");
+
+                if (user.getConfiguration().getSelectionSensor() instanceof MouseSensor) {
+                    selectionSensor.addContent(new Element("type").setText("mouse"));
+                    selectionSensor.addContent(new Element("button").setText(String.valueOf(((MouseSensor) user.getConfiguration().getSelectionSensor()).getButton())));
+                    selectionSensor.addContent(new Element("clickCount").setText(String.valueOf(((MouseSensor) user.getConfiguration().getSelectionSensor()).getClickCount())));
+                } else if (user.getConfiguration().getSelectionSensor() instanceof KeyboardSensor) {
+                    selectionSensor.addContent(new Element("type").setText("keyboard"));
+                    selectionSensor.addContent(new Element("keyCode").setText(String.valueOf(((KeyboardSensor) user.getConfiguration().getSelectionSensor()).getKeyCode())));
+                    selectionSensor.addContent(new Element("keyChar").setText(String.valueOf(((KeyboardSensor) user.getConfiguration().getSelectionSensor()).getKeyChar())));
+                }
+
+                profile.getChild("configuration").removeChild("selectionSensor");
+                profile.getChild("configuration").addContent(selectionSensor);
+
+                if (user.getConfiguration().getNavigationSensor() != null) {
+                    Element navigationSensor = new Element("navigationSensor");
+
+                    if (user.getConfiguration().getNavigationSensor() instanceof MouseSensor) {
+                        navigationSensor.addContent(new Element("type").setText("mouse"));
+                        navigationSensor.addContent(new Element("button").setText(String.valueOf(((MouseSensor) user.getConfiguration().getNavigationSensor()).getButton())));
+                        navigationSensor.addContent(new Element("clickCount").setText(String.valueOf(((MouseSensor) user.getConfiguration().getNavigationSensor()).getClickCount())));
+                    } else if (user.getConfiguration().getNavigationSensor() instanceof KeyboardSensor) {
+                        navigationSensor.addContent(new Element("type").setText("keyboard"));
+                        navigationSensor.addContent(new Element("keyCode").setText(String.valueOf(((KeyboardSensor) user.getConfiguration().getNavigationSensor()).getKeyCode())));
+                        navigationSensor.addContent(new Element("keyChar").setText(String.valueOf(((KeyboardSensor) user.getConfiguration().getNavigationSensor()).getKeyChar())));
+                    }
+
+                    profile.getChild("configuration").removeChild("navigationSensor");
+                    profile.getChild("configuration").addContent(navigationSensor);
+
+                }
 
                 if (user.getImage() == null) {
                     profile.getChild("image").setText(profile.getChildText("image"));

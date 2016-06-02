@@ -1,8 +1,8 @@
 package org.scify.jthinkfreedom.talkandplay.gui.grid;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -10,23 +10,23 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.User;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.KeyboardSensor;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.MouseSensor;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.Sensor;
+import org.scify.jthinkfreedom.talkandplay.services.SensorService;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
-/**
- *
- * @author christina
- */
 public class GridFrame extends javax.swing.JFrame {
 
     private User user;
     private GuiHelper guiHelper;
     private UserService userService;
+    private SensorService sensorService;
     private Timer timer;
     private int selectedImage;
     private ArrayList<JPanel> panelList;
@@ -44,6 +44,7 @@ public class GridFrame extends javax.swing.JFrame {
     public GridFrame(String userName) throws IOException {
         this.userService = new UserService();
         this.user = userService.getUser(userName);
+        this.sensorService = new SensorService(user);
         this.guiHelper = new GuiHelper();
         this.guiHelper = guiHelper;
         this.panelList = new ArrayList<>();
@@ -94,6 +95,41 @@ public class GridFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initCustomComponents() {
+        repaintMenu();
+        pack();
+
+        final GridFrame gridFrame = this;
+        
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setFocusable(true);
+        
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent evt) {
+                Sensor sensor = new KeyboardSensor(evt.getKeyCode(), evt.getKeyChar(), "keyboard");
+                if (sensorService.shouldSelect(sensor)) {
+                    //ugly, fix
+                    if (selectedImage == 0) {
+                        timer.cancel();
+                        getContentPane().remove(gridPanel);
+                        try {
+                            getContentPane().add(new CommunicationPanel(user.getName(), gridFrame));
+                        } catch (IOException ex) {
+                            Logger.getLogger(GridFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else if (selectedImage == 1 || selectedImage == 2) {
+                        JOptionPane.showMessageDialog(gridFrame,
+                                "Υπό κατασκευή",
+                                "",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        });
+    }
+
+    public void repaintMenu() {
+       // getContentPane().removeAll();
         /*  setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
          JLabel logoLabel = new JLabel(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/tp_logo_small.png")));
          JPanel logoPanel = new JPanel();
@@ -127,11 +163,12 @@ public class GridFrame extends javax.swing.JFrame {
         //launch the communication grid        
         commImg.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+                Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
+                if (sensorService.shouldSelect(sensor)) {
                     timer.cancel();
                     getContentPane().remove(gridPanel);
                     try {
-                        getContentPane().add(new CommunicationPanel(user));
+                        getContentPane().add(new CommunicationPanel(user.getName(), gridFrame));
                     } catch (IOException ex) {
                         Logger.getLogger(GridFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -142,7 +179,8 @@ public class GridFrame extends javax.swing.JFrame {
         //launch the entertainment grid        
         entImg.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+                Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
+                if (sensorService.shouldSelect(sensor)) {
                     JOptionPane.showMessageDialog(gridFrame,
                             "Υπό κατασκευή",
                             "",
@@ -154,7 +192,8 @@ public class GridFrame extends javax.swing.JFrame {
         //launch the games grid        
         gameImg.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+                Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
+                if (sensorService.shouldSelect(sensor)) {
                     JOptionPane.showMessageDialog(gridFrame,
                             "Υπό κατασκευή",
                             "",
@@ -162,6 +201,7 @@ public class GridFrame extends javax.swing.JFrame {
                 }
             }
         });
+
     }
 
     private void setTimer() {
@@ -191,4 +231,5 @@ public class GridFrame extends javax.swing.JFrame {
     private javax.swing.JPanel gridPanel;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
+
 }

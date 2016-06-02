@@ -19,6 +19,5 @@
         <module>jthinkfreedom-gui</module>
         <module>jthinkfreedom-keyboard</module>
         <module>installer</module>
-        <module>talkAndPlay</module>
     </modules>
 </project>

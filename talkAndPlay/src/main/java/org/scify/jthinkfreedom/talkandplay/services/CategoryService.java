@@ -29,14 +29,48 @@ public class CategoryService {
         return category;
     }
 
+    /**
+     * Set all the categories, along with the modules that should be displayed
+     *
+     * @param userName
+     * @return
+     */
     public List<Category> getCategories(String userName) {
         List<Category> categories = new ArrayList<>();
 
         User user = configurationHandler.getUser(userName);
 
-        if (user != null) {
-            categories = getCategories(user.getCommunicationModule().getCategories(), categories);
+        //set the communication category
+        if (user.getCommunicationModule().isEnabled()) {
+            Category communication = new Category(user.getCommunicationModule().getName(),
+                    user.getCommunicationModule().getRows(),
+                    user.getCommunicationModule().getColumns(),
+                    user.getCommunicationModule().getImage());
+
+            List<Category> subCategories = new ArrayList<>();
+
+            communication.setSubCategories(getCategories(user.getCommunicationModule().getCategories(), subCategories));
+            categories.add(communication);
         }
+
+        //set the entertainment category
+        if (user.getEntertainmentModule().isEnabled()) {
+            Category entertainment = new Category();
+            entertainment.setName(user.getEntertainmentModule().getName());
+            entertainment.setImage(user.getEntertainmentModule().getImage());
+
+            categories.add(entertainment);
+        }
+
+        //set the games category
+        if (user.getGameModule().isEnabled()) {
+            Category games = new Category();
+            games.setName(user.getGameModule().getName());
+            games.setImage(user.getGameModule().getImage());
+
+            categories.add(games);
+        }
+
         return categories;
     }
 

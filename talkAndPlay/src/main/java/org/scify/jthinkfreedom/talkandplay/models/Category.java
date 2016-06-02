@@ -1,6 +1,7 @@
 package org.scify.jthinkfreedom.talkandplay.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Category {
 
@@ -10,14 +11,14 @@ public class Category {
     private int order;
     private boolean editable;
     private Category parentCategory;
-    private ArrayList<Category> subCategories;
-    private ArrayList<Tile> tiles;
+    private List<Category> subCategories;
+    private List<Tile> tiles;
 
     public Category(String name) {
         this.name = name;
     }
 
-    public Category(String name, ArrayList<Tile> tiles, Category parentCategory, ArrayList<Category> subCategories) {
+    public Category(String name, List<Tile> tiles, Category parentCategory, List<Category> subCategories) {
         this.tiles = new ArrayList<>();
         this.subCategories = new ArrayList<>();
         this.name = name;
@@ -73,7 +74,7 @@ public class Category {
         this.order = order;
     }
 
-    public ArrayList<Tile> getTiles() {
+    public List<Tile> getTiles() {
         return tiles;
     }
 
@@ -85,7 +86,7 @@ public class Category {
         this.image = image;
     }
 
-    public void setTiles(ArrayList<Tile> tiles) {
+    public void setTiles(List<Tile> tiles) {
         this.tiles = tiles;
     }
 
@@ -97,11 +98,11 @@ public class Category {
         this.parentCategory = parentCategory;
     }
 
-    public ArrayList<Category> getSubCategories() {
+    public List<Category> getSubCategories() {
         return subCategories;
     }
 
-    public void setSubCategories(ArrayList<Category> subCategories) {
+    public void setSubCategories(List<Category> subCategories) {
         this.subCategories = subCategories;
     }
 
@@ -115,7 +116,9 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" + "rows=" + rows + ", columns=" + columns + ", name=" + name + ", tiles=" + tiles + ", parentCategory=" + parentCategory + ", subCategories=" + subCategories + '}';
+        return "Category{" + "name=" + name + '}';
     }
+
+   
 
 }

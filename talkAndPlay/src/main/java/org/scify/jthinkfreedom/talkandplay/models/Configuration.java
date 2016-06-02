@@ -1,25 +1,17 @@
 package org.scify.jthinkfreedom.talkandplay.models;
 
-import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
-import org.scify.jthinkfreedom.skeleton.sensors.SensorAdapter;
-import org.scify.jthinkfreedom.skeleton.stimuli.StimulusAdapter;
+import org.scify.jthinkfreedom.talkandplay.models.sensors.Sensor;
 
 public class Configuration {
 
     private int rotationSpeed;
     private int defaultGridRow;
     private int defaultGridColumn;
-    private SensorAdapter sensor;
-    private StimulusAdapter stimulus;
-    private ReactorAdapter reactor;
+
+    private Sensor selectionSensor;
+    private Sensor navigationSensor;
 
     public Configuration() {
-    }
-
-    public Configuration(SensorAdapter sensor, StimulusAdapter stimulus, ReactorAdapter reactor) {
-        this.sensor = sensor;
-        this.stimulus = stimulus;
-        this.reactor = reactor;
     }
 
     public int getRotationSpeed() {
@@ -46,33 +38,20 @@ public class Configuration {
         this.defaultGridColumn = defaultGridColumn;
     }
 
-    public SensorAdapter getSensor() {
-        return sensor;
+    public Sensor getSelectionSensor() {
+        return selectionSensor;
     }
 
-    public void setSensor(SensorAdapter sensor) {
-        this.sensor = sensor;
+    public void setSelectionSensor(Sensor selectionSensor) {
+        this.selectionSensor = selectionSensor;
     }
 
-    public StimulusAdapter getStimulus() {
-        return stimulus;
+    public Sensor getNavigationSensor() {
+        return navigationSensor;
     }
 
-    public void setStimulus(StimulusAdapter stimulus) {
-        this.stimulus = stimulus;
-    }
-
-    public ReactorAdapter getReactor() {
-        return reactor;
-    }
-
-    public void setReactor(ReactorAdapter reactor) {
-        this.reactor = reactor;
-    }
-
-    @Override
-    public String toString() {
-        return "Configuration{" + "sensor=" + sensor + ", stimulus=" + stimulus + ", reactor=" + reactor + '}';
+    public void setNavigationSensor(Sensor navigationSensor) {
+        this.navigationSensor = navigationSensor;
     }
 
 }

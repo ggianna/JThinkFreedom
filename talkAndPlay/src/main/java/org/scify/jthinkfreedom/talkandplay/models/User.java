@@ -1,5 +1,8 @@
 package org.scify.jthinkfreedom.talkandplay.models;
 
+import org.scify.jthinkfreedom.talkandplay.models.modules.CommunicationModule;
+import org.scify.jthinkfreedom.talkandplay.models.modules.EntertainmentModule;
+import org.scify.jthinkfreedom.talkandplay.models.modules.GameModule;
 import java.util.ArrayList;
 import java.util.List;
 
