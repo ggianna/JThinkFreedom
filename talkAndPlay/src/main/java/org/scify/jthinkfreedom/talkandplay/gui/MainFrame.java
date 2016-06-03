@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-import org.scify.jthinkfreedom.talkandplay.gui.grid.GridFrame;
+import org.scify.jthinkfreedom.talkandplay.gui.grid.old.GridFrame;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
