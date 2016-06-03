@@ -74,7 +74,7 @@
       <name>Επικοινωνία</name>
       <enabled>true</enabled>
       <image>/home/christina/Desktop/talkandplay/emoticon.png</image>
-      <rows>3</rows>
+      <rows>2</rows>
       <columns>3</columns>
       <categories>
         <category name="Food">
@@ -84,29 +84,41 @@
           <image>/home/christina/Desktop/talkandplay/food-2.png</image>
         </category>
         <category name="Drink">
-          <rows>3</rows>
-          <columns>3</columns>
+         <rows>2</rows>
+      <columns>3</columns>
           <order>0</order>
           <image>/home/christina/Desktop/talkandplay/glass-1.png</image>
           <categories>
             <category name="Κοκτέιλς">
-              <rows>3</rows>
-              <columns>3</columns>
+              <rows>2</rows>
+      <columns>3</columns>
               <image>/home/christina/Desktop/talkandplay/cocktail.png</image>
             </category>
           </categories>
         </category>
         <category name="Sweets">
           <rows>2</rows>
-          <columns>2</columns>
+      <columns>3</columns>
           <order>0</order>
           <image>/home/christina/Desktop/talkandplay/cupcake.png</image>
         </category>
         <category name="Feelings!">
-          <rows>2</rows>
-          <columns>3</columns>
+         <rows>2</rows>
+      <columns>3</columns>
           <order>0</order>
           <image>/home/christina/Desktop/talkandplay/confused.png</image>
+        </category>        
+        <category name="Test1">
+          <rows>2</rows>
+      <columns>3</columns>
+          <order>0</order>
+          <image>/home/christina/Desktop/talkandplay/glass.png</image>
+        </category>
+        <category name="Test2">
+          <rows>2</rows>
+      <columns>3</columns>
+          <order>0</order>
+          <image>/home/christina/Desktop/talkandplay/salad.png</image>
         </category>
       </categories>
     </communication>

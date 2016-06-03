@@ -58,8 +58,8 @@ public class GuiHelper {
                     "Σφάλμα",
                     JOptionPane.ERROR_MESSAGE);
             return panel;
-
         }
     }
 
+    
 }

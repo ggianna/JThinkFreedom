@@ -30,6 +30,9 @@ public class GridFrame extends javax.swing.JFrame {
     private Timer timer;
     private int selectedImage;
     private ArrayList<JPanel> panelList;
+    private JPanel communicationPanel;
+    private JPanel entertainmentPanel;
+    private JPanel gamesPanel;
 
     protected final int BORDER_SIZE = 5;
     protected final int IMAGE_PADDING = 10;
@@ -48,7 +51,6 @@ public class GridFrame extends javax.swing.JFrame {
         this.guiHelper = new GuiHelper();
         this.guiHelper = guiHelper;
         this.panelList = new ArrayList<>();
-        this.timer = new Timer();
         initComponents();
         initCustomComponents();
     }
@@ -95,13 +97,76 @@ public class GridFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initCustomComponents() {
-        repaintMenu();
-        pack();
-
-        final GridFrame gridFrame = this;
-
+        repaintMenu(gridPanel);
+        setKeyboardListeners();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        pack();
+    }
+
+    public void repaintMenu(JPanel panel) {
+        GridLayout gridLayout = new GridLayout(1, 3, IMAGE_PADDING, IMAGE_PADDING);
+        gridPanel.setLayout(gridLayout);
+        gridPanel.removeAll();
+        
+        if (user.getCommunicationModule().isEnabled()) {
+            communicationPanel = guiHelper.createImagePanel(user.getCommunicationModule().getImage(), user.getCommunicationModule().getName(), this);
+            gridPanel.add(communicationPanel);
+            panelList.add(communicationPanel);
+        }
+
+        if (user.getEntertainmentModule().isEnabled()) {
+            entertainmentPanel = guiHelper.createImagePanel(user.getEntertainmentModule().getImage(), user.getEntertainmentModule().getName(), this);
+            gridPanel.add(entertainmentPanel);
+            panelList.add(entertainmentPanel);
+        }
+
+        if (user.getGameModule().isEnabled()) {
+            gamesPanel = guiHelper.createImagePanel(user.getGameModule().getImage(), user.getGameModule().getName(), this);
+            gridPanel.add(gamesPanel);
+            panelList.add(gamesPanel);
+        }
+
+        setTimer();
+
+        gridPanel.revalidate();
+        gridPanel.repaint();
+        remove(panel);
+        add(gridPanel);
+        revalidate();
+        repaint();
+        pack();
+        setMouseListeners();
+    }
+
+    private void setTimer() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+
+                if (selectedImage == 0) {
+                    panelList.get(panelList.size() - 1).setBorder(null);
+                    panelList.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
+                    selectedImage++;
+                } else if (selectedImage == panelList.size() - 1) {
+                    panelList.get(selectedImage - 1).setBorder(null);
+                    panelList.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
+                    selectedImage = 0;
+                } else if (selectedImage < panelList.size() - 1 && selectedImage > 0) {
+                    panelList.get(selectedImage - 1).setBorder(null);
+                    panelList.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
+                    selectedImage++;
+                }
+            }
+        }, user.getConfiguration().getRotationSpeed() * 1000, user.getConfiguration().getRotationSpeed() * 1000);
+    }
+
+    /**
+     * The keyboard listeners for the whole JFrame
+     */
+    private void setKeyboardListeners() {
         setFocusable(true);
+        final GridFrame gridFrame = this;
 
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -128,40 +193,14 @@ public class GridFrame extends javax.swing.JFrame {
         });
     }
 
-    public void repaintMenu() {
-       // getContentPane().removeAll();
-        /*  setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-         JLabel logoLabel = new JLabel(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/tp_logo_small.png")));
-         JPanel logoPanel = new JPanel();
-         logoPanel.setLayout(new BorderLayout(10, 10));
-         logoPanel.add(logoLabel);
-         */
-        //   JPanel gridPanel = new JPanel();
-        GridLayout gridLayout = new GridLayout(1, 3, IMAGE_PADDING, IMAGE_PADDING);
-        gridPanel.setLayout(gridLayout);
-
-        JPanel commImg = guiHelper.createImagePanel(user.getCommunicationModule().getImage(), user.getCommunicationModule().getName(), this);
-        JPanel entImg = guiHelper.createImagePanel(user.getEntertainmentModule().getImage(), user.getEntertainmentModule().getName(), this);
-        JPanel gameImg = guiHelper.createImagePanel(user.getGameModule().getImage(), user.getGameModule().getName(), this);
-
-        gridPanel.add(commImg);
-        gridPanel.add(entImg);
-        gridPanel.add(gameImg);
-
-        panelList.add(commImg);
-        panelList.add(entImg);
-        panelList.add(gameImg);
-
-        setTimer();
-
-        gridPanel.revalidate();
-        gridPanel.repaint();
-        add(gridPanel);
-
+    /**
+     * The mouse listeners for each of the three modules
+     */
+    private void setMouseListeners() {
         final GridFrame gridFrame = this;
 
         //launch the communication grid        
-        commImg.addMouseListener(new java.awt.event.MouseAdapter() {
+        communicationPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
                 if (sensorService.shouldSelect(sensor)) {
@@ -177,7 +216,7 @@ public class GridFrame extends javax.swing.JFrame {
         });
 
         //launch the entertainment grid        
-        entImg.addMouseListener(new java.awt.event.MouseAdapter() {
+        entertainmentPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
                 if (sensorService.shouldSelect(sensor)) {
@@ -190,7 +229,7 @@ public class GridFrame extends javax.swing.JFrame {
         });
 
         //launch the games grid        
-        gameImg.addMouseListener(new java.awt.event.MouseAdapter() {
+        gamesPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
                 if (sensorService.shouldSelect(sensor)) {
@@ -201,31 +240,7 @@ public class GridFrame extends javax.swing.JFrame {
                 }
             }
         });
-
     }
-
-    private void setTimer() {
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-
-                if (selectedImage == 0) {
-                    panelList.get(panelList.size() - 1).setBorder(null);
-                    panelList.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
-                    selectedImage++;
-                } else if (selectedImage == panelList.size() - 1) {
-                    panelList.get(selectedImage - 1).setBorder(null);
-                    panelList.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
-                    selectedImage = 0;
-                } else if (selectedImage < panelList.size() - 1 && selectedImage > 0) {
-                    panelList.get(selectedImage - 1).setBorder(null);
-                    panelList.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
-                    selectedImage++;
-                }
-            }
-        }, user.getConfiguration().getRotationSpeed() * 1000, user.getConfiguration().getRotationSpeed() * 1000);
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel gridPanel;

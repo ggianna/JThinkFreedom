@@ -93,9 +93,13 @@ public class CategoryService {
                 user.getCommunicationModule().getColumns(),
                 user.getCommunicationModule().getImage());
 
-        List<Category> subCategories = new ArrayList<>();
+        List<Category> subCategories = user.getCommunicationModule().getCategories();
 
-        communication.setSubCategories(user.getCommunicationModule().getCategories());
+        for (Category category : subCategories) {
+            category.setParentCategory(communication);
+        }
+
+        communication.setSubCategories(subCategories);
 
         return communication;
     }
