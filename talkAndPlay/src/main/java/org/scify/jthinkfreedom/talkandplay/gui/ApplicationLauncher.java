@@ -16,7 +16,7 @@ public class ApplicationLauncher {
 
     public static void main(String[] args){
         
-        setUIFont(new javax.swing.plaf.FontUIResource("Arial", Font.BOLD, 12));
+        setUIFont(new javax.swing.plaf.FontUIResource("Arial", Font.PLAIN, 12));
         ConfigurationHandler conf = new ConfigurationHandler();
         MainFrame mainFrame = new MainFrame(conf);
         mainFrame.setLocationRelativeTo(null);

@@ -1,15 +1,12 @@
 package org.scify.jthinkfreedom.talkandplay.gui.users;
 
 import java.awt.Font;
+import java.io.IOException;
 import javax.swing.SwingConstants;
 import org.scify.jthinkfreedom.talkandplay.gui.MainFrame;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 
-/**
- *
- * @author peustr
- */
 public class ProfilePanel extends javax.swing.JPanel {
 
     private MainFrame parent;
@@ -27,7 +24,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    public ProfilePanel(MainFrame parent, User profile) {
+    public ProfilePanel(MainFrame parent, User profile){
         this.parent = parent;
         this.profile = profile;
         this.guiHelper = new GuiHelper();
@@ -67,9 +64,9 @@ public class ProfilePanel extends javax.swing.JPanel {
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void initCustomComponents() {
+    private void initCustomComponents(){
         nameLabel.setText(profile.getName());
-        imageLabel.setIcon(guiHelper.getIcon((profile.getImage())));
+        imageLabel.setIcon(guiHelper.getRoundIcon((profile.getImage())));
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
     }
     

@@ -1,8 +1,12 @@
 package org.scify.jthinkfreedom.talkandplay.gui;
 
+import java.awt.Color;
 import org.scify.jthinkfreedom.talkandplay.gui.users.ProfilePanel;
 import org.scify.jthinkfreedom.talkandplay.gui.users.CreateUserScreen;
 import java.awt.GridBagConstraints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -10,16 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import org.scify.jthinkfreedom.talkandplay.gui.grid.GridFrame;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.services.UserService;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
 
-/**
- *
- * @author peustr
- */
 public class MainFrame extends javax.swing.JFrame {
 
     private static final int STEP = 6;
@@ -225,6 +230,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_configureButtonActionPerformed
 
     private void initCustomComponents() {
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         profilePaginationCounterStart = 0;
         profilePaginationCounterEnd = STEP;
 
@@ -251,6 +257,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             profilesPanel.add(profilePanel);
         }
+
         repaintProfiles();
         pack();
     }
@@ -278,6 +285,30 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         }
+        JPanel addUserPanel = new JPanel();
+        addUserPanel.setLayout(new BoxLayout(addUserPanel, BoxLayout.PAGE_AXIS));
+        addUserPanel.setBackground(Color.white);
+        
+        JLabel textLabel = new JLabel("Πρόσθεσε νέο χρήστη");
+        final JLabel imageLabel = new JLabel(new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/add-icon.png")));
+        textLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        addUserPanel.add(imageLabel);
+        addUserPanel.add(textLabel);
+        profilePanel.add(addUserPanel);
+        
+          imageLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent arg0) { 
+                imageLabel.setIcon(new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/add-icon.png")));
+            }           
+            @Override
+            public void mouseEntered(MouseEvent arg0) {
+                    imageLabel.setIcon(new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/add-icon-hover.png")));
+            }           
+        });
+
         pack();
         profilePanel.repaint();
     }

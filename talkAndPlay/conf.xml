@@ -2,7 +2,7 @@
 <profiles>
   <profile preselected="false">
     <name>dddd</name>
-    <image />
+    <image>/home/xrist/Desktop/talkandplay/happy.png</image>
     <configuration>
       <rotationSpeed>1</rotationSpeed>
       <defaultGridRow>2</defaultGridRow>
