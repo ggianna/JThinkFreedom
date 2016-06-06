@@ -4,6 +4,7 @@ public class Module {
 
     private String name;
     private String image;
+    private String sound;
     private boolean enabled;
 
     public Module() {
@@ -23,6 +24,14 @@ public class Module {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getSound() {
+        return sound;
+    }
+
+    public void setSound(String sound) {
+        this.sound = sound;
     }
 
     public boolean isEnabled() {

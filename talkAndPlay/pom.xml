@@ -35,19 +35,6 @@
                     </execution>
                 </executions>
             </plugin>
-                      
-            <!--<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>org.scify.jthinkfreedom.gui.ApplicationLauncher</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>-->
                                     
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -77,32 +64,9 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>org.scify.jthinkfreedom.skeleton</groupId>
-            <artifactId>jthinkfreedom.skeleton</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <!--<dependency>
-            <groupId>org.scify.jthinkfreedom.leap</groupId>
-            <artifactId>jthinkfreedom.leap</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>-->
-        <dependency>
-            <groupId>org.scify.jthinkfreedom.webcam</groupId>
-            <artifactId>jthinkfreedom.webcam</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.scify.jthinkfreedom.reactors</groupId>
-            <artifactId>jthinkfreedom.reactors</artifactId>
-            <version>1.0-SNAPSHOT</version>            
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.scify.jthinkfreedom.keyboard</groupId>
-            <artifactId>jthinkfreedom.keyboard</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
         </dependency>
         <dependency>
             <groupId>org.jdom</groupId>
@@ -115,15 +79,9 @@
             <version>3.4</version>
         </dependency>
         <dependency>
-            <groupId>javax.media</groupId>
-            <artifactId>jmf.m3plugin</artifactId>
-            <version>1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.media</groupId>
-            <artifactId>jmf</artifactId>
-            <version>2.1.1e</version>
-        </dependency>
-        
+            <groupId>uk.co.caprica</groupId>
+            <artifactId>vlcj</artifactId>
+            <version>3.10.1</version>
+        </dependency>        
     </dependencies>
 </project>

@@ -28,38 +28,45 @@ public class GuiHelper {
     public ImageIcon getIcon(String path) {
         if (path != null && new File(path).isFile()) {
             return new ImageIcon(new ImageIcon(path).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
-
+            
         } else {
             return new ImageIcon(new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png")).getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
         }
     }
-
+    
     public JPanel createImagePanel(String imagePath, String text, JFrame frame) {
         JPanel panel = new JPanel(new BorderLayout());
-
+        
         java.awt.Image image;
         try {
             image = ImageIO.read(new File(imagePath));
             ImageIcon imageIcon = new ImageIcon(image.getScaledInstance(300, 300, java.awt.Image.SCALE_SMOOTH));
-
-            JLabel imgLabel = new JLabel(imageIcon);
-            JLabel txtLabel = new JLabel(text);
-            txtLabel.setFont(new Font("Courier New", Font.PLAIN, 40));
-
-            panel.setBackground(Color.LIGHT_GRAY);
-            panel.add(imgLabel, BorderLayout.CENTER);
-            panel.add(txtLabel, BorderLayout.NORTH);
-            txtLabel.setHorizontalAlignment(JLabel.CENTER);
-
-            return panel;
+            
+            return decorateImageIcon(imageIcon, text);
         } catch (IOException ex) {
-            JOptionPane.showInternalMessageDialog(frame,
+            JOptionPane.showMessageDialog(frame,
                     "Η εικόνα της καρτέλας " + text + " δεν βρέθηκε",
                     "Σφάλμα",
                     JOptionPane.ERROR_MESSAGE);
             return panel;
         }
     }
-
+    
+    public JPanel createResourceImagePanel(ImageIcon imageIcon, String text, JFrame frame) {
+        return decorateImageIcon(imageIcon, text);
+    }
+    
+    private JPanel decorateImageIcon(ImageIcon imageIcon, String text) {
+        JPanel panel = new JPanel(new BorderLayout());
+        
+        JLabel imgLabel = new JLabel(imageIcon);
+        JLabel txtLabel = new JLabel(text);
+        txtLabel.setFont(new Font("Courier New", Font.PLAIN, 40));
+        panel.setBackground(Color.LIGHT_GRAY);
+        panel.add(imgLabel, BorderLayout.CENTER);
+        panel.add(txtLabel, BorderLayout.NORTH);
+        txtLabel.setHorizontalAlignment(JLabel.CENTER);
+        return panel;
+    }
     
 }

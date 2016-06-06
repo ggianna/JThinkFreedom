@@ -8,16 +8,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JFileChooser;
-import org.scify.jthinkfreedom.reactors.SlideShowReactor;
-import org.scify.jthinkfreedom.skeleton.reactors.ReactorAdapter;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.utils.ConfigurationHandler;
 
-/**
- *
- * @author peustr
- */
 public class ConfigurationFrame extends javax.swing.JFrame {
 
     private static final int VIEW_LIMIT = 2;
@@ -185,24 +178,6 @@ public class ConfigurationFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_usersListValueChanged
 
-    private String setImageGalleryPath(ReactorAdapter reactor) {
-        //System.out.println("yes");
-        String path = "";
-        JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
-        chooser.setDialogTitle("Select Picture Folder");
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setAcceptAllFileFilterUsed(false);
-
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            path = chooser.getSelectedFile().getAbsolutePath();
-        } else {
-            System.out.println("No Selection ");
-        }
-        SlideShowReactor r = (SlideShowReactor) reactor;
-        r.setPath(path);
-        return path;
-    }
 
     private void initCustomComponents() {
         // Grid bag layout manager fill from left to right

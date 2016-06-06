@@ -1,4 +1,4 @@
-package org.scify.jthinkfreedom.talkandplay.gui.grid.old;
+package org.scify.jthinkfreedom.talkandplay.gui.grid;
 
 /**
  *

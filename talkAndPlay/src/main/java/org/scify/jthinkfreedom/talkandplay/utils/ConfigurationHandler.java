@@ -1,6 +1,5 @@
 package org.scify.jthinkfreedom.talkandplay.utils;
 
-import OS.Os;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -30,16 +29,18 @@ import org.scify.jthinkfreedom.talkandplay.models.sensors.Sensor;
  */
 public class ConfigurationHandler {
 
-    Os os = new Os();
     private Document configurationFile;
     private List<User> profiles;
     private File file;
     private String projectPath;
 
-    public ConfigurationHandler() {
-        try {
-            projectPath = System.getProperty("user.dir") + os.returnChatracter() + "conf.xml";
+    private static String DEFAULT_SOUND;
 
+    public ConfigurationHandler() {
+        DEFAULT_SOUND = getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/sounds/cat.mp3").getPath();
+
+        try {
+            projectPath = System.getProperty("user.dir") + File.separator + "conf.xml";
             file = new File(projectPath);
             if (!file.exists() || file.isDirectory()) {
                 PrintWriter writer = new PrintWriter(projectPath, "UTF-8");
@@ -129,8 +130,10 @@ public class ConfigurationHandler {
             CommunicationModule communicationModule = new CommunicationModule();
             communicationModule.setName(profile.getChild("communication").getChildText("name"));
             communicationModule.setImage(profile.getChild("communication").getChildText("image"));
+            communicationModule.setSound(getSound(profile.getChild("communication").getChildText("sound")));
             communicationModule.setRows(Integer.parseInt(profile.getChild("communication").getChildText("rows")));
             communicationModule.setColumns(Integer.parseInt(profile.getChild("communication").getChildText("columns")));
+
             communicationModule.setEnabled("true".equals(profile.getChild("communication").getChildText("enabled")));
             communicationModule.setCategories(categoriesArray);
 
@@ -138,12 +141,14 @@ public class ConfigurationHandler {
             EntertainmentModule entertainmentModule = new EntertainmentModule();
             entertainmentModule.setName(profile.getChild("entertainment").getChildText("name"));
             entertainmentModule.setImage(profile.getChild("entertainment").getChildText("image"));
+            entertainmentModule.setSound(getSound(profile.getChild("communication").getChildText("sound")));
             entertainmentModule.setEnabled("true".equals(profile.getChild("entertainment").getChildText("enabled")));
 
             //set the game module settings
             GameModule gameModule = new GameModule();
             gameModule.setName(profile.getChild("games").getChildText("name"));
             gameModule.setImage(profile.getChild("games").getChildText("image"));
+            gameModule.setSound(getSound(profile.getChild("communication").getChildText("sound")));
             gameModule.setEnabled("true".equals(profile.getChild("games").getChildText("enabled")));
 
             user.setCommunicationModule(communicationModule);
@@ -223,6 +228,8 @@ public class ConfigurationHandler {
                         Integer.parseInt(categoryEl.getChildText("columns")),
                         categoryEl.getChildText("image"));
 
+                category.setSound(getSound(categoryEl.getChildText("sound")));
+
                 if (parent != null) {
                     category.setParentCategory(new Category(parent.getName()));
                 }
@@ -268,6 +275,20 @@ public class ConfigurationHandler {
 
             }
             return categories;
+        }
+    }
+
+    /**
+     * Set the sound, either the path given or the default one
+     *
+     * @param path
+     * @return
+     */
+    private String getSound(String path) {
+        if (path != null) {
+            return path;
+        } else {
+            return DEFAULT_SOUND;
         }
     }
 

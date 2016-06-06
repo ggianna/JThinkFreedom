@@ -1,10 +1,11 @@
-package org.scify.jthinkfreedom.talkandplay.gui.grid.old;
+package org.scify.jthinkfreedom.talkandplay.gui.grid.test;
 
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -13,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import org.scify.jthinkfreedom.talkandplay.gui.grid.CommunicationPanel;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 import org.scify.jthinkfreedom.talkandplay.models.sensors.KeyboardSensor;
@@ -23,13 +25,17 @@ import org.scify.jthinkfreedom.talkandplay.services.UserService;
 
 public class GridFrame extends javax.swing.JFrame {
 
+    private int selectedImage;
+
     private User user;
+    private Timer timer;
+
     private GuiHelper guiHelper;
     private UserService userService;
     private SensorService sensorService;
-    private Timer timer;
-    private int selectedImage;
-    private ArrayList<JPanel> panelList;
+
+    private List<JPanel> pages; //holds the outer panels, or pages
+    private List<JPanel> panels; //holds each panel that will be used in the auto scanning
     private JPanel communicationPanel;
     private JPanel entertainmentPanel;
     private JPanel gamesPanel;
@@ -45,12 +51,13 @@ public class GridFrame extends javax.swing.JFrame {
     }
 
     public GridFrame(String userName) throws IOException {
+        this.sensorService = new SensorService(user);
         this.userService = new UserService();
         this.user = userService.getUser(userName);
-        this.sensorService = new SensorService(user);
         this.guiHelper = new GuiHelper();
-        this.guiHelper = guiHelper;
-        this.panelList = new ArrayList<>();
+        this.pages = new ArrayList<>();
+        this.panels = new ArrayList<>();
+        
         initComponents();
         initCustomComponents();
     }
@@ -107,23 +114,23 @@ public class GridFrame extends javax.swing.JFrame {
         GridLayout gridLayout = new GridLayout(1, 3, IMAGE_PADDING, IMAGE_PADDING);
         gridPanel.setLayout(gridLayout);
         gridPanel.removeAll();
-        
+
         if (user.getCommunicationModule().isEnabled()) {
             communicationPanel = guiHelper.createImagePanel(user.getCommunicationModule().getImage(), user.getCommunicationModule().getName(), this);
             gridPanel.add(communicationPanel);
-            panelList.add(communicationPanel);
+            panels.add(communicationPanel);
         }
 
         if (user.getEntertainmentModule().isEnabled()) {
             entertainmentPanel = guiHelper.createImagePanel(user.getEntertainmentModule().getImage(), user.getEntertainmentModule().getName(), this);
             gridPanel.add(entertainmentPanel);
-            panelList.add(entertainmentPanel);
+            panels.add(entertainmentPanel);
         }
 
         if (user.getGameModule().isEnabled()) {
             gamesPanel = guiHelper.createImagePanel(user.getGameModule().getImage(), user.getGameModule().getName(), this);
             gridPanel.add(gamesPanel);
-            panelList.add(gamesPanel);
+            panels.add(gamesPanel);
         }
 
         setTimer();
@@ -145,16 +152,16 @@ public class GridFrame extends javax.swing.JFrame {
             public void run() {
 
                 if (selectedImage == 0) {
-                    panelList.get(panelList.size() - 1).setBorder(null);
-                    panelList.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
+                    panels.get(panels.size() - 1).setBorder(null);
+                    panels.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
                     selectedImage++;
-                } else if (selectedImage == panelList.size() - 1) {
-                    panelList.get(selectedImage - 1).setBorder(null);
-                    panelList.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
+                } else if (selectedImage == panels.size() - 1) {
+                    panels.get(selectedImage - 1).setBorder(null);
+                    panels.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
                     selectedImage = 0;
-                } else if (selectedImage < panelList.size() - 1 && selectedImage > 0) {
-                    panelList.get(selectedImage - 1).setBorder(null);
-                    panelList.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
+                } else if (selectedImage < panels.size() - 1 && selectedImage > 0) {
+                    panels.get(selectedImage - 1).setBorder(null);
+                    panels.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
                     selectedImage++;
                 }
             }
@@ -172,7 +179,7 @@ public class GridFrame extends javax.swing.JFrame {
             @Override
             public void keyPressed(KeyEvent evt) {
                 Sensor sensor = new KeyboardSensor(evt.getKeyCode(), evt.getKeyChar(), "keyboard");
-                if (sensorService.shouldSelect(sensor)) {
+             /*   if (sensorService.shouldSelect(sensor)) {
                     //ugly, fix
                     if (selectedImage == 0) {
                         timer.cancel();
@@ -188,7 +195,7 @@ public class GridFrame extends javax.swing.JFrame {
                                 "",
                                 JOptionPane.INFORMATION_MESSAGE);
                     }
-                }
+                }*/
             }
         });
     }
@@ -203,7 +210,7 @@ public class GridFrame extends javax.swing.JFrame {
         communicationPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
-                if (sensorService.shouldSelect(sensor)) {
+               /* if (sensorService.shouldSelect(sensor)) {
                     timer.cancel();
                     remove(gridPanel);
                     try {
@@ -211,7 +218,7 @@ public class GridFrame extends javax.swing.JFrame {
                     } catch (IOException ex) {
                         Logger.getLogger(GridFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
+                }*/
             }
         });
 

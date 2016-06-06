@@ -1,4 +1,4 @@
-package org.scify.jthinkfreedom.talkandplay.gui.grid.old;
+package org.scify.jthinkfreedom.talkandplay.gui.grid;
 
 import java.io.IOException;
 import org.scify.jthinkfreedom.talkandplay.models.User;

@@ -8,6 +8,7 @@ public class Category {
     private int rows, columns;
     private String name;
     private String image;
+    private String sound;
     private int order;
     private boolean editable;
     private Category parentCategory;
@@ -86,6 +87,14 @@ public class Category {
         this.image = image;
     }
 
+    public String getSound() {
+        return sound;
+    }
+
+    public void setSound(String sound) {
+        this.sound = sound;
+    }
+
     public void setTiles(List<Tile> tiles) {
         this.tiles = tiles;
     }
@@ -118,7 +127,5 @@ public class Category {
     public String toString() {
         return "Category{" + "name=" + name + '}';
     }
-
-   
 
 }

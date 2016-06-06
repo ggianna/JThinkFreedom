@@ -16,31 +16,31 @@
     <communication>
       <name>Επικοινωνία</name>
       <enabled>true</enabled>
-      <image>/home/christina/Desktop/talkandplay/emoticon.png</image>
+      <image>/home/xrist/Desktop/talkandplay/emoticon.png</image>
       <rows>3</rows>
       <columns>3</columns>
       <categories>
         <category name="Φαγητό">
           <rows>3</rows>
           <columns>3</columns>
-          <image>/home/christina/Desktop/talkandplay/food-1.png</image>
+          <image>/home/xrist/Desktop/talkandplay/food-1.png</image>
           <categories>
             <category name="Γλυκά">
               <rows>3</rows>
               <columns>4</columns>
-              <image>/home/christina/Desktop/talkandplay/cupcake.png</image>
+              <image>/home/xrist/Desktop/talkandplay/cupcake.png</image>
             </category>
           </categories>
         </category>
         <category name="Ποτό">
           <rows>4</rows>
           <columns>4</columns>
-          <image>/home/christina/Desktop/talkandplay/glass-1.png</image>
+          <image>/home/xrist/Desktop/talkandplay/glass-1.png</image>
           <categories>
             <category name="Κοκτέιλς">
               <rows>3</rows>
               <columns>3</columns>
-              <image>/home/christina/Desktop/talkandplay/cocktail.png</image>
+              <image>/home/xrist/Desktop/talkandplay/cocktail.png</image>
             </category>
           </categories>
         </category>
@@ -49,12 +49,12 @@
     <entertainment>
       <name>Ψυχαγωγία</name>
       <enabled>true</enabled>
-      <image>/home/christina/Desktop/talkandplay/music-player.png</image>
+      <image>/home/xrist/Desktop/talkandplay/music-player.png</image>
     </entertainment>
     <games>
       <name>Παιχνίδια</name>
       <enabled>true</enabled>
-      <image>/home/christina/Desktop/talkandplay/game-controller.png</image>
+      <image>/home/xrist/Desktop/talkandplay/game-controller.png</image>
     </games>
   </profile>
   <profile preselected="false">
@@ -73,7 +73,7 @@
     <communication>
       <name>Επικοινωνία</name>
       <enabled>true</enabled>
-      <image>/home/christina/Desktop/talkandplay/emoticon.png</image>
+      <image>/home/xrist/Desktop/talkandplay/arguing.png</image>
       <rows>2</rows>
       <columns>3</columns>
       <categories>
@@ -81,18 +81,19 @@
           <rows>2</rows>
           <columns>3</columns>
           <order>0</order>
-          <image>/home/christina/Desktop/talkandplay/food-2.png</image>
+          <image>/home/xrist/Desktop/talkandplay/food-2.png</image>
+          <sound>/home/xrist/Desktop/talkandplay/pretty_kitty_cats.mp3</sound>
         </category>
         <category name="Drink">
          <rows>2</rows>
       <columns>3</columns>
           <order>0</order>
-          <image>/home/christina/Desktop/talkandplay/glass-1.png</image>
+          <image>/home/xrist/Desktop/talkandplay/glass-1.png</image>
           <categories>
             <category name="Κοκτέιλς">
               <rows>2</rows>
       <columns>3</columns>
-              <image>/home/christina/Desktop/talkandplay/cocktail.png</image>
+              <image>/home/xrist/Desktop/talkandplay/cocktail.png</image>
             </category>
           </categories>
         </category>
@@ -100,37 +101,37 @@
           <rows>2</rows>
       <columns>3</columns>
           <order>0</order>
-          <image>/home/christina/Desktop/talkandplay/cupcake.png</image>
+          <image>/home/xrist/Desktop/talkandplay/cupcake.png</image>
         </category>
         <category name="Feelings!">
          <rows>2</rows>
       <columns>3</columns>
           <order>0</order>
-          <image>/home/christina/Desktop/talkandplay/confused.png</image>
+          <image>/home/xrist/Desktop/talkandplay/food.png</image>
         </category>        
         <category name="Test1">
           <rows>2</rows>
       <columns>3</columns>
           <order>0</order>
-          <image>/home/christina/Desktop/talkandplay/glass.png</image>
+          <image>/home/xrist/Desktop/talkandplay/glass.png</image>
         </category>
         <category name="Test2">
           <rows>2</rows>
       <columns>3</columns>
           <order>0</order>
-          <image>/home/christina/Desktop/talkandplay/salad.png</image>
+          <image>/home/xrist/Desktop/talkandplay/salad.png</image>
         </category>
       </categories>
     </communication>
     <entertainment>
       <name>Ψυχαγωγία</name>
       <enabled>true</enabled>
-      <image>/home/christina/Desktop/talkandplay/music-player.png</image>
+      <image>/home/xrist/Desktop/talkandplay/music-player.png</image>
     </entertainment>
     <games>
       <name>Παιχνίδια</name>
       <enabled>true</enabled>
-      <image>/home/christina/Desktop/talkandplay/game-controller.png</image>
+      <image>/home/xrist/Desktop/talkandplay/joystick.png</image>
     </games>
   </profile>
 </profiles>
