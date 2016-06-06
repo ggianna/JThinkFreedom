@@ -107,7 +107,15 @@
          <rows>2</rows>
       <columns>3</columns>
           <order>0</order>
-          <image>/home/xrist/Desktop/talkandplay/food.png</image>
+          <image>/home/xrist/Desktop/talkandplay/happy.png</image>
+          <categories>
+           <category name="Moustache!">
+	         <rows>2</rows>
+	      <columns>3</columns>
+	          <order>0</order>
+	          <image>/home/xrist/Desktop/talkandplay/hipster.png</image>
+	        </category> 
+    </categories>
         </category>        
         <category name="Test1">
           <rows>2</rows>
@@ -119,7 +127,7 @@
           <rows>2</rows>
       <columns>3</columns>
           <order>0</order>
-          <image>/home/xrist/Desktop/talkandplay/salad.png</image>
+          <image>/home/xrist/Desktop/talkandplay/cheese.png</image>
         </category>
       </categories>
     </communication>

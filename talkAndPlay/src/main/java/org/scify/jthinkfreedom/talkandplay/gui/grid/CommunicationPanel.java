@@ -171,13 +171,13 @@ public class CommunicationPanel extends javax.swing.JPanel {
                 imagesPanel.add(new JLabel());
             }
         }
+        setTimer();
 
         imagesPanel.revalidate();
         imagesPanel.repaint();
         parent.add(imagesPanel);
         parent.revalidate();
         parent.repaint();
-        setTimer();
     }
 
     /**
@@ -245,9 +245,12 @@ public class CommunicationPanel extends javax.swing.JPanel {
 
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (evt.getClickCount() == 2 && !evt.isConsumed()) {
-
+                Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
+                if (sensorService.shouldSelect(sensor)) {
+                    timer.cancel();
+                    System.out.println("stopped at "+stopped);
                     stopped = 0;
+                    System.out.println("isRoot " + isRoot + " category " + category.getName() + " category.parent " + category.getParentCategory());
                     if (isRoot) {
                         parent.repaintMenu(imagesPanel);
                     } else if (!isRoot && category.getParentCategory() == null) {
@@ -283,7 +286,9 @@ public class CommunicationPanel extends javax.swing.JPanel {
 
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+                Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
+                if (sensorService.shouldSelect(sensor)) {
+                    timer.cancel();
                     try {
                         drawImages(category);
                     } catch (IOException ex) {
@@ -303,13 +308,15 @@ public class CommunicationPanel extends javax.swing.JPanel {
      * @throws IOException
      */
     private JPanel createLessItem(final Category category) throws IOException {
-        JPanel panel = guiHelper.createResourceImagePanel((new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/back-icon.png"))), "Λιγότερα", parent);
+        JPanel panel = guiHelper.createResourceImagePanel((new ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/less-icon.png"))), "Λιγότερα", parent);
         panelList.add(panel);
         imagesPanel.add(panel);
 
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+                Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
+                if (sensorService.shouldSelect(sensor)) {
+                    timer.cancel();
                     try {
                         drawImages(category);
                     } catch (IOException ex) {
@@ -351,12 +358,10 @@ public class CommunicationPanel extends javax.swing.JPanel {
     }
 
     private void setTimer() {
-        System.out.println("selecte "+selectedImage);
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("selected "+selectedImage);
                 if (selectedImage == 0) {
                     panelList.get(panelList.size() - 1).setBorder(null);
                     panelList.get(selectedImage).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_SIZE));
@@ -371,7 +376,7 @@ public class CommunicationPanel extends javax.swing.JPanel {
                     selectedImage++;
                 }
             }
-        }, 1000, 1000);
+        }, user.getConfiguration().getRotationSpeed() * 1000, user.getConfiguration().getRotationSpeed() * 1000);
     }
 
 

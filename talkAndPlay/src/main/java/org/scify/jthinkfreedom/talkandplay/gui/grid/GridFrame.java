@@ -160,7 +160,7 @@ public class GridFrame extends javax.swing.JFrame {
 
     private void setTimer() {
         timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
 
@@ -224,8 +224,8 @@ public class GridFrame extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
                 if (sensorService.shouldSelect(sensor)) {
+                    timer.cancel();
                     audioPlayer.getMediaPlayer().playMedia(user.getCommunicationModule().getSound());
-                    //mediaPlayerService.playSound(user.getCommunicationModule().getSound());
                 }
             }
         });
@@ -235,6 +235,7 @@ public class GridFrame extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
                 if (sensorService.shouldSelect(sensor)) {
+                    timer.cancel();
                     mediaPlayerService.playSound(user.getEntertainmentModule().getSound());
                     JOptionPane.showMessageDialog(gridFrame,
                             "Υπό κατασκευή",
@@ -249,6 +250,7 @@ public class GridFrame extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Sensor sensor = new MouseSensor(evt.getButton(), evt.getClickCount(), "mouse");
                 if (sensorService.shouldSelect(sensor)) {
+                    timer.cancel();
                     mediaPlayerService.playSound(user.getGameModule().getSound());
                     JOptionPane.showMessageDialog(gridFrame,
                             "Υπό κατασκευή",
