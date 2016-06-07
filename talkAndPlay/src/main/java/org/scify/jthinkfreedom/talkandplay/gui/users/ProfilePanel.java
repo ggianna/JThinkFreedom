@@ -74,7 +74,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
-        nameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        nameLabel.setFont(new Font("DejaVu Sans", Font.PLAIN, 16));
         
         profilePanel.add(imageLabel);
         profilePanel.add(nameLabel);

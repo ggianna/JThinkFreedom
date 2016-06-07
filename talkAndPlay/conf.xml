@@ -170,5 +170,35 @@
       <image />
     </games>
   </profile>
+  <profile preselected="false">
+    <name>kukuuuu</name>
+    <image />
+    <configuration>
+      <rotationSpeed>1</rotationSpeed>
+      <defaultGridRow>2</defaultGridRow>
+      <defaultGridColumn>2</defaultGridColumn>
+      <selectionSensor />
+    </configuration>
+    <communication>
+      <name xmlns="Επικοινωνία" />
+      <enabled xmlns="true" />
+      <image>/home/christina/Projects/JThinkFreedom/talkAndPlay/target/classes/org/scify/jthinkfreedom/talkandplay/resources/default/communication_module.png</image>
+      <rows>1</rows>
+      <columns>1</columns>
+      <categories />
+    </communication>
+    <entertainment>
+      <name>Ψυχαγωγία</name>
+      <enabled>true</enabled>
+      <image>/home/christina/Projects/JThinkFreedom/talkAndPlay/target/classes/org/scify/jthinkfreedom/talkandplay/resources/default/entertainment_module.png</image>
+      <musicPath />
+      <videoPath />
+    </entertainment>
+    <games>
+      <name>Παιχνίδια</name>
+      <enabled>true</enabled>
+      <image>/home/christina/Projects/JThinkFreedom/talkAndPlay/target/classes/org/scify/jthinkfreedom/talkandplay/resources/default/games_module.png</image>
+    </games>
+  </profile>
 </profiles>
 

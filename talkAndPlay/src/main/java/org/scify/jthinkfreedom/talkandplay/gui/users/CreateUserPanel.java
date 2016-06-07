@@ -48,6 +48,9 @@ public class CreateUserPanel extends javax.swing.JPanel {
 
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
         createUserPanel = new javax.swing.JPanel();
         nameTextField = new javax.swing.JTextField();
         imageLabel = new javax.swing.JLabel();
@@ -68,7 +71,16 @@ public class CreateUserPanel extends javax.swing.JPanel {
         nameTextField.setBackground(new java.awt.Color(255, 255, 255));
         nameTextField.setForeground(new java.awt.Color(51, 51, 51));
         nameTextField.setText("Γράψε όνομα χρήστη εδώ");
+        nameTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                nameTextFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                nameTextFieldFocusLost(evt);
+            }
+        });
 
+        imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
         imageLabel.setText("Ανέβασε φωτογραφία χρήστη");
         imageLabel.setToolTipText("");
@@ -121,51 +133,56 @@ public class CreateUserPanel extends javax.swing.JPanel {
         createUserPanelLayout.setHorizontalGroup(
             createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(createUserPanelLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(imageLabel))
-                .addGap(111, 111, 111)
+                .addGap(30, 30, 30)
                 .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
+                .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createUserPanelLayout.createSequentialGroup()
+                        .addComponent(createUserButton)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createUserPanelLayout.createSequentialGroup()
                         .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rotationSpeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rotationSpeedLabel))
-                        .addGroup(createUserPanelLayout.createSequentialGroup()
-                            .addComponent(whiteRadioButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(blackRadioButton)))
-                    .addComponent(backgroundColorLabel))
-                .addGap(0, 135, Short.MAX_VALUE))
+                            .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rotationSpeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(rotationSpeedLabel))
+                                .addGroup(createUserPanelLayout.createSequentialGroup()
+                                    .addComponent(whiteRadioButton)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(blackRadioButton)))
+                            .addComponent(backgroundColorLabel))
+                        .addGap(137, 137, 137))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createUserPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(createUserButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(errorLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addComponent(errorLabel)
                 .addContainerGap())
         );
         createUserPanelLayout.setVerticalGroup(
             createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(createUserPanelLayout.createSequentialGroup()
                 .addGap(52, 52, 52)
-                .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rotationSpeedLabel)
-                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
                 .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(createUserPanelLayout.createSequentialGroup()
+                        .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
+                        .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 62, Short.MAX_VALUE))
+                    .addGroup(createUserPanelLayout.createSequentialGroup()
+                        .addComponent(rotationSpeedLabel)
+                        .addGap(8, 8, 8)
                         .addComponent(rotationSpeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(46, 46, 46)
                         .addComponent(backgroundColorLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(createUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(whiteRadioButton)
-                            .addComponent(blackRadioButton)))
-                    .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(errorLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(createUserButton)
+                            .addComponent(blackRadioButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(errorLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(createUserButton)))
                 .addGap(39, 39, 39))
         );
 
@@ -221,17 +238,29 @@ public class CreateUserPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_imageLabelMouseClicked
 
+    private void nameTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameTextFieldFocusGained
+        if ("Γράψε όνομα χρήστη εδώ".equals(nameTextField.getText())) {
+            nameTextField.setText("");
+        }
+    }//GEN-LAST:event_nameTextFieldFocusGained
+
+    private void nameTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameTextFieldFocusLost
+        if (nameTextField.getText().isEmpty()) {
+            nameTextField.setText("Γράψε όνομα χρήστη εδώ");
+        }
+    }//GEN-LAST:event_nameTextFieldFocusLost
+
     private void initCustomComponents() {
         errorLabel.setVisible(false);
         nameTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.GRAY));
-        nameTextField.setFont(new Font("Arial", Font.BOLD, 14));
+        nameTextField.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
         nameTextField.setHorizontalAlignment(JTextField.CENTER);
-        imageLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        rotationSpeedLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        backgroundColorLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        whiteRadioButton.setFont(new Font("Arial", Font.PLAIN, 14));
-        blackRadioButton.setFont(new Font("Arial", Font.PLAIN, 14));
-        createUserButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        imageLabel.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
+        rotationSpeedLabel.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
+        backgroundColorLabel.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
+        whiteRadioButton.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
+        blackRadioButton.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
+        createUserButton.setFont(new Font("DejaVu Sans", Font.PLAIN, 18));
         createUserButton.setBorder(new LineBorder(new Color(75, 161, 69), 20));
         createUserButton.setMargin(new Insets(10, 10, 10, 10));
     }
@@ -239,6 +268,9 @@ public class CreateUserPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backgroundColorLabel;
     private javax.swing.JRadioButton blackRadioButton;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JButton createUserButton;
     private javax.swing.JPanel createUserPanel;
     private javax.swing.JLabel errorLabel;
