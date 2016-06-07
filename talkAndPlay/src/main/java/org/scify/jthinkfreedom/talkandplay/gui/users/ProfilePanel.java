@@ -1,15 +1,17 @@
 package org.scify.jthinkfreedom.talkandplay.gui.users;
 
+import java.awt.Component;
 import java.awt.Font;
-import java.io.IOException;
-import javax.swing.SwingConstants;
-import org.scify.jthinkfreedom.talkandplay.gui.MainFrame;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.border.EmptyBorder;
+import org.scify.jthinkfreedom.talkandplay.gui.MainPanel;
 import org.scify.jthinkfreedom.talkandplay.gui.helpers.GuiHelper;
 import org.scify.jthinkfreedom.talkandplay.models.User;
 
 public class ProfilePanel extends javax.swing.JPanel {
-
-    private MainFrame parent;
+    
+    private MainPanel parent;
     private User profile;
     private GuiHelper guiHelper;
 
@@ -19,12 +21,12 @@ public class ProfilePanel extends javax.swing.JPanel {
     public User getUser() {
         return profile;
     }
-
+    
     public ProfilePanel() {
         initComponents();
     }
-
-    public ProfilePanel(MainFrame parent, User profile){
+    
+    public ProfilePanel(MainPanel parent, User profile) {
         this.parent = parent;
         this.profile = profile;
         this.guiHelper = new GuiHelper();
@@ -41,56 +43,66 @@ public class ProfilePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        imageLabel = new javax.swing.JLabel();
-        nameLabel = new javax.swing.JLabel();
+        profilePanel = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        profilePanel.setBackground(new java.awt.Color(255, 255, 255));
+        profilePanel.setForeground(new java.awt.Color(255, 255, 255));
 
-        imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/scify/jthinkfreedom/talkandplay/resources/no-photo.png"))); // NOI18N
-        jPanel1.add(imageLabel, java.awt.BorderLayout.PAGE_START);
+        javax.swing.GroupLayout profilePanelLayout = new javax.swing.GroupLayout(profilePanel);
+        profilePanel.setLayout(profilePanelLayout);
+        profilePanelLayout.setHorizontalGroup(
+            profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 191, Short.MAX_VALUE)
+        );
+        profilePanelLayout.setVerticalGroup(
+            profilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 178, Short.MAX_VALUE)
+        );
 
-        nameLabel.setFont(nameLabel.getFont().deriveFont(nameLabel.getFont().getSize()+2f));
-        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        nameLabel.setText("Name");
-        jPanel1.add(nameLabel, java.awt.BorderLayout.CENTER);
-
-        add(jPanel1, java.awt.BorderLayout.CENTER);
+        add(profilePanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void initCustomComponents(){
-        nameLabel.setText(profile.getName());
-        imageLabel.setIcon(guiHelper.getRoundIcon((profile.getImage())));
-        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    private void initCustomComponents() {
+        profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
+        profilePanel.setBorder(new EmptyBorder(0, 0, 0, 30));
+        JLabel imageLabel = new JLabel(guiHelper.getRoundIcon((profile.getImage())));
+        JLabel nameLabel = new JLabel(profile.getName());
+        
+        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        nameLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
+        nameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        
+        profilePanel.add(imageLabel);
+        profilePanel.add(nameLabel);
+        /*
+         nameLabel.setText(profile.getName());
+         imageLabel.setIcon(guiHelper.getRoundIcon((profile.getImage())));
+         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);*/
     }
     
     public void repaintPanel(User user) {
-        nameLabel.setText(user.getName());
-        imageLabel.setIcon(guiHelper.getIcon((user.getImage())));
+        /* nameLabel.setText(user.getName());
+         imageLabel.setIcon(guiHelper.getIcon((user.getImage())));*/
     }
-
+    
     public User getProfile() {
         return profile;
     }
-
+    
     public void setProfile(User profile) {
         this.profile = profile;
     }
-
+    
     public void update(String profile) {
-        nameLabel.setText(profile);
+        //  nameLabel.setText(profile);
     }
-
+    
     private Font originalFont;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel imageLabel;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel nameLabel;
+    private javax.swing.JPanel profilePanel;
     // End of variables declaration//GEN-END:variables
 }

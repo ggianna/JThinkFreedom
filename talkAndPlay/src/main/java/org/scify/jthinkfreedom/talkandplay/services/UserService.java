@@ -31,6 +31,12 @@ public class UserService {
         return user;
     }
 
+    public List<User> getUsers() {
+        List<User> user = configurationHandler.getProfiles();
+
+        return user;
+    }
+
     /**
      * Save a user to the xml file
      *
@@ -50,9 +56,9 @@ public class UserService {
 
         //add the configurations
         Element configuration = new Element("configuration");
-        configuration.addContent(new Element("rotationSpeed").setText("2"));
+        configuration.addContent(new Element("rotationSpeed").setText(String.valueOf(user.getConfiguration().getRotationSpeed())));
         configuration.addContent(new Element("defaultGridRow").setText("2"));
-        configuration.addContent(new Element("defaultGriColumn").setText("2"));
+        configuration.addContent(new Element("defaultGridColumn").setText("2"));
 
         //add the selection sensor
         Element selectionSensor = new Element("selectionSensor");
@@ -91,16 +97,28 @@ public class UserService {
         Element categories = new Element("categories");
 
         //add the first category settings
-        Element commCategory = new Element("category");
-        commCategory.setAttribute("name", "Επικοινωνία");
-        commCategory.setAttribute("editable", "false");
-        commCategory.addContent(new Element("rows").setText("1"));
-        commCategory.addContent(new Element("columns").setText("1"));
-        commCategory.addContent(new Element("image"));
-
-        categories.addContent(commCategory);
+        communication.addContent(new Element("name", "Επικοινωνία"));
+        communication.addContent(new Element("enabled", "true"));
+        communication.addContent(new Element("image"));
+        communication.addContent(new Element("rows").setText("1"));
+        communication.addContent(new Element("columns").setText("1"));
         communication.addContent(categories);
+
+        //add entertainment module settings
+        Element entertainment = new Element("entertainment");
+        entertainment.addContent(new Element("name").setText("Ψυχαγωγία"));
+        entertainment.addContent(new Element("enabled").setText("true"));
+        entertainment.addContent(new Element("image"));
+
+        //add game module settings
+        Element games = new Element("games");
+        games.addContent(new Element("name").setText("Παιχνίδια"));
+        games.addContent(new Element("enabled").setText("true"));
+        games.addContent(new Element("image"));
+
         profile.addContent(communication);
+        profile.addContent(entertainment);
+        profile.addContent(games);
         profiles.addContent(profile);
 
         configurationHandler.writeToXmlFile();
